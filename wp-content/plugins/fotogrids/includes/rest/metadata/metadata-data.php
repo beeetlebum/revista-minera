@@ -1,0 +1,258 @@
+<?php
+namespace FotoGrids\REST\Metadata;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Metadata Data Handler
+ *
+ * Handles metadata data for REST API endpoints.
+ *
+ * @since 1.0.0
+ */
+class Metadata_Data {
+
+	/**
+	 * Get metadata tags
+	 *
+	 * Retrieves available metadata tags with optional search filtering.
+	 * Used for autocomplete and selection interfaces in item metadata editing.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request with optional search and limit parameters
+	 * @return \WP_REST_Response Array of available tags
+	 */
+	public static function get_metadata_tags( $request ) {
+		$search = $request->get_param( 'search' );
+		$limit  = $request->get_param( 'limit' );
+
+		$tags = \FotoGrids\Metadata_Manager::get_tags( $search, $limit );
+
+		return rest_ensure_response( self::format_rows( $tags ) );
+	}
+
+	/**
+	 * Get metadata people
+	 *
+	 * Retrieves available people metadata with optional search filtering.
+	 * Used for autocomplete and selection interfaces in item metadata editing.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request with optional search and limit parameters
+	 * @return \WP_REST_Response Array of available people
+	 */
+	public static function get_metadata_people( $request ) {
+		$search = $request->get_param( 'search' );
+		$limit  = $request->get_param( 'limit' );
+
+		$people = \FotoGrids\Metadata_Manager::get_people( $search, $limit );
+
+		return rest_ensure_response( self::format_rows( $people ) );
+	}
+
+	/**
+	 * Get metadata locations
+	 *
+	 * Retrieves available location metadata with optional search filtering.
+	 * Used for autocomplete and selection interfaces in item metadata editing.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request with optional search and limit parameters
+	 * @return \WP_REST_Response Array of available locations
+	 */
+	public static function get_metadata_locations( $request ) {
+		$search = $request->get_param( 'search' );
+		$limit  = $request->get_param( 'limit' );
+
+		$locations = \FotoGrids\Metadata_Manager::get_locations( $search, $limit );
+
+		return rest_ensure_response( self::format_rows( $locations ) );
+	}
+
+	/**
+	 * Create metadata tag
+	 *
+	 * Creates a new metadata tag that can be used for item categorization.
+	 * Returns the created tag data or an error if creation fails.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request containing tag name
+	 * @return \WP_REST_Response|\WP_Error Created tag data or error response
+	 */
+	public static function create_metadata_tag( $request ) {
+		$name = $request->get_param( 'name' );
+
+		if ( empty( $name ) ) {
+			return new \WP_Error( 'missing_name', __( 'Tag name is required', 'fotogrids' ), array( 'status' => 400 ) );
+		}
+
+		$tag = self::resolve_entry(
+			'tag',
+			$name,
+			function () use ( $name ) {
+				return \FotoGrids\Metadata_Manager::add_or_get_tag( $name );
+			}
+		);
+
+		if ( is_wp_error( $tag ) ) {
+			return $tag;
+		}
+
+		if ( ! $tag ) {
+			return new \WP_Error( 'creation_failed', __( 'Failed to create tag', 'fotogrids' ), array( 'status' => 500 ) );
+		}
+
+		return rest_ensure_response( \FotoGrids\Metadata_Manager::format_for_response( $tag ) );
+	}
+
+	/**
+	 * Create metadata person
+	 *
+	 * Creates a new person entry that can be used for item metadata.
+	 * Returns the created person data or an error if creation fails.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request containing person name
+	 * @return \WP_REST_Response|\WP_Error Created person data or error response
+	 */
+	public static function create_metadata_person( $request ) {
+		$name = $request->get_param( 'name' );
+
+		if ( empty( $name ) ) {
+			return new \WP_Error( 'missing_name', __( 'Person name is required', 'fotogrids' ), array( 'status' => 400 ) );
+		}
+
+		$person = self::resolve_entry(
+			'person',
+			$name,
+			function () use ( $name ) {
+				return \FotoGrids\Metadata_Manager::add_or_get_person( $name );
+			}
+		);
+
+		if ( is_wp_error( $person ) ) {
+			return $person;
+		}
+
+		if ( ! $person ) {
+			return new \WP_Error( 'creation_failed', __( 'Failed to create person', 'fotogrids' ), array( 'status' => 500 ) );
+		}
+
+		return rest_ensure_response( \FotoGrids\Metadata_Manager::format_for_response( $person ) );
+	}
+
+	/**
+	 * Create metadata location
+	 *
+	 * Creates a new location entry that can be used for item metadata.
+	 * Returns the created location data or an error if creation fails.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request containing location name
+	 * @return \WP_REST_Response|\WP_Error Created location data or error response
+	 */
+	public static function create_metadata_location( $request ) {
+		$name      = $request->get_param( 'name' );
+		$latitude  = $request->get_param( 'latitude' );
+		$longitude = $request->get_param( 'longitude' );
+
+		if ( empty( $name ) ) {
+			return new \WP_Error( 'missing_name', __( 'Location name is required', 'fotogrids' ), array( 'status' => 400 ) );
+		}
+
+		$coordinates = \FotoGrids\Metadata_Manager::normalize_coordinates( $latitude, $longitude );
+		if ( is_wp_error( $coordinates ) ) {
+			return $coordinates;
+		}
+
+		$location = self::resolve_entry(
+			'location',
+			$name,
+			function () use ( $name, $latitude, $longitude ) {
+				return \FotoGrids\Metadata_Manager::add_or_get_location( $name, $latitude, $longitude );
+			}
+		);
+
+		if ( is_wp_error( $location ) ) {
+			return $location;
+		}
+
+		if ( ! $location ) {
+			return new \WP_Error( 'creation_failed', __( 'Failed to create location', 'fotogrids' ), array( 'status' => 500 ) );
+		}
+
+		return rest_ensure_response( \FotoGrids\Metadata_Manager::format_for_response( $location ) );
+	}
+
+	/**
+	 * Get item metadata
+	 *
+	 * Retrieves all metadata associated with a specific item including
+	 * tags, people, and location information.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request containing item ID
+	 * @return \WP_REST_Response Item metadata including tags, people, and locations
+	 */
+	public static function get_item_metadata( $request ) {
+		$item_id = $request->get_param( 'id' );
+
+		$metadata = \FotoGrids\Metadata_Manager::get_item_metadata( $item_id );
+
+		foreach ( array( 'tags', 'people', 'locations' ) as $key ) {
+			$metadata[ $key ] = self::format_rows( $metadata[ $key ] ?? array() );
+		}
+
+		return rest_ensure_response( $metadata );
+	}
+
+	/**
+	 * Shape a list of metadata rows for a REST response.
+	 *
+	 * @since  1.2.0
+	 * @param  array|false $rows Rows from the tags table.
+	 * @return array<int, array<string, mixed>>
+	 */
+	private static function format_rows( $rows ) {
+		return array_map(
+			array( '\FotoGrids\Metadata_Manager', 'format_for_response' ),
+			is_array( $rows ) ? $rows : array()
+		);
+	}
+
+	/**
+	 * Resolve a library entry by name, creating it only for users who manage the library.
+	 *
+	 * Users without the library capability can use an existing entry but cannot
+	 * add one or change its stored details.
+	 *
+	 * @since 1.2.0
+	 * @param string   $type   Metadata type: tag, person or location.
+	 * @param string   $name   Entry name.
+	 * @param callable $create Creates or fetches the entry; called only for library managers.
+	 * @return object|false|\WP_Error Entry row, false when creation failed, or a 403 error.
+	 */
+	public static function resolve_entry( $type, $name, callable $create ) {
+		if ( Metadata_Permissions::can_manage_library() ) {
+			return $create();
+		}
+
+		$entry = \FotoGrids\Metadata_Manager::find_metadata( $type, $name );
+
+		if ( $entry ) {
+			return $entry;
+		}
+
+		return new \WP_Error(
+			'fotogrids_library_forbidden',
+			sprintf(
+				/* translators: %s: tag, person or location name. */
+				__( '"%s" is not in the library, and you do not have permission to add it.', 'fotogrids' ),
+				$name
+			),
+			array( 'status' => 403 )
+		);
+	}
+}

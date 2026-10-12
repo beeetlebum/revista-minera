@@ -1,0 +1,109 @@
+/* ===== Footer Builder CSS HERE ===== */
+
+.footer-nav-wrapper .aft-small-social-menu .menu li,
+.footer-main-right .footer-nav-wrapper .menu li:last-child {
+    margin-right: 0;
+}
+[class*="footer-bottom-"],
+[class*="footer-main-"]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.footer-bottom-left,
+.footer-main-left{justify-content: flex-start;}
+
+.footer-bottom-center,
+.footer-main-center{justify-content: center;text-align: center;}
+
+.footer-bottom-right,
+.footer-main-right{
+    text-align: right;
+    justify-content: flex-end;
+}
+.site-info .af-flex-container ,
+.secondary-footer .af-flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+.secondary-footer.main .row {
+    display: block;
+}
+.footer-main-right .footer-nav-wrapper ul li a,
+.footer-bottom-right .footer-nav-wrapper ul li a {
+    padding-left: 15px;
+    padding-right: 0;
+}
+.aft-small-social-menu ul {
+    white-space: nowrap;
+}
+.aft-small-social-menu ul li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.site-info {
+    text-align: unset;
+}
+
+.footer-bottom-left .social-navigation ul,
+.footer-main-left .social-navigation ul{
+    text-align: left;
+}
+.footer-bottom-right .social-navigation ul,
+.footer-main-right .social-navigation ul{
+    text-align: right;
+}
+
+.aft-footer-custom-html [class*="livecoinwatch-widget"] {
+    width: 90vw !important;
+    max-width: 1530px !important;
+}
+@media (max-width: 1600px) {
+    .aft-footer-custom-html [class*="livecoinwatch-widget"] {
+        max-width: 1145px !important;
+    }
+}
+
+footer figure.wp-block-image {
+    margin-bottom: 0;
+}
+
+body .wp-block-embed.wp-block-embed-youtube {
+    width: clamp(260px, 27vw, 400px);
+}
+
+body.aft-default-mode footer .morenews-widget {
+    background: rgba(255,255,255,.1);
+}
+body.aft-dark-mode footer .morenews-widget {
+    background: rgba(0,0,0,.1);
+}
+@media only screen and (max-width: 768px){
+    .secondary-footer .af-flex-container ,
+    .site-info .af-container-row {
+        flex-wrap: wrap;
+    }
+}
+@media only screen and (max-width: 767px){
+    .footer-nav-wrapper ul{
+        margin-bottom: 0;
+    }
+}
+@media screen and (max-width: 480px) {
+    .secondary-footer .af-flex-container ,
+    .site-info .af-container-row {
+        justify-content: center;
+    }
+    .aft-small-social-menu ul {
+        white-space: wrap;
+    }
+    .footer-bottom-left, .footer-main-left{
+        justify-content: center;
+    }
+    .footer-bottom-right, .footer-main-right {
+        text-align: center;
+    }
+}

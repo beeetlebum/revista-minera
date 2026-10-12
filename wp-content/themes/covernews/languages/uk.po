@@ -1,0 +1,1889 @@
+# Translation of Themes - CoverNews in Ukrainian
+# This file is distributed under the same license as the Themes - CoverNews package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-01-14 10:55:23+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: uk_UA\n"
+"Project-Id-Version: Themes - CoverNews\n"
+
+#. Description of the theme
+#: style.css
+#, gp-priority: high
+msgid "CoverNews is a clean and elegant free WordPress theme that is perfect for online blog and magazine. With the help of block patterns, live customizer options and custom widgets, you can design your website as you like and preview the changes live. This theme is fully responsive that looks beautiful on all the screen sizes from small to large devices. As it includes many useful features that require to build an awesome looking website, you can implement the layout as a personal blog, modern news journals, fashion magazine, travel blogging & magazine, vibrant news sites and more. It is also compatible with Elementor, Gutenberg along with WooCommerce plugin that helps you to integrate an online business with your blog easily. The RTL language supported theme is well optimized that helps to rank your website in the top of search engines and users will get an outstanding support from the team if there will be any difficulties while using the theme. There are a number demos available for this theme so import the one you like and start to build a website. See our demos: https://afthemes.com/products/covernews/#aft-view-starter-sites Videos: https://www.youtube.com/@wpafthemes/ Docs: https://docs.afthemes.com/covernews/"
+msgstr ""
+
+#. Theme Name of the theme
+#: style.css inc/hooks/hook-patterns.php:13
+#, gp-priority: high
+msgid "CoverNews"
+msgstr "CoverNews"
+
+#: admin-dashboard/rest-api/class-admin-notice.php:230
+msgid "Whether you're just starting or customizing your site"
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:229
+msgid "🤝 We're Here for You"
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:198
+msgid ""
+"Choose from 100+ starter sites designed for blogs, magazines, businesses & more.\n"
+"      Setup is simple — no coding required."
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:197
+msgid "🚀 Start With One Click"
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:165
+msgid "%s is now active. We're here to help you turn your ideas into a beautiful, professional website — quickly and confidently."
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:163
+msgid "👋 Welcome, and Thank You!"
+msgstr ""
+
+#: inc/hooks/blocks/block-post-header-layout-1.php:147
+msgid "Toggle Primary Menu"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:403
+msgid "Trending Story Section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:335
+msgid "Editor's Picks Section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:267
+msgid "Main Story Section"
+msgstr ""
+
+#: inc/widgets/widgets-common-functions.php:113
+#: inc/widgets/widgets-common-functions.php:115
+msgid "Read more about %s"
+msgstr "Докладніше про %s"
+
+#. Template Name of the theme
+msgid "Page Builder Full Width"
+msgstr "Page Builder на всю ширину"
+
+#. Template Name of the theme
+msgid "Blank Canvas"
+msgstr "Порожнє полотно"
+
+#: template-parts/content.php:41
+msgid "Post Navigation"
+msgstr "Навігація запису"
+
+#: admin-dashboard/admin_dashboard.php:545
+#: admin-dashboard/rest-api/class-admin-notice.php:149
+msgid "The \"Get Started\" action will install/activate the Templatespare and Blockspare plugins for Starter Sites and Templates."
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:544
+#: admin-dashboard/rest-api/class-admin-notice.php:148
+msgid "Get Started"
+msgstr "Розпочнемо"
+
+#: admin-dashboard/admin_dashboard.php:366
+msgid "One-click Import, Header/Footer Builder, Multilingual Support! Powered by Elespare."
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:365
+msgid "Elespare plugin version should be more than %s."
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:294
+msgid "One-click Demo Import, Block Editor Ready, No Code Required! Built with Blockspare."
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:289
+msgid "Blockspare plugin version should be more than %s."
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:220
+msgid "Import a Starter Site, Personalize, and Live it in 3 Easy Steps!"
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:217
+msgid "The Templatespare plugin should be updated to the latest version"
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:109
+#: admin-dashboard/admin_dashboard.php:110
+msgid "Dashboard"
+msgstr "Майстерня"
+
+#: admin-dashboard/admin_dashboard.php:143
+#: admin-dashboard/admin_dashboard.php:144
+msgid "Elementor Kits"
+msgstr "Elementor Kits"
+
+#: admin-dashboard/admin_dashboard.php:153
+#: admin-dashboard/admin_dashboard.php:154
+msgid "Block Patterns"
+msgstr "Патерни блоків"
+
+#: admin-dashboard/admin_dashboard.php:133
+#: admin-dashboard/admin_dashboard.php:134
+msgid "Starter Sites"
+msgstr "Стартові сайти"
+
+#: inc/customizer/theme-options.php:225
+msgid "Full Width"
+msgstr "На всю ширину"
+
+#: inc/customizer/theme-options.php:224
+msgid "Wide"
+msgstr "По ширині"
+
+#: inc/customizer/theme-options.php:219
+msgid "Select Conatiner Width"
+msgstr ""
+
+#: inc/customizer/theme-options.php:218
+msgid "Conatiner Width"
+msgstr "Ширина контейнера"
+
+#: inc/notice-upgrade.php:212
+msgid "Have Queries?"
+msgstr "Є питання?"
+
+#: inc/notice-upgrade.php:202
+msgid "All Themes Plan"
+msgstr "План усіх тем"
+
+#: inc/notice-upgrade.php:197
+msgid "Power Bundle"
+msgstr ""
+
+#: inc/notice-upgrade.php:192
+msgid "Claim Your Discount"
+msgstr "Отримайте свою знижку"
+
+#. Translators: %1$s current user display name., %2$s this theme name., %3$s
+#. discount coupon code., %4$s discount percentage.
+#: inc/notice-upgrade.php:177
+msgid "%1$s 🎁 Hope you're loving our free %2$s theme! Dive into the festive spirit with an exclusive gift: %4$s premium features! Use code %3$s at checkout. Wishing you a season filled with joyous holidays and even happier savings! 🎄✨"
+msgstr "%1$s 🎁 Сподіваємося, вам сподобалася наша безкоштовна тема %2$s! Пориньте у святковий дух з ексклюзивним подарунком: преміум-функції %4$s! Використовуйте код %3$s при оформленні замовлення. Бажаємо вам сезону, наповненого радісними святами та ще більш щасливими заощадженнями! 🎄✨"
+
+#: inc/hooks/patterns/section-4.php:9
+msgid "Section 4"
+msgstr "Розділ 4"
+
+#: inc/hooks/patterns/section-3.php:9
+msgid "Section 3"
+msgstr "Розділ 3"
+
+#: inc/hooks/patterns/section-2.php:9
+msgid "Section 2"
+msgstr "Розділ 2"
+
+#: inc/hooks/patterns/section-1.php:9
+msgid "Section 1"
+msgstr "Розділ 1"
+
+#: inc/hooks/patterns/full.php:188 inc/hooks/patterns/section-4.php:54
+msgid "Categories"
+msgstr "Категорії"
+
+#: inc/hooks/patterns/full.php:160 inc/hooks/patterns/section-4.php:26
+msgid "Single Column"
+msgstr "Окрема колонка"
+
+#: inc/hooks/patterns/full.php:152 inc/hooks/patterns/section-4.php:18
+msgid "Express Tile"
+msgstr ""
+
+#: inc/hooks/patterns/full.php:130 inc/hooks/patterns/full.php:170
+#: inc/hooks/patterns/section-3.php:83 inc/hooks/patterns/section-4.php:36
+msgid "Advertisement"
+msgstr "Реклама"
+
+#: inc/hooks/patterns/full.php:92 inc/hooks/patterns/section-3.php:45
+msgid "Connect to Us"
+msgstr "Зв'яжіться з нами"
+
+#: inc/hooks/patterns/full.php:84 inc/hooks/patterns/section-3.php:37
+msgid "Post List"
+msgstr "Перелік записів"
+
+#: inc/hooks/patterns/full.php:74 inc/hooks/patterns/full.php:180
+#: inc/hooks/patterns/section-3.php:27 inc/hooks/patterns/section-4.php:46
+msgid "Post Grid"
+msgstr "Сітка запису"
+
+#: inc/hooks/patterns/full.php:66 inc/hooks/patterns/section-3.php:19
+msgid "Post Slider"
+msgstr "Слайдер запису"
+
+#: inc/hooks/patterns/full.php:47 inc/hooks/patterns/section-2.php:35
+msgid "We mainly focus on quality code and elegant design with incredible support. Our WordPress themes and plugins empower you to create an elegant, professional, and easy-to-maintain website in no time at all. Even on mobile and tablet screens, your website will look great"
+msgstr ""
+
+#: inc/hooks/patterns/full.php:41 inc/hooks/patterns/section-2.php:29
+msgid "About Author"
+msgstr "Про автора"
+
+#: inc/hooks/patterns/full.php:31 inc/hooks/patterns/section-2.php:19
+msgid "Express Grid"
+msgstr ""
+
+#: inc/hooks/patterns/block-5.php:9 inc/hooks/patterns/block-5.php:16
+#: inc/hooks/patterns/full.php:142
+msgid "Post Carousel"
+msgstr "Карусель запису"
+
+#: inc/hooks/patterns/block-4.php:16 inc/hooks/patterns/full.php:56
+msgid "Three Columns"
+msgstr "Три колонки"
+
+#: inc/hooks/patterns/block-4.php:9
+msgid "Three Columns Posts"
+msgstr ""
+
+#: inc/hooks/patterns/block-3.php:9 inc/hooks/patterns/block-3.php:16
+#: inc/hooks/patterns/full.php:20
+msgid "Featured News"
+msgstr "Вибрані новини"
+
+#: inc/hooks/patterns/block-2.php:9
+msgid "Main Banner"
+msgstr "Головний банер"
+
+#: inc/hooks/patterns/block-1.php:9
+msgid "Ticker News"
+msgstr "Біжуча стрічка новин"
+
+#: inc/customizer/theme-options.php:420
+msgid "Show Tags Below Content"
+msgstr ""
+
+#: inc/customizer/theme-options.php:588
+msgid "Select Excerpt display mode"
+msgstr ""
+
+#: inc/customizer/theme-options.php:587
+msgid "Excerpt Mode"
+msgstr ""
+
+#: inc/hooks/hook-tgm.php:20
+msgid "Templatespare"
+msgstr "Templatespare"
+
+#: inc/customizer/theme-options.php:342
+msgid "Enable"
+msgstr "Увімкнути"
+
+#: inc/customizer/theme-options.php:338
+msgid "Show Comment Count"
+msgstr "Показувати кількість коментарів"
+
+#: inc/hooks/hook-tgm.php:30
+msgid "Blockspare"
+msgstr ""
+
+#: inc/hooks/hook-tgm.php:25
+msgid "Elespare"
+msgstr ""
+
+#: inc/hooks/hook-tgm.php:40
+msgid "Free Live Chat using 3CX"
+msgstr ""
+
+#: admin-dashboard/rest-api/class-ajaxcall.php:72
+msgid "Sorry, you are not allowed to activate plugins on this site."
+msgstr "На жаль, вам не дозволено активувати плагіни цього сайту."
+
+#: admin-dashboard/rest-api/class-ajaxcall.php:18
+#: admin-dashboard/rest-api/class-ajaxcall.php:79
+#: admin-dashboard/rest-api/class-ajaxcall.php:153
+msgid "Error - unable to verify nonce, please try again."
+msgstr "Помилка - не вдалося перевірити nonce, спробуйте ще раз."
+
+#: admin-dashboard/rest-api/class-ajaxcall.php:10
+#: admin-dashboard/rest-api/class-ajaxcall.php:146
+msgid "Sorry, you are not allowed to install plugins on this site."
+msgstr "На жаль, вам не дозволяється встановлювати плагіни на цьому сайті."
+
+#: admin-dashboard/rest-api/class-admin-notice.php:232
+msgid "Videos"
+msgstr "Відео"
+
+#: admin-dashboard/rest-api/class-admin-notice.php:231
+msgid "Documentation"
+msgstr "Документація"
+
+#: admin-dashboard/rest-api/class-admin-notice.php:205
+msgid "Theme dashboard"
+msgstr "Майстерня теми"
+
+#: admin-dashboard/rest-api/api-request.php:126
+msgid "More Details"
+msgstr "Детальніше"
+
+#: admin-dashboard/admin_dashboard.php:539
+#: admin-dashboard/rest-api/api-request.php:104
+#: admin-dashboard/rest-api/class-admin-notice.php:144
+msgid "Get Starter Sites"
+msgstr "Отримати стартові сайти"
+
+#: admin-dashboard/rest-api/api-request.php:99
+msgid "By"
+msgstr "Від"
+
+#: admin-dashboard/admin_dashboard.php:443
+#: admin-dashboard/rest-api/api-request.php:70
+msgid "Activated"
+msgstr "Активовано"
+
+#: admin-dashboard/admin_dashboard.php:441
+#: admin-dashboard/rest-api/api-request.php:29
+msgid "Install Now"
+msgstr "Встановити зараз"
+
+#: admin-dashboard/admin_dashboard.php:440
+msgid "Are you sure you want to install this plugin?"
+msgstr "Ви впевнені, що хочете встановити цей плагін?"
+
+#: inc/notice-upgrade.php:207
+msgid "Maybe Later"
+msgstr "Можливо пізніше"
+
+#: inc/notice-upgrade.php:73 inc/notice-upgrade.php:93
+msgid "Cheatin&#8217; huh?"
+msgstr "Хакер чи що?"
+
+#: inc/notice-upgrade.php:69 inc/notice-upgrade.php:89
+msgid "Action failed. Please refresh the page and retry."
+msgstr "Дія не вдалася. Будь ласка, оновіть сторінку і повторіть спробу."
+
+#: inc/customizer/theme-options.php:269 inc/customizer/theme-options.php:343
+msgid "Disable"
+msgstr "Вимкнути"
+
+#: inc/customizer/theme-options.php:268
+msgid "Enable "
+msgstr "Увімкнути "
+
+#: inc/customizer/theme-options.php:264
+msgid "Image Lazy Loading"
+msgstr "Відкладене завантаження зображення"
+
+#: inc/customizer/customizer.php:179
+msgid "Background Color will not be applicable for this mode."
+msgstr "Колір фону не застосовується для цього режиму."
+
+#: inc/customizer/customizer.php:160
+msgid "Dark"
+msgstr "Темний"
+
+#: inc/customizer/customizer.php:155
+msgid "Select global site mode"
+msgstr ""
+
+#: inc/customizer/customizer.php:154
+msgid "Site Mode"
+msgstr "Режим сайту"
+
+#: inc/customizer/theme-options.php:481
+msgid "Bottom"
+msgstr "Знизу"
+
+#: inc/customizer/theme-options.php:480
+msgid "Top"
+msgstr "Верх"
+
+#: inc/customizer/theme-options.php:476
+msgid "Sidebar Sticky Position"
+msgstr "Позиція прикріпленої бічної колонки"
+
+#: inc/customizer/theme-options.php:439
+msgid "Sidebar Settings"
+msgstr "Налаштування бічної колонки"
+
+#: inc/customizer/theme-options.php:403
+msgid "Spacious"
+msgstr "Просторий"
+
+#: inc/customizer/theme-options.php:398
+msgid "Individual posts edit panel also have the option"
+msgstr ""
+
+#: inc/customizer/theme-options.php:397
+msgid "Global Content Mode"
+msgstr ""
+
+#: inc/customizer/theme-options.php:377
+msgid "Show Featured Image"
+msgstr "Показувати головне зображення"
+
+#: inc/customizer/theme-options.php:359
+msgid "Single Posts Settings"
+msgstr "Налаштування окремих записів"
+
+#: inc/customizer/theme-options.php:182
+msgid "NavXT"
+msgstr "NavXT"
+
+#: inc/customizer/theme-options.php:181
+msgid "Rank Math"
+msgstr "Rank Math"
+
+#: inc/customizer/theme-options.php:180
+msgid "Yoast SEO"
+msgstr "Yoast SEO"
+
+#: inc/customizer/theme-options.php:175
+msgid "Please ensure that you have enabled the plugin's breadcrumbs before choosing other than Default"
+msgstr ""
+
+#: inc/customizer/theme-options.php:174
+msgid "Select Breadcrumbs"
+msgstr "Виберіть навігаційні стежки"
+
+#: inc/customizer/theme-options.php:457
+msgid "Make Sidebar Sticky"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:247
+msgid "Order 2"
+msgstr ""
+
+#: inc/customizer/customizer.php:159 inc/customizer/frontpage-options.php:246
+#: inc/customizer/theme-options.php:179 inc/customizer/theme-options.php:223
+#: inc/customizer/theme-options.php:402
+msgid "Default"
+msgstr "За замовчуванням"
+
+#: inc/customizer/frontpage-options.php:242
+msgid "Select Banner Section Order"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:241
+msgid "Banner Section Order"
+msgstr ""
+
+#: inc/customizer/customizer.php:120
+msgid "Show Full Image"
+msgstr "Показати повне зображення"
+
+#: inc/customizer/customizer.php:119
+msgid "Set as Background"
+msgstr "Використати для фону"
+
+#: inc/customizer/customizer.php:114
+msgid "Image visibility may vary as per the mode"
+msgstr ""
+
+#: inc/customizer/customizer.php:113
+msgid "Header Image Mode"
+msgstr ""
+
+#: inc/customizer/theme-options.php:310
+msgid "Date Display Format"
+msgstr "Формат відображення дати"
+
+#: inc/customizer/theme-options.php:287
+msgid "Date and Author Display"
+msgstr "Відображення дати та автора"
+
+#: inc/customizer/theme-options.php:241
+msgid "Content Alignment"
+msgstr "Вирівнювання вмісту"
+
+#: inc/notice-review.php:108
+msgid "Got any support queries?"
+msgstr ""
+
+#: inc/notice-review.php:103
+msgid "I've already done."
+msgstr "Я вже зробив."
+
+#: inc/notice-review.php:98
+msgid "Remind me later"
+msgstr "Нагадати пізніше"
+
+#: inc/notice-review.php:93
+msgid "Sure thing"
+msgstr ""
+
+#. Translators: %1$s current user display name.
+#: inc/notice-review.php:79
+msgid "Howdy, %1$s! We've noticed that you've been using %2$s for some time now, we hope you are loving it! We would appreciate it if you can %3$sgive us a 5 star rating on WordPress.org%4$s! We'll continue to develop exciting new features for free in the future by sharing the love!"
+msgstr "Привіт, %1$s! Ми помітили, що ви вже деякий час використовуєте %2$s, сподіваємося, вам подобається! Ми будемо вдячні, якщо ви зможете %3$s записавити нам 5 зірок на WordPress.org%4$s! Ми продовжимо розробляти нові захоплюючі функції безкоштовно в майбутньому, якщо ви будете ділитися своєю любов'ю!"
+
+#: inc/customizer/theme-options.php:125
+msgid "Disable Sticky Header"
+msgstr "Вимкнути прикріплений хедер"
+
+#: inc/customizer/theme-options.php:316
+msgid "WordPress Default Date Format"
+msgstr "Формат дати за замовчуванням WordPress"
+
+#: inc/customizer/theme-options.php:315
+msgid "Date Format by Theme"
+msgstr "Формат дати на основі теми"
+
+#: inc/customizer/theme-options.php:311
+msgid "Select date display display format"
+msgstr ""
+
+#: inc/customizer/theme-options.php:593
+msgid "Default Excerpt"
+msgstr "Витяг за замовчуванням"
+
+#: inc/customizer/theme-options.php:592
+msgid "Trimmed Content"
+msgstr "Обрізаний вміст"
+
+#: inc/customizer/theme-options.php:200
+msgid "Global Settings"
+msgstr "Глобальні настройки"
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:364
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] "Наступний рекомендований плагін наразі неактивен: %1$s."
+msgstr[1] "Наступні рекомендовані плагіни наразі неактивні: %1$s."
+msgstr[2] "Наступних рекомендованих плагінів наразі неактивовано: %1$s."
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:358
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] "Наступний необхідний плагін наразі неактивен: %1$s."
+msgstr[1] "Наступні необхідні плагіни наразі неактивно: %1$s."
+msgstr[2] "Наступних необхідних плагінів наразі неактивовано: %1$s.."
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:352
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] "Є оновлення для: %1$s."
+msgstr[1] "Є оновлення для: %1$s."
+msgstr[2] "Є оновлення для: %1$s."
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:346
+msgid "The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s."
+msgid_plural "The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s."
+msgstr[0] "Наступний плагін повинен бути оновлений до останньої версії для забезпечення максимальної сумісності з цією темою: %1$s."
+msgstr[1] "Наступні плагіни повинні бути оновленими до останньої версії для забезпечення максимальної сумісності з цією темою: %1$s."
+msgstr[2] "Наступних плагінів повинно бути оновлено до останньої версії для забезпечення максимальної сумісності з цією темою: %1$s."
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:340
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] "Ця тема рекомендує наступний плагін: %1$s."
+msgstr[1] "Ця тема рекомендує наступні плагіни: %1$s."
+msgstr[2] "Ця тема рекомендує наступних плагінів: %1$s."
+
+#. translators: 1: plugin name(s).
+#: lib/tgm/class-tgm-plugin-activation.php:334
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] "Ця тема потребує наступного плагіна: %1$s."
+msgstr[1] "Ця тема потребує наступних плагінів: %1$s."
+msgstr[2] "Ця тема потребує наступних плагінів: %1$s."
+
+#: inc/customizer/customizer-default.php:118
+msgid "You may have missed"
+msgstr "Можливо, ви пропустили"
+
+#: inc/customizer/theme-options.php:643
+msgid "Show on single posts"
+msgstr "Показувати на окремих записах"
+
+#: inc/customizer/theme-options.php:625
+msgid "Related Posts"
+msgstr "Пов'язані записи"
+
+#: inc/customizer/customizer-default.php:110
+msgid "More Stories"
+msgstr "Більше історій"
+
+#: inc/template-tags.php:90
+msgid "ago"
+msgstr "тому назад"
+
+#. Template Name of the theme
+msgid "Front-page Template"
+msgstr "Шаблон домашньої сторінки"
+
+#: template-parts/content.php:39
+msgid "<span class=\"em-post-navigation\">Next</span> %title"
+msgstr "<span class=\"em-post-navigation\">Наступний:</span> %title"
+
+#: template-parts/content.php:38
+msgid "<span class=\"em-post-navigation\">Previous</span> %title"
+msgstr "<span class=\"em-post-navigation\">Попередні</span> %title"
+
+#. translators: %s: Name of current post. Only visible to screen readers
+#: template-parts/content.php:19
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr "Продовжити читання<span class=\"screen-reader-text\"> \"%s\"</span>"
+
+#: template-parts/content-none.php:44
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr "Схоже, ми не можемо знайти те, що ви шукали. Можливо, пошук може допомогти."
+
+#: template-parts/content-none.php:38
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr "Вибачте, але ніщо не відповідає вашим пошуковим термінам. Спробуйте ще раз із різними ключовими словами."
+
+#. translators: 1: link to WP admin new post page.
+#: template-parts/content-none.php:25
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr "Готові опублікувати свій перший запис? <a href=\"%1$s\">Почніть звідси</a>."
+
+#: template-parts/content-none.php:14
+msgid "Nothing Found"
+msgstr "Нічого не знайдено"
+
+#. translators: %s: search query.
+#: search.php:22
+msgid "Search Results for: %s"
+msgstr "Результати пошуку для: %s"
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: lib/tgm/class-tgm-plugin-activation.php:3520
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr "Встановлення плагіна %1$s (%2$d/%3$d)"
+
+#: lib/tgm/class-tgm-plugin-activation.php:3518
+msgid "All installations have been completed."
+msgstr "Усі установки завершено."
+
+#: lib/tgm/class-tgm-plugin-activation.php:3515
+msgid "The installation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr "Починається процес встановлення. Цей процес може зайняти тривалий час на деяких системах, тому будь ласка, будьте терплячі."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: lib/tgm/class-tgm-plugin-activation.php:3512
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr "Встановлення та активація плагіна %1$s (%2$d/%3$d)"
+
+#: lib/tgm/class-tgm-plugin-activation.php:3510
+msgid "All installations and activations have been completed."
+msgstr "Усі встановлення та активації завершені."
+
+#. translators: 1: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:3509
+#: lib/tgm/class-tgm-plugin-activation.php:3517
+msgid "%1$s done."
+msgstr "%1$s готово."
+
+#: lib/tgm/class-tgm-plugin-activation.php:3507
+msgid "The installation and activation process is starting. This process may take a while on some hosts, so please be patient."
+msgstr "Починається процес встановлення та активації. Цей процес може зайняти тривалий час на деяких системах, тому будь ласка, будьте терплячі."
+
+#. translators: 1: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:3503
+msgid "The installation of %1$s failed."
+msgstr "Встановити %1$s не вдалося."
+
+#. translators: 1: plugin name, 2: error message.
+#: lib/tgm/class-tgm-plugin-activation.php:3501
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr "Сталася помилка при встановленні %1$s: <strong>%2$s</strong>."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: lib/tgm/class-tgm-plugin-activation.php:3498
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr "Оновлення плагіну %1$s (%2$d/%3$d)"
+
+#: lib/tgm/class-tgm-plugin-activation.php:3158
+msgid "Plugin activation failed."
+msgstr "Активація плагіна не вдалася."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2934
+msgid "No plugins are available to be activated at this time."
+msgstr "Наразі немає доступних плагінів для активації."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2908
+msgid "No plugins were selected to be activated. No action taken."
+msgstr "Жодних плагінів не обрано для активації. Жодних дій не виконано."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2802
+msgid "No plugins are available to be updated at this time."
+msgstr "Наразі немає плагінів для оновлення."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2800
+msgid "No plugins are available to be installed at this time."
+msgstr "Наразі немає доступних плагінів для встановлення."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2759
+msgid "No plugins were selected to be updated. No action taken."
+msgstr "Жодних плагінів не обрано для оновлення. Жодних дій не виконано."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2757
+msgid "No plugins were selected to be installed. No action taken."
+msgstr "Жодних плагінів не обрано для встановлення. Жодних дій не виконано."
+
+#: admin-dashboard/admin_dashboard.php:442
+#: admin-dashboard/rest-api/api-request.php:74
+#: lib/tgm/class-tgm-plugin-activation.php:2726
+msgid "Activate"
+msgstr "Активувати"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2723
+msgid "Update"
+msgstr "Оновити"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2717
+msgid "Install"
+msgstr "Встановити"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2684
+msgid "Upgrade message from the plugin author:"
+msgstr "Повідомлення про оновлення від автора плагіна:"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: lib/tgm/class-tgm-plugin-activation.php:2614
+msgid "Activate %2$s"
+msgstr "Активувати %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: lib/tgm/class-tgm-plugin-activation.php:2608
+msgid "Update %2$s"
+msgstr "Оновити %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: lib/tgm/class-tgm-plugin-activation.php:2603
+msgid "Install %2$s"
+msgstr "Встановити %2$s"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2554
+msgid "Status"
+msgstr "Статус"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2553
+msgid "Version"
+msgstr "Версія"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2549
+msgid "Type"
+msgstr "Тип"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2548
+msgid "Source"
+msgstr "Джерело"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2547
+msgid "Plugin"
+msgstr "Плагін"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2533
+msgid "No plugins to install, update or activate."
+msgstr "Немає плагінів для встановлення, оновлення або активації."
+
+#: lib/tgm/class-tgm-plugin-activation.php:2510
+msgid "Available version:"
+msgstr "Доступна версія:"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2498
+msgid "Minimum required version:"
+msgstr "Мін. необхідна версія:"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2490
+msgid "Installed version:"
+msgstr "Встановлена версія:"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2482
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr "невідома"
+
+#. translators: 1: number of plugins.
+#: lib/tgm/class-tgm-plugin-activation.php:2400
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] "Для активації <span class=\"count\">(%s)</span>"
+msgstr[1] "Для активації <span class=\"count\">(%s)</span>"
+msgstr[2] "Для активації <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: lib/tgm/class-tgm-plugin-activation.php:2396
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] "Доступне оновлення <span class=\"count\">(%s)</span>"
+msgstr[1] "Доступні оновлення <span class=\"count\">(%s)</span>"
+msgstr[2] "Доступних оновлень <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: lib/tgm/class-tgm-plugin-activation.php:2392
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] "Встановити <span class=\"count\">(%s)</span>"
+msgstr[1] "Встановити <span class=\"count\">(%s)</span>"
+msgstr[2] "Встановити <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: lib/tgm/class-tgm-plugin-activation.php:2388
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] "Всі <span class=\"count\">(%s)</span>"
+msgstr[1] "Всі <span class=\"count\">(%s)</span>"
+msgstr[2] "Всі <span class=\"count\">(%s)</span>"
+
+#. translators: 1: install status, 2: update status
+#: lib/tgm/class-tgm-plugin-activation.php:2342
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr "%1$s, %2$s"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2333
+msgid "Update recommended"
+msgstr "Оновлення рекомендовано"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2330
+msgid "Requires Update"
+msgstr "Потребує оновлення"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2327
+msgid "Required Update not Available"
+msgstr "Потрібне оновлення не доступне"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2321
+msgid "Active"
+msgstr "Діючий"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2319
+msgid "Installed But Not Activated"
+msgstr "Встановлено, але не активовано"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2315
+msgid "Not Installed"
+msgstr "Не встановлено"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2298
+msgid "Pre-Packaged"
+msgstr "Заздалегідь запаковано"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2295
+msgid "External Source"
+msgstr "Зовнішнє джерело"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2292
+msgid "WordPress Repository"
+msgstr "Репозиторій WordPress"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2276
+msgid "Recommended"
+msgstr "Рекомендовані"
+
+#: lib/tgm/class-tgm-plugin-activation.php:2273
+msgid "Required"
+msgstr "Обов’язкові"
+
+#. translators: %s: version number
+#: lib/tgm/class-tgm-plugin-activation.php:1982
+msgid "TGMPA v%s"
+msgstr "TGMPA v%s"
+
+#: lib/tgm/class-tgm-plugin-activation.php:1121
+#: lib/tgm/class-tgm-plugin-activation.php:2948
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr "та"
+
+#: lib/tgm/class-tgm-plugin-activation.php:937
+msgid "The remote plugin package consists of more than one file, but the files are not packaged in a folder."
+msgstr "Архів плагіна містить більше одного файлу, але ці файли не в теці."
+
+#: lib/tgm/class-tgm-plugin-activation.php:934
+#: lib/tgm/class-tgm-plugin-activation.php:937
+msgid "Please contact the plugin provider and ask them to package their plugin according to the WordPress guidelines."
+msgstr "Будь ласка, зв'яжіться з автором плагіна та попросіть запакувати плагін відповідно до правил WordPress."
+
+#: lib/tgm/class-tgm-plugin-activation.php:934
+msgid "The remote plugin package does not contain a folder with the desired slug and renaming did not work."
+msgstr "Пакет віддаленого плагіну не містить папки з потрібним частиною посилання, тому перейменування не спрацювало."
+
+#: lib/tgm/class-tgm-plugin-activation.php:523
+msgid "Update Required"
+msgstr "Потрібне оновлення"
+
+#: lib/tgm/class-tgm-plugin-activation.php:522
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr "Цей плагін потрібно оновити для сумісності з вашою темою."
+
+#: lib/tgm/class-tgm-plugin-activation.php:397
+msgid "Please contact the administrator of this site for help."
+msgstr "Будь ласка, зв'яжіться з адміністратором цього сайту, щоб отримати допомогу."
+
+#: lib/tgm/class-tgm-plugin-activation.php:396
+msgid "There are one or more required or recommended plugins to install, update or activate."
+msgstr "Необхідно встановити, оновити або активувати ще один або кілька обов'язкових і рекомендованих плагінів."
+
+#. translators: 1: dashboard link.
+#: lib/tgm/class-tgm-plugin-activation.php:394
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr "Усі плагіни успішно встановлено та активовано. %1$s"
+
+#. translators: 1: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:392
+msgid "Plugin not activated. A higher version of %s is needed for this theme. Please update the plugin."
+msgstr "Плагін не активовано. Для цієї теми потрібна новіша версія %s. Будь ласка, оновіть плагін."
+
+#. translators: 1: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:390
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "Ніяких дій не здійснено. Плагін %1$s було вже активовано."
+
+#: lib/tgm/class-tgm-plugin-activation.php:388
+#: lib/tgm/class-tgm-plugin-activation.php:2952
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] "Наступний плагін було успішно активовано:"
+msgstr[1] "Наступні плагіни було успішно активовано:"
+msgstr[2] "Наступних плагінів було успішно активовано:"
+
+#: lib/tgm/class-tgm-plugin-activation.php:387
+#: lib/tgm/class-tgm-plugin-activation.php:3159
+msgid "Plugin activated successfully."
+msgstr "Плагін успішно активовано."
+
+#: lib/tgm/class-tgm-plugin-activation.php:386
+#: lib/tgm/class-tgm-plugin-activation.php:827
+#: lib/tgm/class-tgm-plugin-activation.php:2533
+#: lib/tgm/class-tgm-plugin-activation.php:3580
+msgid "Return to the Dashboard"
+msgstr "Повернутися до майстерні"
+
+#: lib/tgm/class-tgm-plugin-activation.php:385
+msgid "Return to Required Plugins Installer"
+msgstr "Повернутися до розділу встановлення необхідних плагінів"
+
+#: lib/tgm/class-tgm-plugin-activation.php:380
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "Почати активацію плагіна"
+msgstr[1] "Почати активацію плагінів"
+msgstr[2] "Почати активацію плагінів"
+
+#: lib/tgm/class-tgm-plugin-activation.php:375
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] "Почати оновлення плагіна"
+msgstr[1] "Почати оновлювати плагіни"
+msgstr[2] "Почати оновлення плагінів"
+
+#: lib/tgm/class-tgm-plugin-activation.php:370
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "Почати встановлення плагіну"
+msgstr[1] "Почати встановлення плагінів"
+msgstr[2] "Почати встановлення плагінів"
+
+#: lib/tgm/class-tgm-plugin-activation.php:333
+msgid "Something went wrong with the plugin API."
+msgstr "Щось пішло не так із API плагіну."
+
+#. translators: %s: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:332
+msgid "Updating Plugin: %s"
+msgstr "Оновлення плагіну: %s"
+
+#. translators: %s: plugin name.
+#: lib/tgm/class-tgm-plugin-activation.php:330
+msgid "Installing Plugin: %s"
+msgstr "Встановлення плагіну: %s"
+
+#: lib/tgm/class-tgm-plugin-activation.php:328
+msgid "Install Plugins"
+msgstr "Встановити плагіни"
+
+#: lib/tgm/class-tgm-plugin-activation.php:327
+msgid "Install Required Plugins"
+msgstr "Встановити необхідні плагіни"
+
+#: admin-dashboard/admin_dashboard.php:167
+msgid "Upgrade Now"
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:121
+#: admin-dashboard/admin_dashboard.php:122
+msgid "Customize"
+msgstr "Налаштувати"
+
+#: admin-dashboard/rest-api/class-admin-notice.php:234
+msgid "Rate This Theme"
+msgstr "Поставити рейтинг темі"
+
+#: admin-dashboard/rest-api/class-admin-notice.php:203
+msgid "View Demos"
+msgstr ""
+
+#: admin-dashboard/admin_dashboard.php:166
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: admin-dashboard/rest-api/class-admin-notice.php:233
+msgid "Support"
+msgstr ""
+
+#: lib/tgm/class-tgm-plugin-activation.php:395
+msgid "Dismiss this notice"
+msgstr "Відхилити це сповіщення"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:876
+msgctxt "weekly archives date format"
+msgid "W"
+msgstr "W"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:847
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:1294
+msgctxt "daily archives date format"
+msgid "j"
+msgstr "j"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:846
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:904
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:1290
+msgctxt "monthly archives date format"
+msgid "F"
+msgstr "F"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:845
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:875
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:903
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:931
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:1286
+msgctxt "yearly archives date format"
+msgid "Y"
+msgstr "Y"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:828
+msgctxt "hour archives time format"
+msgid "g a"
+msgstr "H"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:810
+msgctxt "minute archives time format"
+msgid "i"
+msgstr "i"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:792
+msgctxt "minute and hour archives time format"
+msgid "g:i a"
+msgstr "H:i"
+
+#. Translators: Weekly archive title. %s is the week date format.
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:319
+msgid "Week %s"
+msgstr "Тиждень %s"
+
+#. Translators: Minute archive title. %s is the minute time format.
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:317
+msgid "Minute %s"
+msgstr "Хвилина %s"
+
+#. Translators: %s is the page number.
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:315
+msgid "Comment Page %s"
+msgstr "Сторінка коментарів %s"
+
+#. Translators: %s is the page number.
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:313
+msgid "Page %s"
+msgstr "Сторінка %s"
+
+#. Translators: %s is the search query.
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:311
+msgid "Search results for: %s"
+msgstr "Результати пошуку для: %s"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:309
+msgid "Archives"
+msgstr "Архіви"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:308
+msgid "404 Not Found"
+msgstr "Не знайдено 404"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:307
+msgid "Home"
+msgstr "Домашня"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:306
+msgctxt "breadcrumbs aria label"
+msgid "Breadcrumbs"
+msgstr "Навігаційні стежки"
+
+#: lib/breadcrumb-trail/inc/breadcrumbs.php:305
+msgid "Browse:"
+msgstr "Оглядати:"
+
+#. translators: number of items in the mini cart.
+#: inc/woocommerce.php:258
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d елемент"
+msgstr[1] ""
+msgstr[2] ""
+
+#: inc/woocommerce.php:254
+msgid "View your shopping cart"
+msgstr "Переглянути свій кошик"
+
+#: inc/widgets/widgets-register-sidebars.php:64
+msgid "Displays items on footer third column."
+msgstr "Відображати елементи у третьому стовпці колонтитула."
+
+#: inc/widgets/widgets-register-sidebars.php:62
+msgid "Footer Third Section"
+msgstr "Третій розділ колонтитулу"
+
+#: inc/widgets/widgets-register-sidebars.php:54
+msgid "Displays items on footer second column."
+msgstr "Відображати елементи у другому стовпці колонтитула."
+
+#: inc/widgets/widgets-register-sidebars.php:52
+msgid "Footer Second Section"
+msgstr "Другий розділ колонтитулу"
+
+#: inc/widgets/widgets-register-sidebars.php:43
+msgid "Displays items on footer first column."
+msgstr "Відображати елементи в першому стовпці колонтитула."
+
+#: inc/widgets/widgets-register-sidebars.php:41
+msgid "Footer First Section"
+msgstr "Перший розділ колонтитулу"
+
+#: inc/widgets/widgets-register-sidebars.php:32
+msgid "Add widgets to front-page sidebar section."
+msgstr "Додати віджети до розділу бічної колонки на передній сторінці."
+
+#: inc/widgets/widgets-register-sidebars.php:30
+msgid "Front-page Sidebar Section"
+msgstr "Розділ бічна колонка домашньої сторінки"
+
+#: inc/widgets/widgets-register-sidebars.php:22
+msgid "Add widgets to front-page contents section."
+msgstr "Додати віджети до розділу вмісту на першій сторінці."
+
+#: inc/widgets/widgets-register-sidebars.php:20
+msgid "Front-page Content Section"
+msgstr "Розділ вмісту домашньої сторінки"
+
+#: inc/widgets/widgets-register-sidebars.php:12
+msgid "Add widgets for main sidebar."
+msgstr "Додати віджети до основної бічної колонки."
+
+#: inc/widgets/widgets-register-sidebars.php:10
+msgid "Main Sidebar"
+msgstr "Головна бічна колонка"
+
+#: inc/widgets/widgets-common-functions.php:58
+msgid "Select Category"
+msgstr "Виберіть категорію"
+
+#: inc/widgets/widgets-base.php:194
+msgctxt "Remove"
+msgid "X"
+msgstr "X"
+
+#: inc/widgets/widgets-base.php:183
+msgid "Choose Image"
+msgstr "Виберіть зображення"
+
+#: inc/widgets/widgets-base.php:182
+msgid "Select Image"
+msgstr "Виберіть зображення"
+
+#: inc/widgets/widgets-base.php:181
+msgid "Upload"
+msgstr "Завантажити"
+
+#: inc/widgets/widget-social-contacts.php:70
+msgid "Social menu is not set. You need to create menu and assign it to Social Menu on Menu Settings."
+msgstr "Меню соцмереж не встановлено. Вам потрібно створити меню та призначити його соціальному меню в налаштуваннях меню."
+
+#: inc/widgets/widget-social-contacts.php:41
+msgid "CoverNews Social"
+msgstr ""
+
+#: inc/widgets/widget-social-contacts.php:24
+msgid "CoverNews Social Contacts"
+msgstr ""
+
+#: inc/widgets/widget-social-contacts.php:20
+msgid "Displays social contacts lists from selected settings."
+msgstr "Відображає списки соціальних контактів із вибраних налаштувань."
+
+#: inc/widgets/widget-posts-tabbed.php:132
+msgid "Show excerpt"
+msgstr "Показувати уривок"
+
+#: inc/widgets/widget-posts-tabbed.php:131
+msgid "Settings for all tabs"
+msgstr "Налаштування для всіх вкладок"
+
+#: inc/widgets/widget-posts-tabbed.php:127
+msgid "Enable Categorised Tab"
+msgstr "Увімкнути категоризовану вкладку"
+
+#: inc/widgets/widget-posts-tabbed.php:125
+msgid "Categorised Posts"
+msgstr "Категоризовані записи"
+
+#: inc/widgets/widget-posts-tabbed.php:118
+msgid "Popular Posts"
+msgstr "Популярні записи"
+
+#: inc/widgets/widget-posts-tabbed.php:55
+#: inc/widgets/widget-posts-tabbed.php:116
+msgid "Latest"
+msgstr "Останні"
+
+#: inc/widgets/widget-posts-tabbed.php:115
+msgid "Latest Posts"
+msgstr "Останні записи"
+
+#: inc/customizer/theme-options.php:425 inc/widgets/widget-posts-tabbed.php:103
+#: inc/widgets/widget-posts-tabbed.php:108
+msgid "No"
+msgstr "Ні"
+
+#: inc/customizer/theme-options.php:424 inc/widgets/widget-posts-tabbed.php:102
+#: inc/widgets/widget-posts-tabbed.php:109
+msgid "Yes"
+msgstr "Так"
+
+#: inc/widgets/widget-posts-tabbed.php:54
+#: inc/widgets/widget-posts-tabbed.php:119
+msgid "Popular"
+msgstr "Популярні"
+
+#: inc/widgets/widget-posts-tabbed.php:58
+#: inc/widgets/widget-posts-tabbed.php:128
+msgid "Trending"
+msgstr "В тренді"
+
+#: inc/widgets/widget-posts-tabbed.php:25
+msgid "CoverNews Tabbed Posts"
+msgstr ""
+
+#: inc/widgets/widget-posts-tabbed.php:21
+msgid "Displays tabbed posts lists from selected settings."
+msgstr "Відображає списки записів на вкладках із вибраних налаштувань."
+
+#: inc/widgets/widget-posts-slider.php:24
+msgid "CoverNews Posts Slider"
+msgstr ""
+
+#: inc/widgets/widget-posts-slider.php:20
+msgid "Displays posts slider from selected category."
+msgstr "Відображає слайдер повідомлень із вибраної категорії."
+
+#: inc/widgets/widget-posts-grid.php:152
+msgid "Posts Grid"
+msgstr "Сітка записів"
+
+#: inc/widgets/widget-posts-grid.php:24
+msgid "CoverNews Posts Grid"
+msgstr ""
+
+#: inc/widgets/widget-posts-grid.php:20
+msgid "Displays posts from selected category in a grid."
+msgstr ""
+
+#: inc/widgets/widget-posts-double-category.php:208
+msgid "Select category 2"
+msgstr "Виберіть категорію 2"
+
+#: inc/widgets/widget-posts-double-category.php:207
+msgid "Title 2"
+msgstr "Назва 2"
+
+#: inc/widgets/widget-posts-double-category.php:206
+msgid "Select category 1"
+msgstr "Виберіть категорію 1"
+
+#: inc/widgets/widget-posts-double-category.php:205
+msgid "Title 1"
+msgstr "Назва 1"
+
+#: inc/widgets/widget-posts-double-category.php:195
+msgid "All in list"
+msgstr ""
+
+#: inc/widgets/widget-posts-double-category.php:194
+msgid "Big thumb in first and other in list"
+msgstr ""
+
+#: inc/widgets/widget-posts-double-category.php:24
+msgid "CoverNews Double Categories Posts"
+msgstr ""
+
+#: inc/widgets/widget-posts-double-category.php:20
+msgid "Displays posts from 2 selected categories in double column."
+msgstr "Відображає записи з двох вибраних категорій у подвійній колонці."
+
+#: inc/widgets/widget-posts-carousel.php:133
+#: inc/widgets/widget-posts-grid.php:153
+#: inc/widgets/widget-posts-slider.php:137
+#: inc/widgets/widget-posts-tabbed.php:129
+msgid "Select category"
+msgstr "Виберіть категорію"
+
+#: inc/widgets/widget-posts-carousel.php:24
+msgid "CoverNews Posts Carousel"
+msgstr ""
+
+#: inc/widgets/widget-posts-carousel.php:20
+msgid "Displays posts carousel from selected category."
+msgstr "Відображає карусель записів із вибраної категорії."
+
+#: inc/widgets/widget-author-info.php:147
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#: inc/widgets/widget-author-info.php:146
+msgid "Twitter"
+msgstr "Twitter"
+
+#: inc/widgets/widget-author-info.php:145
+msgid "Facebook"
+msgstr "Facebook"
+
+#: inc/widgets/widget-author-info.php:144
+msgid "Descriptions"
+msgstr "Опис"
+
+#: inc/widgets/widget-author-info.php:143
+msgid "Name"
+msgstr "Ім’я"
+
+#: inc/widgets/widget-author-info.php:142
+msgid "Profile image"
+msgstr "Зображення профілю"
+
+#: inc/customizer/theme-options.php:662 inc/widgets/widget-author-info.php:141
+#: inc/widgets/widget-posts-grid.php:152
+#: inc/widgets/widget-posts-slider.php:136
+#: inc/widgets/widget-posts-tabbed.php:116
+#: inc/widgets/widget-posts-tabbed.php:119
+#: inc/widgets/widget-posts-tabbed.php:128
+msgid "Title"
+msgstr "Назва"
+
+#: inc/widgets/widget-author-info.php:24
+msgid "CoverNews Author Info"
+msgstr ""
+
+#: inc/widgets/widget-author-info.php:20
+msgid "Displays author info."
+msgstr "Відображати інформацію про автора."
+
+#. translators: %s: Name of current post. Only visible to screen readers
+#: inc/template-tags.php:152 template-parts/content-page.php:41
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr "Редагувати <span class=\"screen-reader-text\">%s</span>"
+
+#. translators: used between list items, there is a space after the comma
+#: inc/template-tags.php:139
+msgctxt "list item separator"
+msgid ", "
+msgstr ", "
+
+#: inc/template-tags.php:33
+msgid "View all posts in %s"
+msgstr "Переглянути всі записи в %s"
+
+#: inc/template-functions.php:407
+msgid "Next"
+msgstr "Далі"
+
+#: inc/template-functions.php:406
+msgid "Previous"
+msgstr "Попередній"
+
+#: inc/hooks/hook-tgm.php:35
+msgid "WP Post Author"
+msgstr "Автор запису WP"
+
+#: inc/hooks/hook-meta.php:163 inc/hooks/hook-meta.php:200
+msgid "Select category color class. You can set appropriate categories color on \"Categories\" section of the theme customizer."
+msgstr "Виберіть кольоровий клас категорії. Ви можете встановити відповідний колір категорій у розділі \"Категорії\" у налаштуваннях теми."
+
+#: inc/hooks/hook-meta.php:157 inc/hooks/hook-meta.php:185
+msgid "Color Class"
+msgstr "Кольоровий клас"
+
+#: inc/hooks/hook-meta.php:152 inc/hooks/hook-meta.php:191
+msgid "Category Color 3"
+msgstr "Колір 3 категорії"
+
+#: inc/hooks/hook-meta.php:151 inc/hooks/hook-meta.php:190
+msgid "Category Color 2"
+msgstr "Колір 2 категорії"
+
+#: inc/hooks/hook-meta.php:150 inc/hooks/hook-meta.php:189
+msgid "Category Color 1"
+msgstr "Колір 1 категорії"
+
+#: inc/hooks/hook-meta.php:77
+msgid "Primary Sidebar - Content"
+msgstr "Основна бічна колонка - вміст"
+
+#: inc/hooks/hook-meta.php:74
+msgid "Content - Primary Sidebar"
+msgstr "Вміст - основна бічна колонка"
+
+#: inc/hooks/hook-meta.php:71
+msgid "Set as global layout"
+msgstr "Встановити як глобальне компонування"
+
+#: inc/hooks/hook-meta.php:23
+msgid "Layout Options"
+msgstr "Параметри компонування"
+
+#: inc/hooks/blocks/block-post-grid.php:74 template-parts/content-page.php:27
+#: template-parts/content.php:45
+msgid "Pages:"
+msgstr "Сторінки:"
+
+#: inc/customizer/theme-options.php:746
+msgid "Copyright Text"
+msgstr "Текст авторського права"
+
+#: inc/customizer/theme-options.php:728
+msgid "Footer"
+msgstr "Підвал"
+
+#: inc/customizer/theme-options.php:714
+msgid "Latest Posts Section Title"
+msgstr ""
+
+#: inc/customizer/theme-options.php:695
+msgid "Show Latest Posts Section above Footer"
+msgstr ""
+
+#: inc/customizer/theme-options.php:678
+msgid "Latest Posts Options"
+msgstr "Параметри останніх записів"
+
+#: inc/customizer/theme-options.php:569
+msgid "None"
+msgstr "Немає"
+
+#: inc/customizer/theme-options.php:568
+msgid "Full Content"
+msgstr "Повний вміст"
+
+#: inc/customizer/theme-options.php:567
+msgid "Post excerpt"
+msgstr "Поштові збори"
+
+#: inc/customizer/theme-options.php:563
+msgid "Select content view for archive"
+msgstr ""
+
+#: inc/customizer/theme-options.php:562
+msgid "Content view"
+msgstr "Перегляд вмісту"
+
+#: inc/customizer/theme-options.php:545
+msgid "Right"
+msgstr "Праворуч"
+
+#: inc/customizer/theme-options.php:544
+msgid "Left"
+msgstr "Ліворуч"
+
+#: inc/customizer/theme-options.php:540
+msgid "Select image alignment for archive"
+msgstr ""
+
+#: inc/customizer/theme-options.php:539
+msgid "Image alignment"
+msgstr "Вирівнювання картинки"
+
+#: inc/customizer/theme-options.php:523
+msgid "Grid"
+msgstr "Сітка"
+
+#: inc/customizer/theme-options.php:522 inc/hooks/patterns/full.php:9
+msgid "Full"
+msgstr "Повний"
+
+#: inc/customizer/theme-options.php:517
+msgid "Select layout for archive"
+msgstr ""
+
+#: inc/customizer/theme-options.php:516
+msgid "Archive layout"
+msgstr "Компонування архіву"
+
+#: inc/customizer/theme-options.php:498
+msgid "Archive Settings"
+msgstr "Налаштування архіву"
+
+#: inc/customizer/theme-options.php:295
+msgid "Hide All"
+msgstr "Приховати все"
+
+#: inc/customizer/theme-options.php:294
+msgid "Show Author Only"
+msgstr "Показати лише автора"
+
+#: inc/customizer/theme-options.php:293
+msgid "Show Date Only"
+msgstr "Показати лише дату"
+
+#: inc/customizer/theme-options.php:292
+msgid "Show Date and Author"
+msgstr "Показати дату та автора"
+
+#: inc/customizer/theme-options.php:288
+msgid "Select date and author display settings below post title"
+msgstr ""
+
+#: inc/customizer/theme-options.php:248 inc/hooks/hook-meta.php:80
+msgid "Full width content"
+msgstr "Вміст на всю ширину"
+
+#: inc/customizer/theme-options.php:247
+msgid "Primary sidebar - Content"
+msgstr "Основна бічна колонка - вміст"
+
+#: inc/customizer/theme-options.php:246
+msgid "Content - Primary sidebar"
+msgstr "Вміст - основна бічна колонка"
+
+#: inc/customizer/theme-options.php:242
+msgid "Select global content alignment"
+msgstr ""
+
+#: inc/customizer/theme-options.php:154
+msgid "Show breadcrumbs"
+msgstr "Показати навігаційні стежки"
+
+#: inc/customizer/theme-options.php:136
+msgid "Breadcrumb Options"
+msgstr "Параметри навігаційної стежки"
+
+#: inc/customizer/theme-options.php:105
+msgid "Show social menu on top header"
+msgstr ""
+
+#: inc/customizer/theme-options.php:83
+msgid "Show date on top header"
+msgstr ""
+
+#: inc/customizer/theme-options.php:66
+msgid "Header Options"
+msgstr "Параметри хедеру"
+
+#: inc/customizer/theme-options.php:49
+msgid "Enable preloader"
+msgstr "Увімкнути анімацію завантаження"
+
+#: inc/customizer/theme-options.php:31
+msgid "Preloader Options"
+msgstr "Параметри анімації завантаження"
+
+#: inc/customizer/theme-options.php:21
+msgid "Theme Options"
+msgstr "Параметри теми"
+
+#: inc/customizer/frontpage-options.php:588
+msgid "Only Home Content"
+msgstr "Тільки домашній вміст"
+
+#: inc/customizer/frontpage-options.php:587
+msgid "Home Sidebar - Home Content"
+msgstr "Домашня бічна колонка - домашній вміст"
+
+#: inc/customizer/frontpage-options.php:586
+msgid "Home Content - Home Sidebar"
+msgstr "Домашній вміст - домашня бічна колонка"
+
+#: inc/customizer/frontpage-options.php:582
+msgid "Select frontpage content alignment"
+msgstr "Вибрати вирівнювання вмісту передньої сторінки"
+
+#: inc/customizer/frontpage-options.php:581
+msgid "Frontpage Content alignment"
+msgstr "Вирівнювання вмісту на домашній сторінці"
+
+#: inc/customizer/frontpage-options.php:562
+msgid "Frontpage Layout Settings"
+msgstr "Налаштування компонуванняа передньої сторінки"
+
+#: inc/customizer/frontpage-options.php:547
+msgid "Select category to be shown on featured section "
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:546
+msgid "Featured Posts Category"
+msgstr "Категорія популярних записів"
+
+#: inc/customizer/frontpage-options.php:526
+msgid "Featured Posts Section Title"
+msgstr "Заголовок розділу популярних записів"
+
+#: inc/customizer/frontpage-options.php:504
+msgid "Enable Featured New Section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:486
+msgid "Featured Posts Section"
+msgstr "Розділ вибраних записів"
+
+#: inc/customizer/frontpage-options.php:471
+msgid "The option will disable trending news, main slider, featured news, featured products from blog archive page."
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:470
+msgid "Disable main banner section on blog archive"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:449
+msgid "Select category to be shown on Trending section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:448
+msgid "Trending News Category"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:427
+msgid "Trending Vertical Slider Title"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:381
+msgid "Select category to be shown on Editor's Picks section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:380
+msgid "Editor's Picks Category"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:359
+msgid "Editor's Picks Title"
+msgstr "Назва вибору редакції"
+
+#: inc/customizer/frontpage-options.php:313
+msgid "Select category to be shown on Main Story slider section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:312
+msgid "Slider Posts Category"
+msgstr "Категорія записів слайдера"
+
+#: inc/customizer/frontpage-options.php:291
+msgid "Main Story Slider Title"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:222
+msgid "Enable Main Banner Slider"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:203
+msgid "Main Banner Section"
+msgstr "Розділ \"Основного банера\""
+
+#: inc/customizer/frontpage-options.php:185
+msgid "Select category to be shown on trending posts "
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:184
+msgid "Flash Posts Category"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:163
+msgid "Flash Story Title"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:143
+msgid "Enable Flash Posts Section"
+msgstr "Увімкнути розділ флеш-записів"
+
+#: inc/customizer/frontpage-options.php:126
+msgid "Flash Posts"
+msgstr "Флеш-записи"
+
+#: inc/customizer/frontpage-options.php:116
+msgid "Show sitewide"
+msgstr "Показати на всьому сайті"
+
+#: inc/customizer/frontpage-options.php:115
+msgid "Show on Homepage only"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:111
+msgid "Select scope to display on banner advertisement section"
+msgstr ""
+
+#: inc/customizer/frontpage-options.php:110
+msgid "Show banner advertisement on"
+msgstr "Показувати банерну рекламу на"
+
+#: inc/customizer/frontpage-options.php:91
+msgid "Open in new tab"
+msgstr "Відкрити в новій вкладці"
+
+#: inc/customizer/frontpage-options.php:74
+msgid "URL Link"
+msgstr "URL посилання"
+
+#: inc/customizer/frontpage-options.php:52
+msgid "Recommended Size %1$s px X %2$s px"
+msgstr "Рекомендований розмір %1$s px X %2$s px"
+
+#: inc/customizer/frontpage-options.php:51
+msgid "Banner Section Advertisement"
+msgstr "Банер розділу \"Реклама\""
+
+#: inc/customizer/frontpage-options.php:29
+msgid "Banner Advertisement"
+msgstr "Банер \"Реклама\""
+
+#: inc/customizer/frontpage-options.php:21
+msgid "Frontpage Options"
+msgstr "Параметри домашньої сторінки"
+
+#: inc/customizer/customizer.php:201
+msgid "Upgrade now"
+msgstr "Оновити зараз"
+
+#: inc/customizer/customizer.php:200
+msgid "CoverNews Pro"
+msgstr "CoverNews Pro"
+
+#: inc/customizer/customizer.php:136
+msgid "Disable Image Tint/Overlay"
+msgstr "Вимкнути Відтінок чи Накладення зображення"
+
+#: inc/customizer/customizer.php:98
+msgid "Site Title/Tagline Color"
+msgstr "Колір назви/ключової фрази сайту"
+
+#: inc/customizer/customizer.php:89
+msgid "Site Title Size"
+msgstr "Розмір назви сайту"
+
+#: inc/customizer/customizer-default.php:121
+msgid "Copyright &copy; All rights reserved."
+msgstr "Copyright © Усі права захищено."
+
+#: inc/customizer/customizer-default.php:98
+#: inc/customizer/theme-options.php:611
+msgid "Read More"
+msgstr "Читати далі"
+
+#: inc/customizer/customizer-default.php:76
+msgid "Featured Story"
+msgstr "Вибрана історія"
+
+#: inc/customizer/customizer-default.php:71
+msgid "Trending Story"
+msgstr "Трендова історія"
+
+#: inc/customizer/customizer-default.php:68
+msgid "Editor's Picks"
+msgstr "За вибором редактора"
+
+#: inc/customizer/customizer-default.php:61
+msgid "Main Story"
+msgstr "Основна історія"
+
+#: inc/customizer/customizer-default.php:54
+msgid "Flash Story"
+msgstr ""
+
+#: inc/customizer/customizer-control.php:93
+msgid "All"
+msgstr "Всі"
+
+#: header.php:44
+msgid "Skip to content"
+msgstr "Перейти до вмісту"
+
+#: functions.php:165
+msgctxt "Lato font: on or off"
+msgid "on"
+msgstr "on"
+
+#: functions.php:161
+msgctxt "Source Sans Pro font: on or off"
+msgid "on"
+msgstr "на"
+
+#: functions.php:83
+msgid "Footer Menu"
+msgstr "Нижнє меню"
+
+#: functions.php:82
+msgid "Social Menu"
+msgstr "Меню соцмереж"
+
+#: functions.php:81
+msgid "Top Menu"
+msgstr "Верхнє меню"
+
+#: functions.php:80 inc/hooks/blocks/block-post-header-layout-1.php:149
+msgid "Primary Menu"
+msgstr "Основне меню"
+
+#. translators: 1: Theme name, 2: Theme author.
+#: footer.php:137
+msgid "%1$s by %2$s."
+msgstr "%1$s автор: %2$s."
+
+#: comments.php:63
+msgid "Comments are closed."
+msgstr "Коментування закрито."
+
+#. translators: 1: comment count number, 2: title.
+#: comments.php:40
+msgctxt "comments title"
+msgid "%1$s thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] "%1$s коментар до &ldquo;%2$s&rdquo;"
+msgstr[1] "%1$s коментарі до &ldquo;%2$s&rdquo;"
+msgstr[2] "%1$s коментарів до &ldquo;%2$s&rdquo;"
+
+#. translators: 1: title.
+#: comments.php:34
+msgid "One thought on &ldquo;%1$s&rdquo;"
+msgstr "Один коментар до &ldquo;%1$s&rdquo;"
+
+#: 404.php:23
+msgid "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
+msgstr "Схоже нічого не було знайдено. Спробуйте скористатися пошуком, або посиланнями нижче?"
+
+#: 404.php:19
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "Отакої! Цю сторінку не знайдено."
+
+#. Author URI of the theme
+#: style.css
+#, gp-priority: low
+msgid "https://www.afthemes.com/"
+msgstr "https://www.afthemes.com/"
+
+#. Author of the theme
+#: style.css
+#, gp-priority: low
+msgid "AF themes"
+msgstr "AF themes"
+
+#. Theme URI of the theme
+#: style.css
+#, gp-priority: low
+msgid "https://afthemes.com/products/covernews/"
+msgstr "https://afthemes.com/products/covernews/"

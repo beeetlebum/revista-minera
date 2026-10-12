@@ -1,0 +1,505 @@
+<?php
+/**
+ * Per-item `wp_ajax_*` endpoints for the gallery item-edit modal.
+ *
+ * @package FotoGrids\Metaboxes
+ * @since   1.0.0
+ */
+
+declare(strict_types=1);
+
+namespace FotoGrids\Metaboxes;
+
+use FotoGrids\Exif\Exif_Extractor;
+use FotoGrids\Galleries\Gallery_Items;
+use FotoGrids\Galleries\Item_Meta;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Five `wp_ajax_*` endpoints driving the per-item edit + bulk-URL UI.
+ *
+ *   fotogrids_get_item_data           - read item data for the edit modal
+ *   fotogrids_get_item_urls           - read external_url / link_target for many items
+ *   fotogrids_update_item_url         - write external_url for one item
+ *   fotogrids_bulk_update_item_urls   - bulk apply/clear external_url
+ *   fotogrids_reorder_gallery_items   - drag-reorder a gallery's items
+ *
+ * Eventually candidates to move to REST routes under `includes/rest/items/`;
+ * see the refactor plan for that follow-up.
+ *
+ * @since 1.0.0
+ */
+final class Item_Ajax_Endpoints {
+
+	/**
+	 * Wire the 5 `wp_ajax_*` endpoints.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function init(): void {
+		add_action( 'wp_ajax_fotogrids_get_item_data', array( __CLASS__, 'get_item_data' ) );
+		add_action( 'wp_ajax_fotogrids_get_item_urls', array( __CLASS__, 'get_item_urls' ) );
+		add_action( 'wp_ajax_fotogrids_update_item_url', array( __CLASS__, 'update_item_url' ) );
+		add_action( 'wp_ajax_fotogrids_bulk_update_item_urls', array( __CLASS__, 'bulk_update_item_urls' ) );
+		add_action( 'wp_ajax_fotogrids_reorder_gallery_items', array( __CLASS__, 'reorder_gallery_items' ) );
+	}
+
+	/**
+	 * GET item data for the edit modal.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function get_item_data(): void {
+		check_ajax_referer( 'fotogrids_item_edit', 'nonce' );
+
+		if ( ! current_user_can( 'upload_files' ) ) {
+			wp_die( -1 );
+		}
+
+		$item_id = intval( $_POST['item_id'] ?? 0 );
+		if ( ! $item_id ) {
+			wp_send_json_error( 'Invalid item ID' );
+		}
+
+		$attachment = get_post( $item_id );
+		if ( ! $attachment || 'attachment' !== $attachment->post_type ) {
+			wp_send_json_error( 'Item not found' );
+		}
+
+		$custom_meta = Item_Meta::get( $item_id );
+
+		$custom_data  = array();
+		$external_url = '';
+		$link_target  = 'global';
+		$exif_data    = null;
+
+		if ( $custom_meta ) {
+			$external_url = $custom_meta['external_url'] ?? '';
+			$link_target  = $custom_meta['link_target'] ?? 'global';
+			if ( ! empty( $custom_meta['custom_data'] ) ) {
+				$decoded_data = json_decode( $custom_meta['custom_data'], true );
+				if ( is_array( $decoded_data ) ) {
+					$custom_data = $decoded_data;
+				}
+			}
+			if ( ! empty( $custom_meta['exif_data'] ) ) {
+				$decoded_exif = json_decode( $custom_meta['exif_data'], true );
+				if ( is_array( $decoded_exif ) ) {
+					$exif_data = $decoded_exif;
+				}
+			}
+		}
+
+		// If no stored EXIF, read it live from the file so the EXIF tab is
+		// always populated in the modal regardless of gallery settings.
+		if ( null === $exif_data ) {
+			$raw_exif = Exif_Extractor::extract(
+				$item_id,
+				\FotoGrids\Exif\Exif_Fields::keys()
+			);
+			if ( ! empty( $raw_exif ) ) {
+				$exif_data = $raw_exif;
+			}
+		}
+
+		$attachment_meta = wp_get_attachment_metadata( $item_id );
+		$file_path       = get_attached_file( $item_id );
+		$filename        = $file_path ? basename( $file_path ) : '';
+		$filesize        = '';
+		$width           = '';
+		$height          = '';
+		$mime_type       = get_post_mime_type( $item_id );
+
+		if ( $file_path && file_exists( $file_path ) ) {
+			$filesize = size_format( filesize( $file_path ) );
+		}
+
+		if ( $attachment_meta && isset( $attachment_meta['width'], $attachment_meta['height'] ) ) {
+			$width  = $attachment_meta['width'];
+			$height = $attachment_meta['height'];
+		}
+
+		$item_type  = \FotoGrids\Render\Video\Video_Item_Helpers::type_for_attachment( $item_id );
+		$is_video   = \FotoGrids\Render\Video\Video_Item_Helpers::TYPE_FILE === $item_type;
+		$video_url  = '';
+		$poster_url = '';
+
+		if ( $is_video ) {
+			$video_url  = (string) ( wp_get_attachment_url( $item_id ) ?: '' );
+			$poster_url = \FotoGrids\Render\Video\Video_Poster_Resolver::resolve(
+				$item_type,
+				$item_id,
+				is_array( $custom_data ) ? $custom_data : array(),
+				'medium'
+			);
+		}
+
+		wp_send_json_success(
+			array(
+				'id'            => $item_id,
+				'title'         => $attachment->post_title,
+				'alt'           => get_post_meta( $item_id, '_wp_attachment_image_alt', true ),
+				'caption'       => $attachment->post_excerpt,
+				'description'   => $attachment->post_content,
+				'credit'        => $custom_meta ? ( $custom_meta['credit'] ?? '' ) : '',
+				'external_url'  => $external_url,
+				'link_target'   => $link_target,
+				'custom_data'   => $custom_data,
+				'exif'          => $exif_data,
+				'medium_url'    => wp_get_attachment_image_url( $item_id, 'medium' ),
+				'thumbnail_url' => wp_get_attachment_image_url( $item_id, 'fotogrids_masonry' ),
+				'full_url'      => wp_get_attachment_image_url( $item_id, 'full' ),
+				'filename'      => $filename,
+				'filesize'      => $filesize,
+				'width'         => $width,
+				'height'        => $height,
+				'mime_type'     => $mime_type,
+				'item_type'     => $item_type,
+				'video_url'     => $video_url,
+				'poster_url'    => $poster_url,
+				'media_sizes'   => self::build_media_sizes( $item_id, $attachment_meta ),
+			)
+		);
+	}
+
+	/**
+	 * Build the registered-image-size inventory for an attachment.
+	 *
+	 * Every registered size is reported, including sizes WordPress never
+	 * generated, so the item editor can flag gaps. Each entry carries a
+	 * `status` of `generated`, `missing_file`, `source_too_small`, or
+	 * `not_generated`.
+	 *
+	 * @since 1.1.0
+	 * @param   int   $item_id         Attachment ID.
+	 * @param   mixed $attachment_meta Result of wp_get_attachment_metadata().
+	 * @return  array<int, array<string, mixed>>
+	 */
+	private static function build_media_sizes( int $item_id, $attachment_meta ): array {
+		if ( ! wp_attachment_is_image( $item_id ) ) {
+			return array();
+		}
+
+		$meta       = is_array( $attachment_meta ) ? $attachment_meta : array();
+		$meta_sizes = isset( $meta['sizes'] ) && is_array( $meta['sizes'] ) ? $meta['sizes'] : array();
+		$source_w   = (int) ( $meta['width'] ?? 0 );
+		$source_h   = (int) ( $meta['height'] ?? 0 );
+		$core_sizes = array( 'thumbnail', 'medium', 'medium_large', 'large', '1536x1536', '2048x2048' );
+
+		$upload_dir = wp_get_upload_dir();
+		$base_file  = (string) ( $meta['file'] ?? '' );
+		$base_dir   = '' !== $base_file
+			? trailingslashit( $upload_dir['basedir'] ) . dirname( $base_file )
+			: '';
+
+		$full_path   = get_attached_file( $item_id );
+		$full_exists = $full_path && file_exists( $full_path );
+
+		$sizes = array(
+			array(
+				'name'     => 'full',
+				'label'    => self::label_for_image_size( 'full' ),
+				'width'    => $source_w,
+				'height'   => $source_h,
+				'crop'     => false,
+				'url'      => (string) ( wp_get_attachment_image_url( $item_id, 'full' ) ?: '' ),
+				'filename' => $full_path ? basename( $full_path ) : '',
+				'filesize' => $full_exists ? size_format( filesize( $full_path ) ) : '',
+				'status'   => $full_exists ? 'generated' : 'missing_file',
+				'source'   => 'core',
+			),
+		);
+
+		foreach ( wp_get_registered_image_subsizes() as $name => $registered ) {
+			$target_w = (int) ( $registered['width'] ?? 0 );
+			$target_h = (int) ( $registered['height'] ?? 0 );
+			$crop     = ! empty( $registered['crop'] );
+			$entry    = isset( $meta_sizes[ $name ] ) && is_array( $meta_sizes[ $name ] ) ? $meta_sizes[ $name ] : null;
+
+			$origin = 'theme';
+			if ( in_array( $name, $core_sizes, true ) ) {
+				$origin = 'core';
+			} elseif ( 0 === strpos( $name, 'fotogrids_' ) ) {
+				$origin = 'fotogrids';
+			}
+
+			$row = array(
+				'name'     => $name,
+				'label'    => self::label_for_image_size( $name ),
+				'width'    => $entry ? (int) ( $entry['width'] ?? 0 ) : $target_w,
+				'height'   => $entry ? (int) ( $entry['height'] ?? 0 ) : $target_h,
+				'crop'     => $crop,
+				'url'      => '',
+				'filename' => $entry ? (string) ( $entry['file'] ?? '' ) : '',
+				'filesize' => '',
+				'status'   => 'not_generated',
+				'source'   => $origin,
+			);
+
+			if ( $entry ) {
+				$file_path   = ( '' !== $base_dir && '' !== $row['filename'] )
+					? trailingslashit( $base_dir ) . $row['filename']
+					: '';
+				$file_exists = '' !== $file_path && file_exists( $file_path );
+
+				$row['url']      = (string) ( wp_get_attachment_image_url( $item_id, $name ) ?: '' );
+				$row['status']   = $file_exists ? 'generated' : 'missing_file';
+				$row['filesize'] = $file_exists ? size_format( filesize( $file_path ) ) : '';
+			} elseif ( $source_w > 0 && self::source_too_small( $source_w, $source_h, $target_w, $target_h, $crop ) ) {
+				$row['status'] = 'source_too_small';
+			}
+
+			$sizes[] = $row;
+		}
+
+		return $sizes;
+	}
+
+	/**
+	 * Whether the original image is too small for WordPress to produce a subsize.
+	 *
+	 * @since 1.1.0
+	 * @param   int  $source_w Original width.
+	 * @param   int  $source_h Original height.
+	 * @param   int  $target_w Registered width.
+	 * @param   int  $target_h Registered height.
+	 * @param   bool $crop     Whether the size is a hard crop.
+	 * @return  bool
+	 */
+	private static function source_too_small( int $source_w, int $source_h, int $target_w, int $target_h, bool $crop ): bool {
+		if ( $crop ) {
+			return $source_w < $target_w || $source_h < $target_h;
+		}
+
+		$fits_width  = 0 === $target_w || $source_w <= $target_w;
+		$fits_height = 0 === $target_h || $source_h <= $target_h;
+
+		return $fits_width && $fits_height;
+	}
+
+	/**
+	 * Turn an image-size slug into a readable label.
+	 *
+	 * @since 1.1.0
+	 * @param   string $name Image size slug.
+	 * @return  string
+	 */
+	private static function label_for_image_size( string $name ): string {
+		$label = 0 === strpos( $name, 'fotogrids_' ) ? substr( $name, 10 ) : $name;
+		$label = str_replace( array( '_', '-' ), ' ', $label );
+
+		return ucwords( $label );
+	}
+
+	/**
+	 * GET external URLs + link targets for a list of items (External URL
+	 * Manager modal).
+	 *
+	 * @since 1.0.0
+	 */
+	public static function get_item_urls(): void {
+		check_ajax_referer( 'fotogrids_settings', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( -1 );
+		}
+
+		$item_ids = isset( $_POST['item_ids'] ) ? array_map( 'intval', $_POST['item_ids'] ) : array();
+		if ( empty( $item_ids ) ) {
+			wp_send_json_success( array() );
+		}
+
+		$rows      = Item_Meta::get_many( $item_ids );
+		$item_data = array();
+		foreach ( $rows as $attachment_id => $row ) {
+			$attachment = get_post( $attachment_id );
+
+			$item_data[ $attachment_id ] = array(
+				'url'       => $row['external_url'] ? $row['external_url'] : '',
+				'target'    => $row['link_target'] ? $row['link_target'] : 'global',
+				'thumbnail' => wp_get_attachment_image_url( $attachment_id, 'fotogrids_masonry' ),
+				'alt'       => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+				'title'     => $attachment ? $attachment->post_title : '',
+			);
+		}
+
+		// Fill in missing items with empty data so the response always covers
+		// every requested id.
+		foreach ( $item_ids as $item_id ) {
+			if ( ! isset( $item_data[ $item_id ] ) ) {
+				$attachment            = get_post( $item_id );
+				$item_data[ $item_id ] = array(
+					'url'       => '',
+					'target'    => 'global',
+					'thumbnail' => wp_get_attachment_image_url( $item_id, 'fotogrids_masonry' ),
+					'alt'       => get_post_meta( $item_id, '_wp_attachment_image_alt', true ),
+					'title'     => $attachment ? $attachment->post_title : '',
+				);
+			}
+		}
+
+		wp_send_json_success( $item_data );
+	}
+
+	/**
+	 * Update one item's external URL + link target. Creates the row if it
+	 * doesn't exist.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function update_item_url(): void {
+		check_ajax_referer( 'fotogrids_settings', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( -1 );
+		}
+
+		$item_id = intval( $_POST['item_id'] ?? 0 );
+		$url     = sanitize_url( wp_unslash( $_POST['url'] ?? '' ) );
+		$target  = sanitize_text_field( wp_unslash( $_POST['target'] ?? 'global' ) );
+
+		if ( ! $item_id ) {
+			wp_send_json_error( 'Invalid item ID' );
+		}
+
+		if ( ! get_post( $item_id ) ) {
+			wp_send_json_error( 'Attachment not found' );
+		}
+
+		$result = Item_Meta::save(
+			$item_id,
+			array(
+				'external_url' => $url,
+				'link_target'  => $target,
+			)
+		);
+
+		if ( $result ) {
+			wp_send_json_success( 'Item URL updated successfully' );
+		} else {
+			wp_send_json_error( 'Failed to update item URL' );
+		}
+	}
+
+	/**
+	 * Bulk apply/clear external URLs across a list of items.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function bulk_update_item_urls(): void {
+		check_ajax_referer( 'fotogrids_settings', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die( -1 );
+		}
+
+		$action   = sanitize_text_field( wp_unslash( $_POST['bulk_action'] ?? '' ) );
+		$item_ids = isset( $_POST['item_ids'] ) ? array_map( 'intval', (array) $_POST['item_ids'] ) : array();
+		$url      = sanitize_url( wp_unslash( $_POST['url'] ?? '' ) );
+		$target   = sanitize_text_field( wp_unslash( $_POST['target'] ?? 'global' ) );
+
+		if ( empty( $item_ids ) ) {
+			wp_send_json_error( 'No item IDs provided' );
+		}
+
+		if ( ! in_array( $action, array( 'apply_to_all', 'clear_all' ), true ) ) {
+			wp_send_json_error( 'Invalid action' );
+		}
+
+		$updated = 0;
+
+		if ( 'apply_to_all' === $action ) {
+			foreach ( $item_ids as $item_id ) {
+				if ( ! get_post( $item_id ) ) {
+					continue;
+				}
+
+				$saved = Item_Meta::save(
+					$item_id,
+					array(
+						'external_url' => $url,
+						'link_target'  => $target,
+					)
+				);
+
+				if ( $saved ) {
+					++$updated;
+				}
+			}
+		} elseif ( 'clear_all' === $action ) {
+			foreach ( array_keys( Item_Meta::get_many( $item_ids ) ) as $item_id ) {
+				$saved = Item_Meta::save(
+					$item_id,
+					array(
+						'external_url' => '',
+						'link_target'  => 'global',
+					)
+				);
+
+				if ( $saved ) {
+					++$updated;
+				}
+			}
+		}
+
+		wp_send_json_success(
+			array(
+				'updated' => $updated,
+				'action'  => $action,
+				/* translators: %d: number of items updated. */
+				'message' => sprintf( __( 'Bulk action completed. Updated %d items.', 'fotogrids' ), $updated ),
+			)
+		);
+	}
+
+	/**
+	 * Reorder a gallery's items via drag-and-drop in the metabox.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function reorder_gallery_items(): void {
+		check_ajax_referer( 'fotogrids_item_edit', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions', 'fotogrids' ) ) );
+		}
+
+		$gallery_id = intval( $_POST['gallery_id'] ?? 0 );
+		if ( ! $gallery_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid gallery ID', 'fotogrids' ) ) );
+		}
+
+		$post = get_post( $gallery_id );
+		if ( ! $post || 'fotogrids_gallery' !== $post->post_type ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid gallery', 'fotogrids' ) ) );
+		}
+
+		if ( ! current_user_can( 'edit_post', $gallery_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Cannot edit this gallery', 'fotogrids' ) ) );
+		}
+
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded JSON is validated as an array below, then every element is cast to a positive int via array_map( 'absint', ... ).
+		$item_order = isset( $_POST['item_order'] ) ? json_decode( wp_unslash( $_POST['item_order'] ), true ) : array();
+		if ( ! is_array( $item_order ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid item order data', 'fotogrids' ) ) );
+		}
+		$item_order = array_map( 'absint', $item_order );
+
+		$result = Gallery_Items::reorder( (int) $gallery_id, $item_order );
+
+		if ( $result ) {
+			wp_send_json_success(
+				array(
+					'message'    => __( 'Items reordered successfully', 'fotogrids' ),
+					'gallery_id' => $gallery_id,
+					'item_order' => $item_order,
+				)
+			);
+		} else {
+			wp_send_json_error( array( 'message' => __( 'Failed to reorder items', 'fotogrids' ) ) );
+		}
+	}
+}

@@ -1,0 +1,782 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Ele Blog\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-11 07:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.2; wp-5.7\n"
+"X-Domain: ele-blog"
+
+#. 1: Plugin name 2: Elementor
+#: elementor/ele-blog-elementor-widgets-init.php:151
+#, php-format
+msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
+msgstr ""
+
+#. 1: Plugin name 2: Elementor 3: Required Elementor version
+#. 1: Plugin name 2: PHP 3: Required PHP version
+#: elementor/ele-blog-elementor-widgets-init.php:175
+#: elementor/ele-blog-elementor-widgets-init.php:200
+#, php-format
+msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:205
+#: elementor/widgets/class-ele-blog-style-four.php:220
+#: elementor/widgets/class-ele-blog-style-one.php:236
+#: elementor/widgets/class-ele-blog-style-six.php:220
+#: elementor/widgets/class-ele-blog-style-three.php:205
+#: elementor/widgets/class-ele-blog-style-two.php:220
+msgid "After Title"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-seven.php:491
+msgid "All"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:48
+#: elementor/widgets/class-ele-blog-style-four.php:48
+#: elementor/widgets/class-ele-blog-style-one.php:64
+#: elementor/widgets/class-ele-blog-style-seven.php:48
+#: elementor/widgets/class-ele-blog-style-six.php:48
+#: elementor/widgets/class-ele-blog-style-three.php:48
+#: elementor/widgets/class-ele-blog-style-two.php:48
+msgid "Amount of post to display"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:114
+#: elementor/widgets/class-ele-blog-style-four.php:129
+#: elementor/widgets/class-ele-blog-style-one.php:145
+#: elementor/widgets/class-ele-blog-style-seven.php:115
+#: elementor/widgets/class-ele-blog-style-six.php:129
+#: elementor/widgets/class-ele-blog-style-three.php:114
+#: elementor/widgets/class-ele-blog-style-two.php:129
+msgid "ASC"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:98
+#: elementor/widgets/class-ele-blog-style-four.php:113
+#: elementor/widgets/class-ele-blog-style-one.php:129
+#: elementor/widgets/class-ele-blog-style-seven.php:99
+#: elementor/widgets/class-ele-blog-style-six.php:113
+#: elementor/widgets/class-ele-blog-style-three.php:98
+#: elementor/widgets/class-ele-blog-style-two.php:113
+msgid "Author"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:204
+#: elementor/widgets/class-ele-blog-style-four.php:219
+#: elementor/widgets/class-ele-blog-style-one.php:235
+#: elementor/widgets/class-ele-blog-style-six.php:219
+#: elementor/widgets/class-ele-blog-style-three.php:204
+#: elementor/widgets/class-ele-blog-style-two.php:219
+msgid "Before Title"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:341
+#: elementor/widgets/class-ele-blog-style-one.php:359
+#: elementor/widgets/class-ele-blog-style-seven.php:210
+#: elementor/widgets/class-ele-blog-style-six.php:356
+msgid "Button"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:581
+#: elementor/widgets/class-ele-blog-style-one.php:599
+#: elementor/widgets/class-ele-blog-style-seven.php:356
+msgid "Button Background Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:551
+#: elementor/widgets/class-ele-blog-style-one.php:569
+#: elementor/widgets/class-ele-blog-style-seven.php:326
+msgid "Button Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:597
+#: elementor/widgets/class-ele-blog-style-one.php:615
+#: elementor/widgets/class-ele-blog-style-seven.php:372
+msgid "Button Hover Background Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:566
+#: elementor/widgets/class-ele-blog-style-one.php:584
+#: elementor/widgets/class-ele-blog-style-seven.php:341
+msgid "Button Hover Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:377
+#: elementor/widgets/class-ele-blog-style-one.php:395
+#: elementor/widgets/class-ele-blog-style-seven.php:246
+#: elementor/widgets/class-ele-blog-style-six.php:392
+msgid "Button Icon"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:350
+#: elementor/widgets/class-ele-blog-style-one.php:368
+#: elementor/widgets/class-ele-blog-style-seven.php:219
+#: elementor/widgets/class-ele-blog-style-six.php:365
+msgid "Button Text"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:454
+#: elementor/widgets/class-ele-blog-style-five.php:507
+#: elementor/widgets/class-ele-blog-style-five.php:613
+#: elementor/widgets/class-ele-blog-style-four.php:377
+#: elementor/widgets/class-ele-blog-style-one.php:472
+#: elementor/widgets/class-ele-blog-style-one.php:525
+#: elementor/widgets/class-ele-blog-style-one.php:631
+#: elementor/widgets/class-ele-blog-style-seven.php:388
+#: elementor/widgets/class-ele-blog-style-seven.php:434
+#: elementor/widgets/class-ele-blog-style-three.php:341
+#: elementor/widgets/class-ele-blog-style-two.php:355
+msgid "Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-four.php:430
+msgid "Content Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:280
+#: elementor/widgets/class-ele-blog-style-four.php:296
+#: elementor/widgets/class-ele-blog-style-one.php:298
+#: elementor/widgets/class-ele-blog-style-six.php:295
+msgid "Content Settings"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:499
+#: elementor/widgets/class-ele-blog-style-four.php:422
+#: elementor/widgets/class-ele-blog-style-one.php:517
+msgid "Content Style"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:522
+#: elementor/widgets/class-ele-blog-style-one.php:540
+msgid "Content Typography"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:100
+#: elementor/widgets/class-ele-blog-style-four.php:115
+#: elementor/widgets/class-ele-blog-style-one.php:131
+#: elementor/widgets/class-ele-blog-style-seven.php:101
+#: elementor/widgets/class-ele-blog-style-six.php:115
+#: elementor/widgets/class-ele-blog-style-three.php:100
+#: elementor/widgets/class-ele-blog-style-two.php:115
+msgid "Date"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:113
+#: elementor/widgets/class-ele-blog-style-four.php:128
+#: elementor/widgets/class-ele-blog-style-one.php:144
+#: elementor/widgets/class-ele-blog-style-seven.php:114
+#: elementor/widgets/class-ele-blog-style-six.php:128
+#: elementor/widgets/class-ele-blog-style-three.php:113
+#: elementor/widgets/class-ele-blog-style-two.php:128
+msgid "DESC"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:134
+#: elementor/widgets/class-ele-blog-style-five.php:286
+#: elementor/widgets/class-ele-blog-style-four.php:149
+#: elementor/widgets/class-ele-blog-style-one.php:165
+#: elementor/widgets/class-ele-blog-style-one.php:304
+#: elementor/widgets/class-ele-blog-style-seven.php:135
+#: elementor/widgets/class-ele-blog-style-six.php:149
+#: elementor/widgets/class-ele-blog-style-six.php:301
+#: elementor/widgets/class-ele-blog-style-three.php:134
+#: elementor/widgets/class-ele-blog-style-two.php:149
+msgid "Display"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:216
+#: elementor/widgets/class-ele-blog-style-four.php:231
+#: elementor/widgets/class-ele-blog-style-one.php:247
+#: elementor/widgets/class-ele-blog-style-six.php:231
+#: elementor/widgets/class-ele-blog-style-three.php:216
+#: elementor/widgets/class-ele-blog-style-two.php:231
+msgid "Display Author Name"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:362
+#: elementor/widgets/class-ele-blog-style-one.php:380
+#: elementor/widgets/class-ele-blog-style-seven.php:231
+#: elementor/widgets/class-ele-blog-style-six.php:377
+msgid "Display Button Icon"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:261
+#: elementor/widgets/class-ele-blog-style-four.php:276
+#: elementor/widgets/class-ele-blog-style-one.php:277
+#: elementor/widgets/class-ele-blog-style-six.php:276
+#: elementor/widgets/class-ele-blog-style-three.php:261
+#: elementor/widgets/class-ele-blog-style-two.php:276
+msgid "Display Category"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:246
+#: elementor/widgets/class-ele-blog-style-four.php:261
+#: elementor/widgets/class-ele-blog-style-one.php:262
+#: elementor/widgets/class-ele-blog-style-six.php:261
+#: elementor/widgets/class-ele-blog-style-three.php:246
+#: elementor/widgets/class-ele-blog-style-two.php:261
+msgid "Display Comment Number"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:231
+#: elementor/widgets/class-ele-blog-style-four.php:246
+#: elementor/widgets/class-ele-blog-style-six.php:246
+#: elementor/widgets/class-ele-blog-style-three.php:231
+#: elementor/widgets/class-ele-blog-style-two.php:246
+msgid "Display Date"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:323
+#: elementor/widgets/class-ele-blog-style-one.php:341
+#: elementor/widgets/class-ele-blog-style-seven.php:192
+#: elementor/widgets/class-ele-blog-style-six.php:338
+msgid "Display Read More"
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:220
+msgid "ELE BLOG"
+msgstr ""
+
+#. Name of the plugin
+msgid "Ele Blog"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Ele Blog is a elementor extention to display deafult WordPress Blog Posts. "
+"It's has 10+  premade blog style like grid style, slider, isotop etc."
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:201
+msgid "ELEBLOG"
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:152
+msgid "Eleblog"
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:176
+msgid "Eleblog Addon"
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:153
+#: elementor/ele-blog-elementor-widgets-init.php:177
+msgid "Elementor"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:138
+#: elementor/widgets/class-ele-blog-style-five.php:290
+#: elementor/widgets/class-ele-blog-style-four.php:153
+#: elementor/widgets/class-ele-blog-style-one.php:169
+#: elementor/widgets/class-ele-blog-style-one.php:308
+#: elementor/widgets/class-ele-blog-style-seven.php:139
+#: elementor/widgets/class-ele-blog-style-six.php:153
+#: elementor/widgets/class-ele-blog-style-six.php:305
+#: elementor/widgets/class-ele-blog-style-three.php:138
+#: elementor/widgets/class-ele-blog-style-two.php:153
+msgid "Excerpt"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:301
+#: elementor/widgets/class-ele-blog-style-four.php:303
+#: elementor/widgets/class-ele-blog-style-one.php:319
+#: elementor/widgets/class-ele-blog-style-six.php:316
+msgid "Excerpt Length"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:77
+#: elementor/widgets/class-ele-blog-style-four.php:92
+#: elementor/widgets/class-ele-blog-style-one.php:108
+#: elementor/widgets/class-ele-blog-style-seven.php:78
+#: elementor/widgets/class-ele-blog-style-six.php:92
+#: elementor/widgets/class-ele-blog-style-three.php:77
+#: elementor/widgets/class-ele-blog-style-two.php:92
+msgid "Exclude Category"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-seven.php:426
+msgid "Filter Button Active Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:289
+#: elementor/widgets/class-ele-blog-style-one.php:307
+#: elementor/widgets/class-ele-blog-style-six.php:304
+msgid "Full Content"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:137
+#: elementor/widgets/class-ele-blog-style-four.php:152
+#: elementor/widgets/class-ele-blog-style-one.php:168
+#: elementor/widgets/class-ele-blog-style-seven.php:138
+#: elementor/widgets/class-ele-blog-style-six.php:152
+#: elementor/widgets/class-ele-blog-style-three.php:137
+#: elementor/widgets/class-ele-blog-style-two.php:152
+msgid "Full Title"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:41
+#: elementor/widgets/class-ele-blog-style-four.php:41
+#: elementor/widgets/class-ele-blog-style-one.php:41
+#: elementor/widgets/class-ele-blog-style-seven.php:41
+#: elementor/widgets/class-ele-blog-style-six.php:41
+#: elementor/widgets/class-ele-blog-style-three.php:41
+#: elementor/widgets/class-ele-blog-style-two.php:41
+msgid "Generel Settings"
+msgstr ""
+
+#: inc/class-ele-blog-init.php:38
+msgctxt "Google font: on or off"
+msgid "on"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:291
+#: elementor/widgets/class-ele-blog-style-one.php:309
+#: elementor/widgets/class-ele-blog-style-six.php:306
+msgid "Hide"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-three.php:406
+msgid "Hover Color"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/quazisazzad/"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://solverwp.com/"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:466
+#: elementor/widgets/class-ele-blog-style-four.php:389
+#: elementor/widgets/class-ele-blog-style-one.php:484
+#: elementor/widgets/class-ele-blog-style-three.php:353
+#: elementor/widgets/class-ele-blog-style-three.php:394
+#: elementor/widgets/class-ele-blog-style-two.php:367
+msgid "Icon Color"
+msgstr ""
+
+#: inc/image-resizer.php:107
+msgid "Image file does not exist (or is not an image) "
+msgstr ""
+
+#: inc/image-resizer.php:99
+msgid "Image must be local "
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-four.php:56
+#: elementor/widgets/class-ele-blog-style-one.php:72
+#: elementor/widgets/class-ele-blog-style-six.php:57
+#: elementor/widgets/class-ele-blog-style-two.php:56
+msgid "layout"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:190
+#: elementor/widgets/class-ele-blog-style-four.php:205
+#: elementor/widgets/class-ele-blog-style-one.php:221
+#: elementor/widgets/class-ele-blog-style-six.php:205
+#: elementor/widgets/class-ele-blog-style-three.php:190
+#: elementor/widgets/class-ele-blog-style-two.php:205
+msgid "Meta"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:201
+#: elementor/widgets/class-ele-blog-style-four.php:216
+#: elementor/widgets/class-ele-blog-style-one.php:232
+#: elementor/widgets/class-ele-blog-style-six.php:216
+#: elementor/widgets/class-ele-blog-style-three.php:201
+#: elementor/widgets/class-ele-blog-style-two.php:216
+msgid "Meta Position"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:183
+#: elementor/widgets/class-ele-blog-style-four.php:198
+#: elementor/widgets/class-ele-blog-style-one.php:214
+#: elementor/widgets/class-ele-blog-style-six.php:198
+#: elementor/widgets/class-ele-blog-style-three.php:183
+#: elementor/widgets/class-ele-blog-style-two.php:198
+msgid "Meta Settings"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:446
+#: elementor/widgets/class-ele-blog-style-four.php:369
+#: elementor/widgets/class-ele-blog-style-one.php:464
+#: elementor/widgets/class-ele-blog-style-three.php:333
+#: elementor/widgets/class-ele-blog-style-two.php:347
+msgid "Meta Style"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:481
+#: elementor/widgets/class-ele-blog-style-four.php:404
+#: elementor/widgets/class-ele-blog-style-one.php:499
+#: elementor/widgets/class-ele-blog-style-three.php:368
+#: elementor/widgets/class-ele-blog-style-two.php:382
+msgid "Meta Typography"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:193
+#: elementor/widgets/class-ele-blog-style-five.php:219
+#: elementor/widgets/class-ele-blog-style-five.php:234
+#: elementor/widgets/class-ele-blog-style-five.php:249
+#: elementor/widgets/class-ele-blog-style-five.php:264
+#: elementor/widgets/class-ele-blog-style-five.php:326
+#: elementor/widgets/class-ele-blog-style-five.php:368
+#: elementor/widgets/class-ele-blog-style-four.php:208
+#: elementor/widgets/class-ele-blog-style-four.php:234
+#: elementor/widgets/class-ele-blog-style-four.php:249
+#: elementor/widgets/class-ele-blog-style-four.php:264
+#: elementor/widgets/class-ele-blog-style-four.php:279
+#: elementor/widgets/class-ele-blog-style-one.php:224
+#: elementor/widgets/class-ele-blog-style-one.php:250
+#: elementor/widgets/class-ele-blog-style-one.php:265
+#: elementor/widgets/class-ele-blog-style-one.php:280
+#: elementor/widgets/class-ele-blog-style-one.php:344
+#: elementor/widgets/class-ele-blog-style-one.php:386
+#: elementor/widgets/class-ele-blog-style-seven.php:195
+#: elementor/widgets/class-ele-blog-style-seven.php:237
+#: elementor/widgets/class-ele-blog-style-six.php:208
+#: elementor/widgets/class-ele-blog-style-six.php:234
+#: elementor/widgets/class-ele-blog-style-six.php:249
+#: elementor/widgets/class-ele-blog-style-six.php:264
+#: elementor/widgets/class-ele-blog-style-six.php:279
+#: elementor/widgets/class-ele-blog-style-six.php:341
+#: elementor/widgets/class-ele-blog-style-six.php:383
+#: elementor/widgets/class-ele-blog-style-three.php:193
+#: elementor/widgets/class-ele-blog-style-three.php:219
+#: elementor/widgets/class-ele-blog-style-three.php:234
+#: elementor/widgets/class-ele-blog-style-three.php:249
+#: elementor/widgets/class-ele-blog-style-three.php:264
+#: elementor/widgets/class-ele-blog-style-two.php:208
+#: elementor/widgets/class-ele-blog-style-two.php:234
+#: elementor/widgets/class-ele-blog-style-two.php:249
+#: elementor/widgets/class-ele-blog-style-two.php:264
+#: elementor/widgets/class-ele-blog-style-two.php:279
+msgid "no"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:340
+#: elementor/widgets/class-ele-blog-style-one.php:358
+#: elementor/widgets/class-ele-blog-style-seven.php:209
+#: elementor/widgets/class-ele-blog-style-six.php:355
+msgid "Normal Text"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:139
+#: elementor/widgets/class-ele-blog-style-four.php:154
+#: elementor/widgets/class-ele-blog-style-one.php:170
+#: elementor/widgets/class-ele-blog-style-seven.php:140
+#: elementor/widgets/class-ele-blog-style-six.php:154
+#: elementor/widgets/class-ele-blog-style-three.php:139
+#: elementor/widgets/class-ele-blog-style-two.php:154
+msgid "Not Display"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:110
+#: elementor/widgets/class-ele-blog-style-four.php:125
+#: elementor/widgets/class-ele-blog-style-one.php:141
+#: elementor/widgets/class-ele-blog-style-seven.php:111
+#: elementor/widgets/class-ele-blog-style-six.php:125
+#: elementor/widgets/class-ele-blog-style-three.php:110
+#: elementor/widgets/class-ele-blog-style-two.php:125
+msgid "Order"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:95
+#: elementor/widgets/class-ele-blog-style-four.php:110
+#: elementor/widgets/class-ele-blog-style-one.php:126
+#: elementor/widgets/class-ele-blog-style-seven.php:96
+#: elementor/widgets/class-ele-blog-style-six.php:110
+#: elementor/widgets/class-ele-blog-style-three.php:95
+#: elementor/widgets/class-ele-blog-style-two.php:110
+msgid "Order by"
+msgstr ""
+
+#: elementor/ele-blog-elementor-widgets-init.php:202
+msgid "PHP"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:60
+#: elementor/widgets/class-ele-blog-style-four.php:75
+#: elementor/widgets/class-ele-blog-style-one.php:91
+#: elementor/widgets/class-ele-blog-style-seven.php:61
+#: elementor/widgets/class-ele-blog-style-six.php:75
+#: elementor/widgets/class-ele-blog-style-three.php:60
+#: elementor/widgets/class-ele-blog-style-two.php:75
+msgid "Post Filter"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:101
+#: elementor/widgets/class-ele-blog-style-four.php:116
+#: elementor/widgets/class-ele-blog-style-one.php:132
+#: elementor/widgets/class-ele-blog-style-seven.php:102
+#: elementor/widgets/class-ele-blog-style-six.php:116
+#: elementor/widgets/class-ele-blog-style-three.php:101
+#: elementor/widgets/class-ele-blog-style-two.php:116
+msgid "Random"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:355
+#: elementor/widgets/class-ele-blog-style-one.php:373
+#: elementor/widgets/class-ele-blog-style-seven.php:224
+#: elementor/widgets/class-ele-blog-style-six.php:370
+msgid "Read More"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:316
+#: elementor/widgets/class-ele-blog-style-one.php:334
+#: elementor/widgets/class-ele-blog-style-seven.php:185
+#: elementor/widgets/class-ele-blog-style-six.php:331
+msgid "Read More Settings"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:334
+#: elementor/widgets/class-ele-blog-style-five.php:540
+#: elementor/widgets/class-ele-blog-style-one.php:352
+#: elementor/widgets/class-ele-blog-style-one.php:558
+#: elementor/widgets/class-ele-blog-style-seven.php:203
+#: elementor/widgets/class-ele-blog-style-seven.php:315
+#: elementor/widgets/class-ele-blog-style-six.php:349
+msgid "Read More Style"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:66
+#: elementor/widgets/class-ele-blog-style-four.php:81
+#: elementor/widgets/class-ele-blog-style-one.php:97
+#: elementor/widgets/class-ele-blog-style-seven.php:67
+#: elementor/widgets/class-ele-blog-style-six.php:81
+#: elementor/widgets/class-ele-blog-style-three.php:66
+#: elementor/widgets/class-ele-blog-style-two.php:81
+msgid "Select Category"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:47
+msgid "Select Style"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:86
+#: elementor/widgets/class-ele-blog-style-four.php:101
+#: elementor/widgets/class-ele-blog-style-one.php:117
+#: elementor/widgets/class-ele-blog-style-seven.php:87
+#: elementor/widgets/class-ele-blog-style-six.php:101
+#: elementor/widgets/class-ele-blog-style-three.php:86
+#: elementor/widgets/class-ele-blog-style-two.php:101
+msgid "Select tag"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-three.php:386
+msgid "Slider Button Style"
+msgstr ""
+
+#. Author of the plugin
+msgid "SolverWP"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:50
+msgid "Style 1"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:51
+msgid "Style 2"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:52
+msgid "Style 3"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:53
+msgid "Style 4"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:54
+msgid "Style 5"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:55
+msgid "Style 6"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:23
+msgid "Style five"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-four.php:23
+msgid "Style Four"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-one.php:23
+msgid "Style One"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-seven.php:23
+msgid "Style Seven"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-six.php:23
+msgid "Style Six"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-three.php:23
+msgid "Style Three"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-two.php:23
+msgid "Style Two"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:99
+#: elementor/widgets/class-ele-blog-style-four.php:114
+#: elementor/widgets/class-ele-blog-style-one.php:130
+#: elementor/widgets/class-ele-blog-style-seven.php:100
+#: elementor/widgets/class-ele-blog-style-six.php:114
+#: elementor/widgets/class-ele-blog-style-three.php:99
+#: elementor/widgets/class-ele-blog-style-two.php:114
+msgid "Title"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:402
+#: elementor/widgets/class-ele-blog-style-four.php:325
+#: elementor/widgets/class-ele-blog-style-one.php:420
+#: elementor/widgets/class-ele-blog-style-seven.php:271
+#: elementor/widgets/class-ele-blog-style-six.php:417
+#: elementor/widgets/class-ele-blog-style-three.php:289
+#: elementor/widgets/class-ele-blog-style-two.php:303
+msgid "Title Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:148
+#: elementor/widgets/class-ele-blog-style-four.php:163
+#: elementor/widgets/class-ele-blog-style-one.php:179
+#: elementor/widgets/class-ele-blog-style-seven.php:149
+#: elementor/widgets/class-ele-blog-style-six.php:163
+#: elementor/widgets/class-ele-blog-style-three.php:148
+#: elementor/widgets/class-ele-blog-style-two.php:163
+msgid "Title Excerpt Length"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:414
+#: elementor/widgets/class-ele-blog-style-four.php:337
+#: elementor/widgets/class-ele-blog-style-one.php:432
+#: elementor/widgets/class-ele-blog-style-seven.php:283
+#: elementor/widgets/class-ele-blog-style-six.php:429
+#: elementor/widgets/class-ele-blog-style-three.php:301
+#: elementor/widgets/class-ele-blog-style-two.php:315
+msgid "Title Hover Color"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:128
+#: elementor/widgets/class-ele-blog-style-four.php:143
+#: elementor/widgets/class-ele-blog-style-one.php:159
+#: elementor/widgets/class-ele-blog-style-seven.php:129
+#: elementor/widgets/class-ele-blog-style-six.php:143
+#: elementor/widgets/class-ele-blog-style-three.php:128
+#: elementor/widgets/class-ele-blog-style-two.php:143
+msgid "Title Settings"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:394
+#: elementor/widgets/class-ele-blog-style-four.php:317
+#: elementor/widgets/class-ele-blog-style-one.php:412
+#: elementor/widgets/class-ele-blog-style-seven.php:263
+#: elementor/widgets/class-ele-blog-style-six.php:409
+#: elementor/widgets/class-ele-blog-style-three.php:281
+#: elementor/widgets/class-ele-blog-style-two.php:295
+msgid "Title Style"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:159
+#: elementor/widgets/class-ele-blog-style-four.php:174
+#: elementor/widgets/class-ele-blog-style-one.php:190
+#: elementor/widgets/class-ele-blog-style-seven.php:160
+#: elementor/widgets/class-ele-blog-style-six.php:174
+#: elementor/widgets/class-ele-blog-style-three.php:159
+#: elementor/widgets/class-ele-blog-style-two.php:174
+msgid "Title Tag"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:428
+#: elementor/widgets/class-ele-blog-style-four.php:351
+#: elementor/widgets/class-ele-blog-style-one.php:446
+#: elementor/widgets/class-ele-blog-style-seven.php:297
+#: elementor/widgets/class-ele-blog-style-six.php:443
+#: elementor/widgets/class-ele-blog-style-three.php:315
+#: elementor/widgets/class-ele-blog-style-two.php:329
+msgid "Title Typography"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:630
+#: elementor/widgets/class-ele-blog-style-one.php:648
+#: elementor/widgets/class-ele-blog-style-seven.php:405
+msgid "Typography"
+msgstr ""
+
+#: inc/image-resizer.php:144
+msgid "Unable to get WP_Image_Editor "
+msgstr ""
+
+#: inc/image-resizer.php:132
+msgid "Unable to resize image because image_resize_dimensions() failed"
+msgstr ""
+
+#: inc/image-resizer.php:153
+msgid "Unable to save resized image file "
+msgstr ""
+
+#: inc/image-resizer.php:68
+msgid "url parameter is required"
+msgstr ""
+
+#: inc/image-resizer.php:70
+msgid "width parameter is required"
+msgstr ""
+
+#: elementor/widgets/class-ele-blog-style-five.php:192
+#: elementor/widgets/class-ele-blog-style-five.php:218
+#: elementor/widgets/class-ele-blog-style-five.php:233
+#: elementor/widgets/class-ele-blog-style-five.php:248
+#: elementor/widgets/class-ele-blog-style-five.php:263
+#: elementor/widgets/class-ele-blog-style-five.php:325
+#: elementor/widgets/class-ele-blog-style-five.php:367
+#: elementor/widgets/class-ele-blog-style-four.php:207
+#: elementor/widgets/class-ele-blog-style-four.php:233
+#: elementor/widgets/class-ele-blog-style-four.php:248
+#: elementor/widgets/class-ele-blog-style-four.php:263
+#: elementor/widgets/class-ele-blog-style-four.php:278
+#: elementor/widgets/class-ele-blog-style-one.php:223
+#: elementor/widgets/class-ele-blog-style-one.php:249
+#: elementor/widgets/class-ele-blog-style-one.php:264
+#: elementor/widgets/class-ele-blog-style-one.php:279
+#: elementor/widgets/class-ele-blog-style-one.php:343
+#: elementor/widgets/class-ele-blog-style-one.php:385
+#: elementor/widgets/class-ele-blog-style-seven.php:194
+#: elementor/widgets/class-ele-blog-style-seven.php:236
+#: elementor/widgets/class-ele-blog-style-six.php:207
+#: elementor/widgets/class-ele-blog-style-six.php:233
+#: elementor/widgets/class-ele-blog-style-six.php:248
+#: elementor/widgets/class-ele-blog-style-six.php:263
+#: elementor/widgets/class-ele-blog-style-six.php:278
+#: elementor/widgets/class-ele-blog-style-six.php:340
+#: elementor/widgets/class-ele-blog-style-six.php:382
+#: elementor/widgets/class-ele-blog-style-three.php:192
+#: elementor/widgets/class-ele-blog-style-three.php:218
+#: elementor/widgets/class-ele-blog-style-three.php:233
+#: elementor/widgets/class-ele-blog-style-three.php:248
+#: elementor/widgets/class-ele-blog-style-three.php:263
+#: elementor/widgets/class-ele-blog-style-two.php:207
+#: elementor/widgets/class-ele-blog-style-two.php:233
+#: elementor/widgets/class-ele-blog-style-two.php:248
+#: elementor/widgets/class-ele-blog-style-two.php:263
+#: elementor/widgets/class-ele-blog-style-two.php:278
+msgid "Yes"
+msgstr ""

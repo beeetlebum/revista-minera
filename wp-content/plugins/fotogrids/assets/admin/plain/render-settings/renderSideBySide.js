@@ -1,0 +1,1 @@
+window.FotoGridsRenderSettings=window.FotoGridsRenderSettings||{},window.FotoGridsRenderSettings.renderSideBySide=(e,t,n,s)=>{const{createElement:i}=wp.element,{renderSetting:r}=s;return e.settings&&Array.isArray(e.settings)?i("div",{className:"fotogrids-settings-sbs"},e.settings.map(e=>r(e,n))):null};

@@ -1,0 +1,274 @@
+<?php
+namespace FotoGrids;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) && ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Plugin Uninstaller Class
+ *
+ * Handles complete plugin removal:
+ * - Database cleanup
+ * - Options removal
+ * - Capabilities removal
+ */
+class Uninstaller {
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall cleanup of custom tables and plugin rows; no core API or object cache applies.
+
+	/**
+	 * Register uninstall() as the plugin's uninstall callback.
+	 *
+	 * @since  1.2.0
+	 * @return void
+	 */
+	public static function register() {
+		register_uninstall_hook( FOTOGRIDS_PLUGIN_FILE, array( self::class, 'uninstall' ) );
+	}
+
+	/**
+	 * Uninstall the plugin completely.
+	 *
+	 * Runs with only the main plugin file loaded.
+	 */
+	public static function uninstall() {
+		\FotoGrids\Licensing\Freemius_Bootstrap::report_uninstall();
+
+		self::clear_scheduled_events();
+
+		if ( ! self::should_delete_data() ) {
+			return;
+		}
+
+		self::remove_cpt_posts();
+
+		// Let lifecycle modules drop the tables/options they own before the
+		// core cleanup runs. Guarded: if the registry is not loaded in this
+		// uninstall request, the blanket option/postmeta cleanup below still
+		// removes module options, and a module's own uninstall hook (if it
+		// registered one against WordPress) handles its tables.
+		if ( class_exists( '\FotoGrids\Activator' ) ) {
+			Activator::run_module_lifecycle( 'on_uninstall' );
+		}
+
+		self::drop_tables();
+		self::remove_capabilities();
+		self::remove_options();
+		self::remove_post_meta();
+		self::remove_user_meta();
+		self::remove_transients();
+	}
+
+	/**
+	 * Clear every scheduled FotoGrids cron event.
+	 *
+	 * Runs before the data-deletion check: a scheduled event is not site data,
+	 * and one left in the cron option fires into a plugin that is no longer
+	 * installed. Deactivation clears the same events, so the work left here is
+	 * events stranded by a deactivation that ran no plugin code.
+	 *
+	 * @since  1.1.2
+	 * @return void
+	 */
+	private static function clear_scheduled_events() {
+		if ( ! class_exists( '\FotoGrids\Hooks\Actions_Cron' ) ) {
+			return;
+		}
+
+		foreach ( \FotoGrids\Hooks\Actions_Cron::ALL_CRON_ACTIONS as $hook ) {
+			wp_clear_scheduled_hook( $hook );
+		}
+	}
+
+	/**
+	 * Whether plugin data should be deleted.
+	 */
+	private static function should_delete_data() {
+		$preserve_data = get_option( 'fotogrids_preserve_data_on_uninstall', true );
+
+		return ! $preserve_data;
+	}
+
+	/**
+	 * Drop custom database tables
+	 */
+	private static function drop_tables() {
+		global $wpdb;
+
+		$tables = array(
+			$wpdb->prefix . 'fotogrids_item_meta',
+			$wpdb->prefix . 'fotogrids_statistics',
+			$wpdb->prefix . 'fotogrids_statistics_daily',
+			$wpdb->prefix . 'fotogrids_gallery_albums',
+			$wpdb->prefix . 'fotogrids_tags',
+			$wpdb->prefix . 'fotogrids_item_metadata',
+			$wpdb->prefix . 'fotogrids_render_cache',
+		);
+
+		foreach ( $tables as $table ) {
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table ) );
+		}
+	}
+
+	/**
+	 * Remove plugin capabilities from all roles.
+	 *
+	 * Reads the full list of FotoGrids-owned atomic caps from
+	 * Permission_Registry so this stays in sync as new caps are added or
+	 * Pro contributes its own.
+	 */
+	private static function remove_capabilities() {
+		// Boot the registry. Uninstall runs in an isolated request - fire
+		// the registration actions explicitly so harvested caps (Tools,
+		// Modules, Pro filters) are included.
+		if ( class_exists( '\FotoGrids\Hooks\Actions_System' ) ) {
+			do_action( \FotoGrids\Hooks\Actions_System::MODULES_REGISTER );
+			do_action( \FotoGrids\Hooks\Actions_System::TOOLS_INIT );
+		}
+
+		if ( ! class_exists( '\FotoGrids\Permissions\Permission_Registry' ) ) {
+			return;
+		}
+
+		\FotoGrids\Permissions\Permission_Registry::boot();
+		$caps = \FotoGrids\Permissions\Permission_Registry::get_all_atomic_caps();
+
+		$roles = wp_roles()->roles;
+		foreach ( $roles as $role_name => $role_info ) {
+			$role = get_role( $role_name );
+			if ( ! $role ) {
+				continue;
+			}
+			foreach ( $caps as $cap ) {
+				$role->remove_cap( $cap );
+			}
+		}
+	}
+
+	/**
+	 * Remove all plugin options
+	 */
+	private static function remove_options() {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				$wpdb->esc_like( 'fotogrids_' ) . '%'
+			)
+		);
+	}
+
+	/**
+	 * Remove plugin post meta.
+	 *
+	 * Matches the `fotogrids_*` keys on collection posts, the `_fotogrids_*`
+	 * keys on attachments, and `_wp_attachment_item_alt`, which 1.1.1 and
+	 * earlier wrote and nothing writes now. Alt text itself lives in core's
+	 * `_wp_attachment_image_alt`, which is matched by none of the three and
+	 * is left in place.
+	 */
+	private static function remove_post_meta() {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->postmeta}
+                 WHERE meta_key LIKE %s
+                    OR meta_key LIKE %s
+                    OR meta_key = %s",
+				$wpdb->esc_like( 'fotogrids_' ) . '%',
+				$wpdb->esc_like( '_fotogrids_' ) . '%',
+				'_wp_attachment_item_alt' // TODO: Remove at 1.4.0
+			)
+		);
+	}
+
+	/**
+	 * Remove plugin user meta.
+	 *
+	 * Matches the `fotogrids_*` keys, which hold saved templates, and the
+	 * `_fotogrids_*` keys, which hold the review-prompt version. User meta is
+	 * not site-scoped, so this clears every user on the install.
+	 *
+	 * @since 1.1.3
+	 * @return void
+	 */
+	private static function remove_user_meta() {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->usermeta}
+                 WHERE meta_key LIKE %s
+                    OR meta_key LIKE %s",
+				$wpdb->esc_like( 'fotogrids_' ) . '%',
+				$wpdb->esc_like( '_fotogrids_' ) . '%'
+			)
+		);
+	}
+
+	/**
+	 * Remove plugin transients
+	 */
+	private static function remove_transients() {
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options}
+                 WHERE option_name LIKE %s
+                    OR option_name LIKE %s",
+				$wpdb->esc_like( '_transient_fotogrids_' ) . '%',
+				$wpdb->esc_like( '_transient_timeout_fotogrids_' ) . '%'
+			)
+		);
+	}
+
+	/**
+	 * Delete every gallery, album and embed post.
+	 *
+	 * WordPress leaves posts of an unregistered post type in place, and the
+	 * FotoGrids post types are not registered during the uninstall request, so
+	 * the rows are collected with a direct query instead of WP_Query. That
+	 * query carries no status filter: `post_status => 'any'` excludes trashed
+	 * and auto-draft posts. Each row is removed with wp_delete_post() so core
+	 * and third-party `before_delete_post` listeners clear their own data.
+	 *
+	 * @return void
+	 */
+	private static function remove_cpt_posts() {
+		global $wpdb;
+
+		$post_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts}
+                 WHERE post_type IN ( %s, %s, %s )",
+				'fotogrids_gallery',
+				'fotogrids_album',
+				'fotogrids_embed'
+			)
+		);
+
+		if ( empty( $post_ids ) ) {
+			return;
+		}
+
+		wp_defer_term_counting( true );
+		wp_suspend_cache_invalidation( true );
+
+		foreach ( $post_ids as $post_id ) {
+			wp_delete_post( (int) $post_id, true );
+		}
+
+		wp_suspend_cache_invalidation( false );
+		wp_defer_term_counting( false );
+	}
+
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+}

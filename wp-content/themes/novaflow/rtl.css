@@ -1,0 +1,92 @@
+body {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
+.nf-skip-link:focus {
+  left: auto;
+  right: 8px;
+}
+
+.nf-brand {
+  text-align: right;
+}
+
+.nf-nav-list .sub-menu {
+  left: auto;
+  right: 0;
+}
+
+.nf-header-colormag .nf-nav-list>li>a:before {
+  left: auto;
+  right: 10px;
+}
+
+.nf-header-colormag .nf-nav-list>li>a {
+  padding-right: 24px;
+  padding-left: 18px;
+}
+
+.nf-trending-list li>a:before {
+  right: auto;
+  left: 0;
+}
+
+.nf-trending-list strong {
+  padding-right: 0;
+  padding-left: 23px;
+}
+
+.nf-widget ul {
+  padding-left: 0;
+  padding-right: 18px;
+}
+
+.nf-ticker-track a:after,
+.nf-header-colormag .nf-ticker-track a:after {
+  right: auto;
+  left: -18px;
+}
+
+.comment-author img {
+  float: right;
+  margin-right: 0;
+  margin-left: 12px;
+}
+
+.entry-content blockquote,
+.nf-article-content blockquote {
+  border-left: 0;
+  border-right: 5px solid var(--nf-accent);
+  border-radius: var(--nf-radius) 0 0 var(--nf-radius);
+}
+
+@media (max-width:980px) {
+  .nf-primary-nav,
+  .nf-header-colormag .nf-primary-nav {
+    left: auto;
+    right: 0;
+  }
+
+  .nf-primary-nav .sub-menu,
+  .nf-header-colormag .nf-primary-nav .sub-menu {
+    padding-left: 0;
+    padding-right: 18px;
+  }
+}
+
+/* Utility bar RTL alignment. */
+
+.rtl .nf-utilitybar-left,
+.rtl .nf-utilitybar-right,
+.rtl .nf-utility-date,
+.rtl .nf-utility-status,
+.rtl .nf-utility-menu-list,
+.rtl .nf-utility-socials {
+  direction: rtl;
+}
+
+.rtl .nf-utilitybar-right {
+  margin-left: 0;
+  margin-right: auto;
+}

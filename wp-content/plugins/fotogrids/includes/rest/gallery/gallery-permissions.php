@@ -1,0 +1,202 @@
+<?php
+namespace FotoGrids\REST\Gallery;
+
+use FotoGrids\Galleries\Gallery_Repository;
+use FotoGrids\Hooks\Filters_Security;
+use FotoGrids\Render\Internal\Gallery_Item_Sequence;
+use FotoGrids\Render\Internal\Render_Controller;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Gallery Permissions Handler
+ *
+ * Handles permission checks for gallery-related REST API endpoints.
+ *
+ * @since 1.0.0
+ */
+class Gallery_Permissions {
+
+	/**
+	 * Permission check for reading galleries
+	 *
+	 * Determines if the current user has permission to read gallery data.
+	 * Currently allows public access for all published galleries.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request object
+	 * @return bool True if access is allowed, false otherwise
+	 */
+	public static function check_gallery_read( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return true;
+	}
+
+	/**
+	 * Permission check for endpoints that return a gallery's item data
+	 * outside the render pipeline.
+	 *
+	 * @since 1.1.2
+	 * @param \WP_REST_Request $request The REST API request object.
+	 * @return true|\WP_Error
+	 */
+	public static function check_gallery_view( $request ) {
+		return self::authorize_gallery_view( absint( $request->get_param( 'gallery_id' ) ) );
+	}
+
+	/**
+	 * Decides whether the current visitor may see a gallery's items.
+	 *
+	 * A user who can edit the gallery always may. Anyone else needs the
+	 * gallery to be published and every gate that would run on a public
+	 * render (password, view permissions, and any add-on gates) to pass.
+	 *
+	 * @since 1.1.2
+	 * @param int $gallery_id Gallery post ID.
+	 * @return true|\WP_Error
+	 */
+	public static function authorize_gallery_view( int $gallery_id ) {
+		$gallery = $gallery_id > 0 ? get_post( $gallery_id ) : null;
+		if ( ! $gallery || 'fotogrids_gallery' !== $gallery->post_type ) {
+			return new \WP_Error(
+				'gallery_not_found',
+				__( 'Gallery not found.', 'fotogrids' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		if ( current_user_can( 'edit_post', $gallery_id ) ) {
+			return true;
+		}
+
+		if ( 'publish' !== $gallery->post_status ) {
+			return new \WP_Error(
+				'gallery_not_published',
+				__( 'Gallery is not published.', 'fotogrids' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+
+		$context = Gallery_Item_Sequence::stub_context( $gallery_id, Gallery_Repository::get_settings( $gallery_id ) );
+		if ( ! Render_Controller::evaluate_gates( $context )->passed ) {
+			return new \WP_Error(
+				'fotogrids_gallery_locked',
+				__( 'You do not have access to this gallery.', 'fotogrids' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Permission check for unlocking a password-protected gallery.
+	 *
+	 * The unlock endpoint is intentionally public - any visitor can attempt
+	 * to unlock a gallery by submitting the password. Rate-limiting (if ever
+	 * needed) should be applied at the server/WAF level, not here.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request object
+	 * @return bool Always true.
+	 */
+	public static function check_gallery_unlock( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return true;
+	}
+
+	/**
+	 * Permission check for reading gallery cache status.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request
+	 * @return bool
+	 */
+	public static function check_cache_status_read( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return current_user_can( 'manage_fotogrids' );
+	}
+
+	/**
+	 * Permission check for flushing a gallery's cache.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request
+	 * @return bool
+	 */
+	public static function check_cache_flush( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return current_user_can( 'manage_fotogrids' );
+	}
+
+	/**
+	 * Permission check for writing a gallery's featured item.
+	 *
+	 * Mirrors WP's `edit_post` cap for the specific gallery ID.
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request
+	 * @return bool|\WP_Error
+	 */
+	public static function check_featured_item_write( $request ) {
+		$gallery_id = absint( $request['id'] );
+		if ( $gallery_id <= 0 ) {
+			return new \WP_Error(
+				'fotogrids_invalid_gallery',
+				__( 'Invalid gallery ID.', 'fotogrids' ),
+				array( 'status' => 400 )
+			);
+		}
+		if ( ! current_user_can( 'edit_post', $gallery_id ) ) {
+			return new \WP_Error(
+				'fotogrids_forbidden',
+				__( 'You do not have permission to edit this gallery.', 'fotogrids' ),
+				array( 'status' => 403 )
+			);
+		}
+		return true;
+	}
+
+	/**
+	 * Permission check for reading a gallery's saved (decrypted) password.
+	 *
+	 * Controlled by the fotogrids/security/can_view_gallery_password filter.
+	 * Default is false - nobody can view stored passwords unless the site
+	 * owner explicitly grants permission via the filter.
+	 *
+	 * Example - allow administrators:
+	 *   add_filter(
+	 *       'fotogrids/security/can_view_gallery_password',
+	 *       fn( $can, $gallery_id, $user_id ) => current_user_can( 'manage_options' ),
+	 *       10,
+	 *       3
+	 *   );
+	 *
+	 * @since 1.0.0
+	 * @param \WP_REST_Request $request The REST API request object
+	 * @return bool|\WP_Error True if allowed, WP_Error if not.
+	 */
+	public static function check_gallery_password_read( $request ) {
+		$gallery_id = absint( $request['id'] );
+		$user_id    = get_current_user_id();
+
+		// Administrators can view saved passwords by default.
+		// All other roles require an explicit opt-in via the filter.
+		$default_allowed = current_user_can( 'manage_options' );
+
+		$allowed = apply_filters(
+			Filters_Security::CAN_VIEW_GALLERY_PASSWORD,
+			$default_allowed,
+			$gallery_id,
+			$user_id
+		);
+
+		if ( ! $allowed ) {
+			return new \WP_Error(
+				'fotogrids_forbidden',
+				__( 'You do not have permission to view saved gallery passwords.', 'fotogrids' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		return true;
+	}
+}

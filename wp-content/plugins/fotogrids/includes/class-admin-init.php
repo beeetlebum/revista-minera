@@ -1,0 +1,1640 @@
+<?php
+namespace FotoGrids;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+
+/**
+ * Admin Interface Initialization Class
+ *
+ * Handles WordPress admin interface setup for FotoGrids
+ */
+class Admin_Init {
+
+	/**
+	 * Initialize the admin interface
+	 */
+	public static function init() {
+		add_action( 'admin_menu', array( __CLASS__, 'add_admin_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
+		add_action( 'admin_init', array( __CLASS__, 'maybe_activation_redirect' ), 1 );
+		add_action( 'admin_init', array( __CLASS__, 'maybe_upgrade_redirect' ), 1 );
+
+		// Allow wp_safe_redirect() to reach the external hosts FotoGrids links
+		// out to (review page, upgrade/marketing).
+		add_filter( 'allowed_redirect_hosts', array( __CLASS__, 'allowed_redirect_hosts' ) );
+
+		add_action( 'admin_head', array( __CLASS__, 'suppress_admin_notices' ) );
+		add_action( 'admin_head', array( __CLASS__, 'fix_menu_highlighting' ) );
+
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_chrome_styles' ) );
+
+		add_action( 'wp_ajax_fotogrids_update_plugin_setting', array( __CLASS__, 'ajax_update_plugin_setting' ) );
+
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-admin-columns.php';
+		\FotoGrids\Admin\Admin_Columns::init();
+
+		add_filter( 'bulk_actions-edit-fotogrids_gallery', array( __CLASS__, 'gallery_bulk_actions' ) );
+		add_filter( 'handle_bulk_actions-edit-fotogrids_gallery', array( __CLASS__, 'handle_gallery_bulk_actions' ), 10, 3 );
+		add_action( 'admin_notices', array( __CLASS__, 'bulk_action_admin_notices' ) );
+		add_action( 'admin_footer-edit.php', array( __CLASS__, 'bulk_action_album_selector' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_bulk_album_selector_assets' ) );
+
+		// Registers the global modal API for every tier - the class gates the
+		// non-Pro upgrade-modal assets internally.
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-upgrade-modal-integration.php';
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/class-upgrade-modal.php';
+		\FotoGrids\Admin\Upgrade_Modal_Integration::init();
+
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-deactivation-feedback.php';
+		\FotoGrids\Admin\Deactivation_Feedback::init();
+
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-admin-header.php';
+
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-dashboard-widget.php';
+		\FotoGrids\Admin\Dashboard_Widget::init();
+
+		require_once FOTOGRIDS_PLUGIN_DIR . 'includes/admin/class-review-prompt.php';
+		\FotoGrids\Admin\Review_Prompt::init();
+	}
+
+	/**
+	 * Capability for the top-level menu entry.
+	 *
+	 * WordPress checks a post-type list screen in this menu against the
+	 * top-level capability, so it must be one the user holds.
+	 *
+	 * @return string
+	 */
+	private static function menu_parent_capability(): string {
+		foreach ( array( 'manage_fotogrids', 'edit_fotogrids_galleries', 'edit_fotogrids_albums' ) as $capability ) {
+			if ( current_user_can( $capability ) ) {
+				return $capability;
+			}
+		}
+
+		return 'manage_fotogrids';
+	}
+
+	/**
+	 * Menu capability for a screen gated through Permission_Check, which
+	 * WordPress's own menu check does not consult.
+	 *
+	 * @param string $capability FotoGrids capability that gates the screen.
+	 * @return string 'read' when granted, 'do_not_allow' otherwise.
+	 */
+	private static function screen_capability( string $capability ): string {
+		return Permissions\Permission_Check::can( $capability ) ? 'read' : 'do_not_allow';
+	}
+
+	/**
+	 * Refuses the top-level Dashboard to users who reach the menu only
+	 * through a post-type capability.
+	 */
+	public static function require_manage_capability(): void {
+		if ( ! current_user_can( 'manage_fotogrids' ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'fotogrids' ), '', array( 'response' => 403 ) );
+		}
+	}
+
+	/**
+	 * Add admin menu and submenus
+	 */
+	public static function add_admin_menu() {
+		$dashboard_hook = add_menu_page(
+			__( 'FotoGrids', 'fotogrids' ),
+			__( 'FotoGrids', 'fotogrids' ),
+			self::menu_parent_capability(),
+			'fotogrids',
+			array( __CLASS__, 'dashboard_page' ),
+			self::get_menu_icon(),
+			30
+		);
+		add_action( 'load-' . $dashboard_hook, array( __CLASS__, 'require_manage_capability' ) );
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Dashboard', 'fotogrids' ),
+			__( 'Dashboard', 'fotogrids' ),
+			'manage_fotogrids',
+			'fotogrids-dashboard',
+			array( __CLASS__, 'dashboard_page' )
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Galleries', 'fotogrids' ),
+			__( 'Galleries', 'fotogrids' ),
+			'edit_fotogrids_galleries',
+			'edit.php?post_type=fotogrids_gallery',
+			''
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Albums', 'fotogrids' ),
+			__( 'Albums', 'fotogrids' ),
+			'edit_fotogrids_albums',
+			'edit.php?post_type=fotogrids_album',
+			''
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Templates', 'fotogrids' ),
+			__( 'Templates', 'fotogrids' ),
+			'manage_fotogrids',
+			'fotogrids-templates',
+			array( __CLASS__, 'templates_page' ) // Render delegated to Templates module - see templates_page().
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Library', 'fotogrids' ),
+			__( 'Library', 'fotogrids' ),
+			self::screen_capability( 'manage_fotogrids_library' ),
+			'fotogrids-library',
+			array( __CLASS__, 'library_page' )
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Statistics', 'fotogrids' ),
+			__( 'Statistics', 'fotogrids' ),
+			'view_fotogrids_stats',
+			'fotogrids-stats',
+			array( __CLASS__, 'statistics_page' )
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Settings', 'fotogrids' ),
+			__( 'Settings', 'fotogrids' ),
+			'manage_fotogrids_settings',
+			'fotogrids-settings',
+			array( __CLASS__, 'settings_page' )
+		);
+
+		add_submenu_page(
+			'fotogrids',
+			__( 'Tools', 'fotogrids' ),
+			__( 'Tools', 'fotogrids' ),
+			'manage_fotogrids',
+			'fotogrids-tools',
+			array( __CLASS__, 'tools_page' )
+		);
+
+		if ( ! \FotoGrids\License_Manager::has_pro() ) {
+			add_submenu_page(
+				'fotogrids',
+				__( 'Upgrade to Pro', 'fotogrids' ),
+				__( 'Upgrade to Pro', 'fotogrids' ),
+				'manage_fotogrids',
+				'fotogrids-upgrade',
+				array( __CLASS__, 'upgrade_redirect' )
+			);
+		}
+
+		remove_submenu_page( 'fotogrids', 'fotogrids' );
+	}
+
+	/**
+	 * Enqueue admin scripts and styles
+	 */
+	public static function enqueue_admin_scripts( $hook ) {
+		if ( ! self::is_fotogrids_admin_page( $hook ) ) {
+			return;
+		}
+
+		wp_enqueue_media();
+
+		wp_enqueue_script( 'wp-element' );
+		wp_enqueue_script( 'wp-components' );
+		wp_enqueue_script( 'wp-data' );
+		wp_enqueue_script( 'wp-api-fetch' );
+		wp_enqueue_script( 'wp-i18n' );
+		wp_enqueue_script( 'wp-url' );
+
+		// UI state manager - must load before admin bundle and collection-settings.
+		wp_enqueue_script(
+			'fotogrids-ui-state-manager',
+			FOTOGRIDS_PLUGIN_URL . 'assets/js/ui-state-manager.js',
+			array(),
+			FOTOGRIDS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'fotogrids-admin',
+			FOTOGRIDS_PLUGIN_URL . 'assets/js/admin.js',
+			array( 'wp-element', 'wp-components', 'wp-data', 'wp-api-fetch', 'wp-i18n', 'wp-media-utils', 'fotogrids-icons', 'fotogrids-ui-state-manager' ),
+			FOTOGRIDS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'fotogrids-loading-icons',
+			FOTOGRIDS_PLUGIN_URL . 'assets/admin/plain/loading-icons.js',
+			array(),
+			FOTOGRIDS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'fotogrids-icons',
+			FOTOGRIDS_PLUGIN_URL . 'assets/admin/plain/icons.js',
+			array( 'fotogrids-loading-icons' ),
+			FOTOGRIDS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'fotogrids-toast-init',
+			FOTOGRIDS_PLUGIN_URL . 'assets/js/toast-init.js',
+			array( 'fotogrids-admin' ),
+			FOTOGRIDS_VERSION,
+			true
+		);
+
+		// Enqueue Poppins - self-hosted (SIL OFL), no external CDN. The
+		// @font-face rules reference .ttf files relative to the stylesheet's
+		// own directory, so no path rewriting is needed.
+		wp_enqueue_style(
+			'fotogrids-google-fonts',
+			FOTOGRIDS_PLUGIN_URL . 'assets/admin/fonts/poppins/poppins.css',
+			array(),
+			FOTOGRIDS_VERSION
+		);
+
+		// JetBrains Mono, the admin monospace face - self-hosted on the same
+		// terms as Poppins.
+		wp_enqueue_style(
+			'fotogrids-jetbrains-mono',
+			FOTOGRIDS_PLUGIN_URL . 'assets/admin/fonts/jetbrains-mono/jetbrains-mono.css',
+			array(),
+			FOTOGRIDS_VERSION
+		);
+
+		wp_enqueue_style(
+			'fotogrids-error-boundary',
+			FOTOGRIDS_PLUGIN_URL . 'assets/css/error-boundary.css',
+			array(),
+			FOTOGRIDS_VERSION
+		);
+
+		wp_enqueue_style(
+			'fotogrids-admin',
+			FOTOGRIDS_PLUGIN_URL . 'assets/css/admin.css',
+			array( 'wp-components', 'fotogrids-google-fonts', 'fotogrids-jetbrains-mono' ),
+			FOTOGRIDS_VERSION
+		);
+
+		// @font-face rules for the bundled watermark fonts, so the Watermark
+		// settings font picker can preview each option in its own typeface.
+		wp_add_inline_style(
+			'fotogrids-admin',
+			\FotoGrids\Settings\Watermark_Settings_Store::font_face_css()
+		);
+
+		wp_localize_script(
+			'fotogrids-admin',
+			'fotogridsAdmin',
+			array(
+				'nonce'              => wp_create_nonce( 'fotogrids_admin' ),
+				'restUrl'            => 'fotogrids/v1/',
+				'restNonce'          => wp_create_nonce( 'wp_rest' ),
+				'ajaxUrl'            => admin_url( 'admin-ajax.php' ),
+				'pluginUrl'          => FOTOGRIDS_PLUGIN_URL,
+				'apiUrl'             => rest_url(),
+				'generalSettings'    => self::get_general_settings(),
+				'sharingSettings'    => \FotoGrids\Settings\Sharing_Settings_Store::get(),
+				'watermarkSettings'  => \FotoGrids\Settings\Watermark_Settings_Store::get(),
+				'seoSettings'        => \FotoGrids\Settings\SEO_Settings_Store::get(),
+				'viewSettings'       => \FotoGrids\Settings\View_Settings_Store::get(),
+				'viewDefaults'       => \FotoGrids\Settings\View_Settings_Store::defaults(),
+				'shareStatistics'    => self::resolve_share_statistics_state(),
+				'marketingAllowed'   => (bool) get_option( 'fotogrids_marketing_allowed', false ),
+				'autosave'           => (bool) get_option( 'fotogrids_autosave', true ),
+				'settingsMode'       => (string) get_option( 'fotogrids_settings_mode', 'easy' ),
+				'userPersona'        => (string) get_option( 'fotogrids_user_persona', '' ),
+				'settingsBaseUrl'    => admin_url( 'admin.php?page=fotogrids-settings' ),
+				'homeUrl'            => home_url(),
+				'permalinksUrl'      => admin_url( 'options-permalink.php' ),
+				'locationLibraryUrl' => admin_url( 'admin.php?page=fotogrids-library&tab=locations' ),
+				'permalinkStructure' => (string) get_option( 'permalink_structure' ),
+				'isFotoGridsPage'    => \FotoGrids\Admin\Admin_Screen::is_fotogrids( $hook ),
+				'capabilities'       => self::get_current_user_capabilities_snapshot(),
+			)
+		);
+
+		wp_localize_script(
+			'fotogrids-loading-icons',
+			'fotogridsAdmin',
+			array(
+				'pluginUrl' => FOTOGRIDS_PLUGIN_URL,
+			)
+		);
+
+		wp_add_inline_script(
+			'wp-api-fetch',
+			sprintf(
+				'wp.apiFetch.use( wp.apiFetch.createNonceMiddleware( %s ) );',
+				wp_json_encode( wp_create_nonce( 'wp_rest' ) )
+			),
+			'after'
+		);
+
+		wp_set_script_translations( 'fotogrids-admin', 'fotogrids', FOTOGRIDS_PLUGIN_DIR . 'languages' );
+
+		if (
+			'fotogrids_page_fotogrids-stats' === $hook || strpos( $hook, 'fotogrids-stats' ) !== false ||
+			'fotogrids_page_fotogrids-library' === $hook || strpos( $hook, 'fotogrids-library' ) !== false
+		) {
+			wp_enqueue_script(
+				'chartjs',
+				FOTOGRIDS_PLUGIN_URL . 'assets/admin/vendor/chartjs/chart.umd.js',
+				array(),
+				FOTOGRIDS_VERSION,
+				true
+			);
+		}
+
+		if ( 'fotogrids_page_fotogrids-library' === $hook || strpos( $hook, 'fotogrids-library' ) !== false ) {
+			$entity_types = \FotoGrids\REST\Metadata\Library_Data::get_entity_types();
+			$tab_slugs    = array_keys( $entity_types );
+			// Read-only tab routing for asset enqueue; sanitised and allowlisted
+			// below. No state change, so nonce verification is N/A.
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$requested   = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+			$initial_tab = in_array( $requested, $tab_slugs, true ) ? $requested : ( $tab_slugs[0] ?? 'tags' );
+
+			wp_localize_script(
+				'fotogrids-admin',
+				'fotogridsLibrary',
+				array(
+					'restBase'    => 'fotogrids/v1/library',
+					'restNonce'   => wp_create_nonce( 'wp_rest' ),
+					'initialTab'  => $initial_tab,
+					'entityTypes' => array_values( $entity_types ),
+					'perPage'     => 50,
+					'canManage'   => Permissions\Permission_Check::can( 'manage_fotogrids_library' ),
+				)
+			);
+		}
+
+		if ( 'fotogrids_page_fotogrids-templates' === $hook || strpos( $hook, 'fotogrids-templates' ) !== false ) {
+			// The Template Overview groups a template's settings into the same
+			// admin tabs as the gallery editor by reading the assembled catalog.
+			// The Templates page doesn't load the full settings panel, so it only
+			// needs the lightweight catalog loader plus its REST config.
+			wp_enqueue_script(
+				'fotogrids-settings-loader',
+				FOTOGRIDS_PLUGIN_URL . 'assets/admin/plain/collection-settings/index.js',
+				array(),
+				FOTOGRIDS_VERSION,
+				true
+			);
+
+			wp_localize_script(
+				'fotogrids-settings-loader',
+				'fotogridsSettings',
+				array(
+					'restUrl'   => rest_url( 'fotogrids/v1/' ),
+					'restNonce' => wp_create_nonce( 'wp_rest' ),
+				)
+			);
+		}
+
+		if ( 'fotogrids_page_fotogrids-settings' === $hook || strpos( $hook, 'fotogrids-settings' ) !== false ) {
+			\FotoGrids\Assets\Collection_Settings_Assets::enqueue( true );
+
+			// Read-only routing, sanitised; no state change so nonce is N/A.
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$subtab    = isset( $_GET['subtab'] ) ? sanitize_text_field( wp_unslash( $_GET['subtab'] ) ) : 'gallery';
+			$post_type = ( 'album' === $subtab ) ? 'album' : 'gallery';
+
+			$localized_data = \FotoGrids\Admin\Settings_Localizer::data_for_collection(
+				array(
+					'post_id'     => 0,
+					'post_type'   => $post_type,
+					'is_defaults' => true,
+				)
+			);
+
+			wp_localize_script( 'fotogrids-collection-settings', 'fotogridsSettings', $localized_data );
+		}
+	}
+
+	/**
+	 * Admin initialization
+	 */
+	public static function admin_init() {
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_general_settings',
+			array(
+				'type'              => 'array',
+				'default'           => self::get_general_settings_defaults(),
+				'sanitize_callback' => array( __CLASS__, 'sanitize_general_settings' ),
+			)
+		);
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_permission_settings',
+			array(
+				'type'              => 'array',
+				'default'           => array(),
+				'sanitize_callback' => array( __CLASS__, 'sanitize_settings_array' ),
+			)
+		);
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_integration_settings',
+			array(
+				'type'              => 'array',
+				'default'           => array(),
+				'sanitize_callback' => array( __CLASS__, 'sanitize_settings_array' ),
+			)
+		);
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_share_statistics',
+			array(
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => array( __CLASS__, 'sanitize_share_statistics' ),
+			)
+		);
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_autosave',
+			array(
+				'type'              => 'boolean',
+				'default'           => true,
+				'sanitize_callback' => array( __CLASS__, 'sanitize_autosave' ),
+			)
+		);
+		register_setting(
+			'fotogrids_settings',
+			'fotogrids_allow_google_fonts',
+			array(
+				'type'              => 'boolean',
+				'default'           => true,
+				'sanitize_callback' => 'rest_sanitize_boolean',
+			)
+		);
+	}
+
+	/**
+	 * Return default values for general settings.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private static function get_general_settings_defaults() {
+		return \FotoGrids\Settings\Plugin_Settings_Store::general_defaults();
+	}
+
+	/**
+	 * Snapshot of every FotoGrids atomic cap the current user holds.
+	 *
+	 * Reads the full atomic-cap list from Permission_Registry and calls
+	 * current_user_can() on each. Localised to the React side as
+	 * `fotogrids.capabilities` so client components can render the right
+	 * controls (enabled / disabled / hidden) without making per-cap REST
+	 * roundtrips.
+	 *
+	 * @since 1.0.0
+	 * @return array<string, bool>
+	 */
+	private static function get_current_user_capabilities_snapshot() {
+		$snapshot = array();
+
+		if ( ! class_exists( '\FotoGrids\Permissions\Permission_Registry' ) ) {
+			return $snapshot;
+		}
+
+		\FotoGrids\Permissions\Permission_Registry::boot();
+		foreach ( \FotoGrids\Permissions\Permission_Registry::get_all() as $def ) {
+			if ( $def->is_logical() || $def->is_meta_cap ) {
+				// Logical caps are not real WP caps. Meta caps require a
+				// post id - calling current_user_can on them globally
+				// triggers a _doing_it_wrong notice in WP 6.1+.
+				continue;
+			}
+			$snapshot[ $def->key ] = current_user_can( $def->key );
+		}
+		return $snapshot;
+	}
+
+	/**
+	 * Return general settings merged with defaults.
+	 *
+	 * Public so the REST settings endpoints can read the same canonical
+	 * shape the Settings API and the frontend renderer use.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function get_general_settings() {
+		return \FotoGrids\Settings\Plugin_Settings_Store::get_general();
+	}
+
+	/**
+	 * Return the advanced (boolean) settings as a single map.
+	 *
+	 * These live as separate top-level options but are read/written together
+	 * by the Advanced settings tab via REST.
+	 *
+	 * @return array<string, bool>
+	 */
+	public static function get_advanced_settings() {
+		return \FotoGrids\Settings\Plugin_Settings_Store::get_advanced();
+	}
+
+	/**
+	 * Sanitize general settings option.
+	 *
+	 * @param mixed $value Raw option value.
+	 * @return array<string, mixed>
+	 */
+	public static function sanitize_general_settings( $value ) {
+		return \FotoGrids\Settings\Plugin_Settings_Store::sanitize_general( $value );
+	}
+
+	/**
+	 * Generic array-settings sanitizer.
+	 *
+	 * Recursively sanitises an arbitrary settings array: scalar values are
+	 * passed through sanitize_text_field() and nested arrays are walked. Used
+	 * for option groups that do not have a typed per-key sanitizer of
+	 * their own. Non-array input collapses to an empty array.
+	 *
+	 * @since  1.0.0
+	 * @param  mixed $value Raw option value from options.php.
+	 * @return array<string, mixed>
+	 */
+	public static function sanitize_settings_array( $value ): array {
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+
+		$sanitized = array();
+		foreach ( $value as $key => $item ) {
+			$clean_key = sanitize_key( (string) $key );
+			if ( is_array( $item ) ) {
+				$sanitized[ $clean_key ] = self::sanitize_settings_array( $item );
+			} elseif ( is_bool( $item ) ) {
+				$sanitized[ $clean_key ] = $item;
+			} elseif ( is_int( $item ) || is_float( $item ) ) {
+				$sanitized[ $clean_key ] = $item;
+			} else {
+				$sanitized[ $clean_key ] = sanitize_text_field( (string) $item );
+			}
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitize a boolean setting submitted via a Toggle component.
+	 *
+	 * Toggle uses a hidden input that is always present in POST with value
+	 * '1' (on) or '0' (off), so absence-from-POST is not a valid signal.
+	 * The raw value is cast directly.
+	 *
+	 * @since  1.0.0
+	 * @param  mixed $value Raw option value from options.php.
+	 * @return bool
+	 */
+	private static function sanitize_boolean_setting( $value ): bool {
+		return '1' === $value || 1 === $value || true === $value;
+	}
+
+	/**
+	 * Sanitize share statistics setting.
+	 *
+	 * @param mixed $value Input value.
+	 * @return bool
+	 */
+	public static function sanitize_share_statistics( $value ): bool {
+		return self::sanitize_boolean_setting( $value );
+	}
+
+	/**
+	 * Sanitize autosave setting.
+	 *
+	 * @param mixed $value Input value.
+	 * @return bool
+	 */
+	public static function sanitize_autosave( $value ): bool {
+		return self::sanitize_boolean_setting( $value );
+	}
+
+	/**
+	 * AJAX handler to update plugin setting
+	 */
+	public static function ajax_update_plugin_setting() {
+		check_ajax_referer( 'fotogrids_admin', 'nonce' );
+
+		if ( ! current_user_can( 'manage_fotogrids_settings' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions', 'fotogrids' ) ) );
+		}
+
+		\FotoGrids\Debug_Log::write(
+			'license',
+			sprintf(
+				'ajax_update_plugin_setting: entry | setting=%s value=%s',
+				isset( $_POST['setting'] ) ? sanitize_text_field( wp_unslash( $_POST['setting'] ) ) : '(unset)',
+				isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '(unset)'
+			)
+		);
+
+		$setting = isset( $_POST['setting'] ) ? sanitize_text_field( wp_unslash( $_POST['setting'] ) ) : '';
+		$value   = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
+
+		// Allowlist split into boolean / string buckets so each is coerced correctly.
+		$boolean_settings = array(
+			'fotogrids_autosave',
+			'fotogrids_auto_clear_cache',
+			'fotogrids_enable_statistics',
+			'fotogrids_share_statistics',
+			'fotogrids_marketing_allowed',
+		);
+		$string_settings  = array(
+			'fotogrids_user_persona',
+			'fotogrids_settings_mode',
+		);
+
+		if ( ! in_array( $setting, array_merge( $boolean_settings, $string_settings ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid setting', 'fotogrids' ) ) );
+		}
+
+		// -------- String settings --------------------------------------------
+		if ( in_array( $setting, $string_settings, true ) ) {
+			$allowed_values = self::allowed_values_for_string_setting( $setting );
+
+			// An empty value is "clear the persona" - accepted; anything
+			// else has to come from the allowlist for the setting.
+			if ( '' !== $value && ! in_array( $value, $allowed_values, true ) ) {
+				wp_send_json_error( array( 'message' => __( 'Invalid value', 'fotogrids' ) ) );
+			}
+
+			$result = update_option( $setting, $value, true );
+			// update_option returns false when the new value matches the
+			// existing one - that's still success from the caller's POV.
+			if ( $result || (string) get_option( $setting, '' ) === $value ) {
+				wp_send_json_success( array( 'value' => $value ) );
+			}
+
+			wp_send_json_error( array( 'message' => __( 'Failed to save setting', 'fotogrids' ) ) );
+		}
+
+		// -------- Boolean settings -------------------------------------------
+		if ( in_array( $setting, $boolean_settings, true ) ) {
+			$sanitized_bool = ( '1' === $value || 'true' === $value || true === $value || 'on' === $value );
+
+			// `fotogrids_share_statistics` has a Freemius side-effect, so
+			// route it through the shared helper to keep the wizard and the
+			// Settings tab in sync. Every boolean option stores `'1'` / `'0'`;
+			// both cast correctly, since `'0'` is falsey in PHP.
+			if ( 'fotogrids_share_statistics' === $setting ) {
+				$applied = \FotoGrids\Settings\Plugin_Settings_Store::apply_share_statistics_consent( $sanitized_bool );
+				wp_send_json_success( array( 'value' => $applied ) );
+			}
+
+			// Promotional-email consent. Separate Freemius side-effect
+			// (per-user is_marketing_allowed) and a distinct, affirmative
+			// opt-in - never inherited from the usage-data toggle.
+			if ( 'fotogrids_marketing_allowed' === $setting ) {
+				$applied = \FotoGrids\Settings\Plugin_Settings_Store::apply_marketing_consent( $sanitized_bool );
+				wp_send_json_success( array( 'value' => $applied ) );
+			}
+
+			$sanitized_value = $sanitized_bool ? '1' : '0';
+
+			global $wpdb;
+			// The row's existence decides add_option() (to force autoload='yes' on
+			// first create) vs update_option(); get_option() cannot tell a missing
+			// row from a falsey stored value. The query is prepared; no object cache
+			// applies to this one-off check.
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$option_exists = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT option_id FROM {$wpdb->options} WHERE option_name = %s",
+					$setting
+				)
+			) !== null;
+
+			remove_all_filters( 'pre_update_option_' . $setting );
+			remove_all_filters( 'update_option_' . $setting );
+			remove_all_filters( 'sanitize_option_' . $setting );
+
+			if ( ! $option_exists ) {
+				$result = add_option( $setting, $sanitized_value, '', 'yes' );
+			} else {
+				$result = update_option( $setting, $sanitized_value, true );
+			}
+
+			if ( $result ) {
+				wp_send_json_success( array( 'value' => $sanitized_bool ) );
+			} else {
+				$current_value = get_option( $setting, false );
+				$current_bool  = ( '1' === $current_value || 1 === $current_value || true === $current_value );
+
+				if ( $current_bool === $sanitized_bool ) {
+					wp_send_json_success( array( 'value' => $sanitized_bool ) );
+				} else {
+					wp_send_json_error( array( 'message' => __( 'Failed to save setting', 'fotogrids' ) ) );
+				}
+			}
+		}
+
+		wp_send_json_error( array( 'message' => __( 'Failed to update setting', 'fotogrids' ) ) );
+	}
+
+	/**
+	 * Allowed-value list for each string-typed setting accepted by
+	 * ajax_update_plugin_setting().
+	 *
+	 * @since 1.0.0
+	 * @param string $setting Option name.
+	 * @return array<int, string>
+	 */
+	private static function allowed_values_for_string_setting( string $setting ): array {
+		switch ( $setting ) {
+			case 'fotogrids_user_persona':
+				return array( 'developer', 'photographer', 'blogger', 'agency', 'business_owner', 'online_shop' );
+			case 'fotogrids_settings_mode':
+				return array( 'easy', 'advanced' );
+			default:
+				return array();
+		}
+	}
+
+	/**
+	 * Resolve the current usage-data sharing state from the local option.
+	 *
+	 * @since 1.0.0
+	 * @return bool
+	 */
+	private static function resolve_share_statistics_state(): bool {
+		$option_raw = get_option( 'fotogrids_share_statistics', null );
+		// Tolerant cast: `(bool) '0'` is true in PHP, so '', '0', 0, false and
+		// null all read as off.
+		$option_bool = ! (
+			null === $option_raw ||
+			false === $option_raw ||
+			'' === $option_raw ||
+			'0' === $option_raw ||
+			0 === $option_raw
+		);
+
+		// The local option is the single source of truth for the in-product
+		// toggle; it is mirrored to Freemius on write but never read back.
+		$resolved = $option_bool;
+
+		if ( \FotoGrids\Debug_Log::should_log( 'license' ) ) {
+			$fs_state = \FotoGrids\Settings\Plugin_Settings_Store::probe_freemius_state();
+			\FotoGrids\Debug_Log::write(
+				'license',
+				sprintf(
+					'resolve_share_statistics_state: option_raw=%s option_bool=%s resolved=%s | FS tracking_allowed=%s registered=%s install_exists=%s',
+					self::dump_log_value( $option_raw ),
+					$option_bool ? 'true' : 'false',
+					$resolved ? 'true' : 'false',
+					self::dump_log_value( $fs_state['tracking_allowed'] ?? null ),
+					self::dump_log_value( $fs_state['is_registered'] ?? null ),
+					self::dump_log_value( $fs_state['install_exists'] ?? null )
+				)
+			);
+		}
+
+		return $resolved;
+	}
+
+	/**
+	 * Stringify a mixed value for compact debug-log lines.
+	 *
+	 * @param mixed $v
+	 * @return string
+	 */
+	private static function dump_log_value( $v ): string {
+		if ( null === $v ) {
+			return 'null';
+		}
+		if ( true === $v ) {
+			return 'true';
+		}
+		if ( false === $v ) {
+			return 'false';
+		}
+		if ( '' === $v ) {
+			return '""';
+		}
+		if ( is_scalar( $v ) ) {
+			return (string) $v;
+		}
+		return wp_json_encode( $v );
+	}
+
+	/**
+	 * Unified admin page renderer
+	 *
+	 * @param string $page_id The unique page identifier for the React mount point
+	 */
+	private static function render_admin_page( $page_id ) {
+		$show_header = 'main' !== $page_id;
+
+		?>
+		<div class="wrap">
+			<?php if ( $show_header ) : ?>
+			<div class="fotogrids-page-header">
+				<h1 class="fotogrids-heading-inline">
+					<?php echo esc_html( get_admin_page_title() ); ?>
+				</h1>
+			</div>
+			<?php endif; ?>
+			<div id="fotogrids-<?php echo esc_attr( $page_id ); ?>-page" class="fotogrids-admin-page"></div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Main admin page
+	 */
+	public static function dashboard_page() {
+		self::render_admin_page( 'main' );
+	}
+
+	/**
+	 * Templates admin page.
+	 *
+	 * Render is owned by the Templates module. The menu item stays here so
+	 * submenu ordering is centralized, but the page body is delegated to the
+	 * module's render_page(). Falls back to the shared renderer if the module
+	 * is unavailable.
+	 */
+	public static function templates_page() {
+		$entry = \FotoGrids\Modules\Module_Registry::get_by_id( 'templates' );
+		if ( $entry && $entry['module'] instanceof \FotoGrids\Modules\Templates\Module ) {
+			$entry['module']->render_page();
+			return;
+		}
+		self::render_admin_page( 'templates' );
+	}
+
+	/**
+	 * Library admin page
+	 *
+	 * Mounts the React Library Manager into #fotogrids-library-page.
+	 * The active tab is read from the `tab` query parameter and exposed
+	 * to React via the `fotogridsLibrary` localised global.
+	 */
+	public static function library_page() {
+		self::render_admin_page( 'library' );
+	}
+
+	/**
+	 * Statistics admin page
+	 */
+	public static function statistics_page() {
+		self::render_admin_page( 'stats' );
+	}
+
+	/**
+	 * Settings admin page
+	 */
+	public static function settings_page() {
+		self::render_admin_page( 'settings' );
+	}
+
+	/**
+	 * Tools admin page
+	 */
+	public static function tools_page() {
+		self::render_admin_page( 'tools' );
+	}
+
+	/**
+	 * Allow FotoGrids' own external hosts through wp_safe_redirect().
+	 *
+	 * @param string[] $hosts Allowed redirect hostnames.
+	 * @return string[]
+	 */
+	public static function allowed_redirect_hosts( $hosts ) {
+		$hosts[] = 'wordpress.org';
+		$hosts[] = 'fotogrids.com';
+		$hosts[] = 'go.fotogrids.com';
+
+		return $hosts;
+	}
+
+	/**
+	 * Redirect the Upgrade submenu page to the external upgrade URL.
+	 *
+	 * Runs on admin_init before any page output is sent. The submenu page
+	 * callback fires during page rendering, after the admin header has already
+	 * been output, so wp_safe_redirect() cannot send headers from there.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function maybe_upgrade_redirect() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading the admin page slug to route a menu redirect, no state change.
+		if ( ! isset( $_GET['page'] ) || 'fotogrids-upgrade' !== $_GET['page'] ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_fotogrids' ) ) {
+			return;
+		}
+
+		wp_safe_redirect( Links::go( 'upgrade', 'plugins-screen', 'upgrade' ) );
+		exit;
+	}
+
+	/**
+	 * Upgrade redirect - submenu page callback fallback.
+	 */
+	public static function upgrade_redirect() {
+		wp_safe_redirect( Links::go( 'upgrade', 'plugins-screen', 'upgrade' ) );
+		exit;
+	}
+
+	/**
+	 * Check if current page is a FotoGrids admin page
+	 */
+	private static function is_fotogrids_admin_page( $hook ) {
+		return \FotoGrids\Admin\Admin_Screen::is_fotogrids( $hook );
+	}
+
+	/**
+	 * Get custom menu icon
+	 */
+	private static function get_menu_icon() {
+		// Custom SVG icon as base64 data URI. WP admin forces the menu-icon
+		// colour via core CSS, so the icon uses the neutral admin grey.
+		$svg = \FotoGrids\Svg::fotogrids_icon( array( 'fill' => '#a7aaad' ) );
+		return 'data:image/svg+xml;base64,' . base64_encode( $svg ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Benign data encoding, not code obfuscation.
+	}
+
+	/**
+	 * Returns the albums the current user can edit, ordered by title.
+	 *
+	 * @since 1.2.0
+	 * @return \WP_Post[]
+	 */
+	private static function get_editable_albums(): array {
+		$albums = get_posts(
+			array(
+				'post_type'   => 'fotogrids_album',
+				'numberposts' => -1,
+				'post_status' => array( 'publish', 'draft', 'private' ),
+				'orderby'     => 'title',
+				'order'       => 'ASC',
+			)
+		);
+
+		return array_values(
+			array_filter(
+				$albums,
+				static function ( $album ) {
+					return current_user_can( 'edit_post', $album->ID );
+				}
+			)
+		);
+	}
+
+	/**
+	 * Add bulk actions for galleries
+	 */
+	public static function gallery_bulk_actions( $bulk_actions ) {
+		$albums = self::get_editable_albums();
+
+		if ( ! empty( $albums ) ) {
+			$bulk_actions['assign_to_album']    = __( 'Assign to Album', 'fotogrids' );
+			$bulk_actions['remove_from_albums'] = __( 'Remove from Albums', 'fotogrids' );
+		}
+
+		return $bulk_actions;
+	}
+
+	/**
+	 * Handle bulk actions for galleries
+	 */
+	public static function handle_gallery_bulk_actions( $redirect_to, $doaction, $post_ids ) {
+		if ( ! in_array( $doaction, array( 'assign_to_album', 'remove_from_albums' ), true ) ) {
+			return $redirect_to;
+		}
+
+		// WordPress core verifies the bulk-action nonce before this filter fires;
+		// re-check it explicitly here before reading any request data.
+		check_admin_referer( 'bulk-posts' );
+
+		if ( empty( $post_ids ) ) {
+			return $redirect_to;
+		}
+
+		// Stamp a nonce onto the redirect URL so bulk_action_admin_notices()
+		// can confirm the result flags it renders were set here, not forged in
+		// a crafted URL. add_query_arg() preserves it across the branches below.
+		$redirect_to = add_query_arg(
+			'_fg_bulk_notice',
+			wp_create_nonce( 'fotogrids_bulk_notice' ),
+			$redirect_to
+		);
+
+		$processed = 0;
+		$errors    = 0;
+
+		switch ( $doaction ) {
+			case 'assign_to_album':
+				$album_id = isset( $_REQUEST['album_id'] ) ? absint( $_REQUEST['album_id'] ) : 0;
+				if ( ! $album_id ) {
+					$redirect_to = add_query_arg( 'bulk_error', 'no_album_selected', $redirect_to );
+					break;
+				}
+
+				if ( ! get_post( $album_id ) || get_post_type( $album_id ) !== 'fotogrids_album' || ! current_user_can( 'edit_post', $album_id ) ) {
+					$redirect_to = add_query_arg( 'bulk_error', 'invalid_album', $redirect_to );
+					break;
+				}
+
+				foreach ( $post_ids as $post_id ) {
+					if ( get_post_type( $post_id ) === 'fotogrids_gallery' ) {
+						$result = current_user_can( 'edit_post', $post_id )
+							&& \FotoGrids\Gallery_Album_Relations::add_gallery_to_album( $post_id, $album_id );
+						if ( $result ) {
+							++$processed;
+						} else {
+							++$errors;
+						}
+					}
+				}
+
+				$redirect_to = add_query_arg(
+					array(
+						'bulk_assigned' => $processed,
+						'bulk_errors'   => $errors,
+						'album_id'      => $album_id,
+					),
+					$redirect_to
+				);
+				break;
+
+			case 'remove_from_albums':
+				foreach ( $post_ids as $post_id ) {
+					if ( get_post_type( $post_id ) === 'fotogrids_gallery' ) {
+						$albums        = current_user_can( 'edit_post', $post_id )
+							? \FotoGrids\Gallery_Album_Relations::get_albums_for_gallery( $post_id )
+							: array();
+						$removed_count = 0;
+
+						foreach ( $albums as $album ) {
+							if ( ! current_user_can( 'edit_post', $album->ID ) ) {
+								continue;
+							}
+							$result = \FotoGrids\Gallery_Album_Relations::remove_gallery_from_album( $post_id, $album->ID );
+							if ( $result ) {
+								++$removed_count;
+							}
+						}
+
+						if ( $removed_count > 0 ) {
+							++$processed;
+						} else {
+							++$errors;
+						}
+					}
+				}
+
+				$redirect_to = add_query_arg(
+					array(
+						'bulk_removed' => $processed,
+						'bulk_errors'  => $errors,
+					),
+					$redirect_to
+				);
+				break;
+		}
+
+		return $redirect_to;
+	}
+
+	/**
+	 * Display admin notices for bulk actions
+	 */
+	public static function bulk_action_admin_notices() {
+		global $post_type, $pagenow;
+
+		if ( 'edit.php' !== $pagenow || 'fotogrids_gallery' !== $post_type ) {
+			return;
+		}
+
+		// The result flags read below come from the post-redirect URL set by
+		// handle_gallery_bulk_actions() (itself nonce-verified). Verify the
+		// nonce it stamped before rendering, so a crafted URL cannot spoof a
+		// notice. Every value read is a read-only display count, absint()'d.
+		$notice_nonce = isset( $_REQUEST['_fg_bulk_notice'] )
+			? sanitize_text_field( wp_unslash( $_REQUEST['_fg_bulk_notice'] ) )
+			: '';
+		if ( ! wp_verify_nonce( $notice_nonce, 'fotogrids_bulk_notice' ) ) {
+			return;
+		}
+
+		if ( isset( $_REQUEST['bulk_assigned'] ) ) {
+			$assigned = absint( $_REQUEST['bulk_assigned'] );
+			$errors   = isset( $_REQUEST['bulk_errors'] ) ? absint( $_REQUEST['bulk_errors'] ) : 0;
+			$album_id = isset( $_REQUEST['album_id'] ) ? absint( $_REQUEST['album_id'] ) : 0;
+
+			$album_name = '';
+			if ( $album_id ) {
+				$album      = get_post( $album_id );
+				$album_name = $album ? Collection_Title::label( $album ) : __( 'Unknown Album', 'fotogrids' );
+			}
+
+			if ( $assigned > 0 ) {
+				$message = sprintf(
+					/* translators: 1: number of galleries assigned, 2: album name. */
+					_n(
+						'%1$d gallery assigned to "%2$s".',
+						'%1$d galleries assigned to "%2$s".',
+						$assigned,
+						'fotogrids'
+					),
+					$assigned,
+					$album_name
+				);
+
+				if ( $errors > 0 ) {
+					$message .= ' ' . sprintf(
+						/* translators: %d: number of galleries that could not be assigned. */
+						_n(
+							'%d gallery could not be assigned.',
+							'%d galleries could not be assigned.',
+							$errors,
+							'fotogrids'
+						),
+						$errors
+					);
+				}
+
+				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+			} elseif ( $errors > 0 ) {
+				$message = sprintf(
+					/* translators: %d: number of galleries that could not be assigned. */
+					_n(
+						'%d gallery could not be assigned.',
+						'%d galleries could not be assigned.',
+						$errors,
+						'fotogrids'
+					),
+					$errors
+				);
+				echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+			}
+		}
+
+		if ( isset( $_REQUEST['bulk_removed'] ) ) {
+			$removed = absint( $_REQUEST['bulk_removed'] );
+			$errors  = isset( $_REQUEST['bulk_errors'] ) ? absint( $_REQUEST['bulk_errors'] ) : 0;
+
+			if ( $removed > 0 ) {
+				$message = sprintf(
+					/* translators: %d: number of galleries removed from albums. */
+					_n(
+						'%d gallery removed from its albums.',
+						'%d galleries removed from their albums.',
+						$removed,
+						'fotogrids'
+					),
+					$removed
+				);
+
+				if ( $errors > 0 ) {
+					$message .= ' ' . sprintf(
+						/* translators: %d: number of galleries that could not be processed. */
+						_n(
+							'%d gallery could not be processed.',
+							'%d galleries could not be processed.',
+							$errors,
+							'fotogrids'
+						),
+						$errors
+					);
+				}
+
+				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+			} elseif ( $errors > 0 ) {
+				$message = sprintf(
+					/* translators: %d: number of galleries that could not be processed. */
+					_n(
+						'%d gallery could not be processed.',
+						'%d galleries could not be processed.',
+						$errors,
+						'fotogrids'
+					),
+					$errors
+				);
+				echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+			}
+		}
+
+		if ( isset( $_REQUEST['bulk_error'] ) ) {
+			$error   = sanitize_text_field( wp_unslash( $_REQUEST['bulk_error'] ) );
+			$message = '';
+
+			switch ( $error ) {
+				case 'no_album_selected':
+					$message = __( 'Please select an album to assign galleries to.', 'fotogrids' );
+					break;
+				case 'invalid_album':
+					$message = __( 'The selected album is invalid or no longer exists.', 'fotogrids' );
+					break;
+				default:
+					$message = __( 'An error occurred during bulk operation.', 'fotogrids' );
+			}
+
+			if ( $message ) {
+				echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+			}
+		}
+	}
+
+	/**
+	 * Add album selector for bulk actions
+	 *
+	 * Renders two hidden selector blocks (one for the top bulk-action row,
+	 * one for the bottom) and inserts each inside its sibling `.bulkactions`
+	 * container, right next to the Apply button. Visibility is driven by the
+	 * corresponding bulk action dropdown's value. The two selects are kept
+	 * in sync so picking an album on either row submits the same value.
+	 */
+	public static function bulk_action_album_selector() {
+		global $post_type;
+
+		if ( 'fotogrids_gallery' !== $post_type ) {
+			return;
+		}
+
+		$albums = self::get_editable_albums();
+
+		if ( empty( $albums ) ) {
+			return;
+		}
+
+		$render_selector = function ( $which ) use ( $albums ) {
+			$id        = 'fotogrids-bulk-album-selector-' . $which;
+			$select_id = 'fotogrids-album-select-' . $which;
+			?>
+			<span id="<?php echo esc_attr( $id ); ?>" class="fotogrids-bulk-album-selector" style="display: none; margin-inline-start: 6px;">
+				<label for="<?php echo esc_attr( $select_id ); ?>" class="screen-reader-text">
+					<?php esc_html_e( 'Select Album:', 'fotogrids' ); ?>
+				</label>
+				<select name="album_id" id="<?php echo esc_attr( $select_id ); ?>" data-fg-album-select="<?php echo esc_attr( $which ); ?>">
+					<option value=""><?php esc_html_e( 'Choose an album...', 'fotogrids' ); ?></option>
+					<?php foreach ( $albums as $album ) : ?>
+						<option value="<?php echo esc_attr( $album->ID ); ?>">
+							<?php echo esc_html( Collection_Title::label( $album ) ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</span>
+			<?php
+		};
+
+		?>
+		<div id="fotogrids-bulk-album-selector-templates" style="display: none">
+			<?php $render_selector( 'top' ); ?>
+			<?php $render_selector( 'bottom' ); ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * JavaScript that wires the bulk "Assign to Album" selector on the
+	 * gallery list table.
+	 *
+	 * @since  1.0.0
+	 * @return string
+	 */
+	private static function bulk_album_selector_js() {
+		return <<<'JS'
+		(function () {
+			document.addEventListener('DOMContentLoaded', function () {
+				var rows = ['top', 'bottom'];
+
+				rows.forEach(function (which) {
+					var actionSelect = document.getElementById('bulk-action-selector-' + which);
+					var selector = document.getElementById('fotogrids-bulk-album-selector-' + which);
+					if (!actionSelect || !selector) {
+						return;
+					}
+
+					// Place the selector next to the Apply button.
+					var bulkActions = actionSelect.closest('.bulkactions');
+					if (bulkActions) {
+						bulkActions.appendChild(selector);
+					}
+
+					var updateVisibility = function () {
+						selector.style.display = actionSelect.value === 'assign_to_album'
+							? 'inline-block'
+							: 'none';
+					};
+
+					actionSelect.addEventListener('change', updateVisibility);
+					updateVisibility();
+				});
+
+				// Keep top/bottom selects in sync so submitting from either row
+				// posts the user's pick.
+				var albumSelects = document.querySelectorAll('select[data-fg-album-select]');
+				albumSelects.forEach(function (sel) {
+					sel.addEventListener('change', function () {
+						albumSelects.forEach(function (other) {
+							if (other !== sel) {
+								other.value = sel.value;
+							}
+						});
+					});
+				});
+
+				// Disable the unused (hidden) select on submit so only one
+				// album_id field is sent - the one tied to the row the user
+				// actually used to submit.
+				var postsFilter = document.getElementById('posts-filter');
+				if (!postsFilter) {
+					return;
+				}
+
+				postsFilter.addEventListener('submit', function (e) {
+					var topAction = document.getElementById('bulk-action-selector-top');
+					var bottomAction = document.getElementById('bulk-action-selector-bottom');
+					var topVal = topAction ? topAction.value : '';
+					var bottomVal = bottomAction ? bottomAction.value : '';
+					var assigning = topVal === 'assign_to_album' || bottomVal === 'assign_to_album';
+
+					if (!assigning) {
+						return;
+					}
+
+					// Prefer the row whose action is assign_to_album.
+					var activeWhich = topVal === 'assign_to_album' ? 'top' : 'bottom';
+					var activeSelect = document.querySelector('select[data-fg-album-select="' + activeWhich + '"]');
+					var albumId = activeSelect ? activeSelect.value : '';
+
+					if (!albumId) {
+						e.preventDefault();
+						e.stopImmediatePropagation();
+						window.alert((window.fotogridsBulkAlbum && window.fotogridsBulkAlbum.selectAlbumMessage) || 'Please select an album to assign galleries to.');
+						if (activeSelect) {
+							activeSelect.focus();
+						}
+						return false;
+					}
+
+					// Disable the other album_id select so only one value posts.
+					var otherWhich = activeWhich === 'top' ? 'bottom' : 'top';
+					var otherSelect = document.querySelector('select[data-fg-album-select="' + otherWhich + '"]');
+					if (otherSelect) {
+						otherSelect.disabled = true;
+					}
+				});
+			});
+		})();
+		JS;
+	}
+
+	/**
+	 * Enqueue the bulk album-selector behaviour on the gallery list table.
+	 *
+	 * @since  1.0.0
+	 * @param  string $hook Current admin page hook suffix.
+	 * @return void
+	 */
+	public static function enqueue_bulk_album_selector_assets( $hook ) {
+		if ( 'edit.php' !== $hook ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || 'fotogrids_gallery' !== $screen->post_type ) {
+			return;
+		}
+
+		wp_register_script( 'fotogrids-bulk-album-selector', false, array(), FOTOGRIDS_VERSION, true );
+		wp_enqueue_script( 'fotogrids-bulk-album-selector' );
+		wp_localize_script(
+			'fotogrids-bulk-album-selector',
+			'fotogridsBulkAlbum',
+			array(
+				'selectAlbumMessage' => __( 'Please select an album to assign galleries to.', 'fotogrids' ),
+			)
+		);
+		wp_add_inline_script( 'fotogrids-bulk-album-selector', self::bulk_album_selector_js() );
+	}
+
+	/**
+	 * Redirect to the setup wizard once, after a fresh activation.
+	 *
+	 * Consumes the one-time transient set by {@see \FotoGrids\Activator}. Skips
+	 * bulk plugin activation and network-admin activation so it does not hijack
+	 * the screen when several plugins are activated together. The wizard opens
+	 * over the dashboard, gated on the ?fotogrids_setup_step query param.
+	 *
+	 * @since  1.0.0
+	 * @return void
+	 */
+	public static function maybe_activation_redirect() {
+		if ( ! get_transient( 'fotogrids_activation_redirect' ) ) {
+			return;
+		}
+
+		delete_transient( 'fotogrids_activation_redirect' );
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading WP's own bulk-activate flag, no state change.
+		if ( isset( $_GET['activate-multi'] ) || is_network_admin() ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'manage_fotogrids' ) ) {
+			return;
+		}
+
+		wp_safe_redirect(
+			admin_url( 'admin.php?page=fotogrids-dashboard&fotogrids_setup_step=1' )
+		);
+		exit;
+	}
+
+	/**
+	 * Suppress admin notices on FotoGrids pages.
+	 *
+	 * Unhooks every callback on the notice actions except FotoGrids' own, so
+	 * third-party and WordPress-core notices do not render on FotoGrids
+	 * screens. Notices injected outside these hooks are handled by the CSS
+	 * backstop in {@see self::notice_suppression_css()}.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public static function suppress_admin_notices() {
+		if ( ! \FotoGrids\Admin\Admin_Screen::is_fotogrids() ) {
+			return;
+		}
+
+		global $wp_filter;
+
+		$actions = array(
+			'admin_notices',
+			'all_admin_notices',
+			'network_admin_notices',
+			'user_admin_notices',
+		);
+
+		foreach ( $actions as $action ) {
+			if ( empty( $wp_filter[ $action ] ) ) {
+				continue;
+			}
+
+			foreach ( $wp_filter[ $action ]->callbacks as $priority => $callbacks ) {
+				foreach ( $callbacks as $key => $callback ) {
+					if ( ! self::is_fotogrids_notice_callback( $callback ) ) {
+						unset( $wp_filter[ $action ]->callbacks[ $priority ][ $key ] );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Whether a notice callback belongs to FotoGrids itself.
+	 *
+	 * Used to keep FotoGrids' own notices while every other notice callback is
+	 * removed on FotoGrids admin pages.
+	 *
+	 * @since  1.0.0
+	 * @param  array $callback A WP filter/action callback registration.
+	 * @return bool
+	 */
+	private static function is_fotogrids_notice_callback( array $callback ): bool {
+		$func = $callback['function'] ?? null;
+		if ( ! $func ) {
+			return false;
+		}
+
+		if ( is_array( $func ) && isset( $func[0] ) ) {
+			$class = is_object( $func[0] ) ? get_class( $func[0] ) : (string) $func[0];
+			return stripos( $class, 'FotoGrids' ) !== false;
+		}
+
+		if ( $func instanceof \Closure ) {
+			return false;
+		}
+
+		if ( is_string( $func ) ) {
+			return stripos( $func, 'fotogrids' ) !== false;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Enqueue FotoGrids admin chrome CSS as inline additions on a head handle.
+	 *
+	 * Notice-suppression CSS is added only on FotoGrids screens (its selectors
+	 * are not self-scoping); the upgrade-menu link style is added on every
+	 * admin screen for non-Pro users because the menu item is global.
+	 *
+	 * @since  1.0.0
+	 * @param  string $hook Current admin page hook suffix.
+	 * @return void
+	 */
+	public static function enqueue_admin_chrome_styles( $hook ) {
+		$is_fotogrids = \FotoGrids\Admin\Admin_Screen::is_fotogrids( $hook );
+		$show_upgrade = ! \FotoGrids\License_Manager::has_pro();
+
+		if ( ! $is_fotogrids && ! $show_upgrade ) {
+			return;
+		}
+
+		wp_register_style( 'fotogrids-admin-chrome', false, array(), FOTOGRIDS_VERSION );
+		wp_enqueue_style( 'fotogrids-admin-chrome' );
+
+		if ( $is_fotogrids ) {
+			wp_add_inline_style( 'fotogrids-admin-chrome', self::notice_suppression_css() );
+		}
+
+		if ( $show_upgrade ) {
+			wp_add_inline_style( 'fotogrids-admin-chrome', self::upgrade_menu_css() );
+		}
+	}
+
+	/**
+	 * CSS that hides notices injected outside the standard notice hooks.
+	 *
+	 * Backstop for {@see self::suppress_admin_notices()}: some plugins print
+	 * notices via footer scripts or their own markup rather than the
+	 * `admin_notices` action, so unhooking callbacks alone cannot remove them.
+	 * FotoGrids' own notices are scoped under the FotoGrids page wrappers and
+	 * are left visible.
+	 *
+	 * @since  1.0.0
+	 * @return string
+	 */
+	private static function notice_suppression_css() {
+		return '#wpbody-content > .notice,'
+			. '#wpbody-content > .update-nag,'
+			. '#wpbody-content > .updated,'
+			. '#wpbody-content > .error,'
+			. '#wpbody-content > .e-notice,'
+			. '#wpbody-content > div[class*="-notice"],'
+			. '#wpbody-content > .wpnotice-wrapper,'
+			. '.fotogrids-page-header > .notice,'
+			. '.fotogrids-page-header > .e-notice,'
+			. '.fotogrids-page-header > .wpnotice-wrapper,'
+			. '.fotogrids-page-header > div[class*="-notice"]'
+			. '{display:none !important;}'
+			. '#wpbody-content > .notice.fotogrids-notice,'
+			. '#wpbody-content > .notice[class*="fotogrids"]'
+			. '{display:block !important;}';
+	}
+
+	/**
+	 * Fix menu highlighting for FotoGrids custom post types
+	 */
+	public static function fix_menu_highlighting() {
+		global $parent_file, $submenu_file, $post_type;
+
+		if ( in_array( $post_type, array( 'fotogrids_gallery', 'fotogrids_album' ), true ) ) {
+			$parent_file = 'fotogrids'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Intentional admin-menu highlight fix.
+
+			if ( 'fotogrids_gallery' === $post_type ) {
+				$submenu_file = 'edit.php?post_type=fotogrids_gallery'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Intentional admin-menu highlight fix.
+			} elseif ( 'fotogrids_album' === $post_type ) {
+				$submenu_file = 'edit.php?post_type=fotogrids_album'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Intentional admin-menu highlight fix.
+			}
+		}
+	}
+
+	/**
+	 * CSS for the upgrade menu item link.
+	 *
+	 * @since  1.0.0
+	 * @return string
+	 */
+	private static function upgrade_menu_css() {
+		return '#adminmenu .wp-submenu a[href*="fotogrids-upgrade"]{'
+			. 'display:flex;align-items:center;justify-content:center;'
+			. 'padding:4px 12px;margin:4px 8px;border:1px solid transparent;'
+			. 'border-radius:4px;background-color:#3c46f0;color:#ffffff;'
+			. 'font-size:12px;font-weight:600;line-height:1.5;'
+			. 'transition:all 0.2s ease;cursor:pointer;}'
+			. '#adminmenu .wp-submenu a[href*="fotogrids-upgrade"]:hover,'
+			. '#adminmenu .wp-submenu a[href*="fotogrids-upgrade"]:active,'
+			. '#adminmenu .wp-submenu a[href*="fotogrids-upgrade"]:focus{'
+			. 'color:#ffffff !important;background-color:#4f5af3;box-shadow:none;}';
+	}
+}

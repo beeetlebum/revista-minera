@@ -1,0 +1,249 @@
+<?php
+/**
+ * (De)serialiser for one collection setting key/value pair.
+ *
+ * @package FotoGrids\Settings
+ * @since   1.0.0
+ */
+
+declare(strict_types=1);
+
+namespace FotoGrids\Settings;
+
+use FotoGrids\Catalog\Catalog;
+use FotoGrids\Password_Crypto;
+use FotoGrids\Sanitization\Array_Field;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Maps between three representations of a per-collection setting value:
+ *
+ *   - raw POST input (string or array from the JS save payload)
+ *   - in-memory PHP value (boolean / int / float / string / array)
+ *   - stored post-meta value (always a scalar string or a JSON-encoded array)
+ *
+ * Centralises the type-coercion + sanitisation rules so every save / read
+ * path treats the same value the same way. Used by `Collection_Save_Pipeline`
+ * (writes) and any consumer that needs to interpret a freshly-read post-meta
+ * value (reads).
+ *
+ * Three responsibilities, in three public static methods:
+ *
+ *   `normalize_incoming()` - raw POST → PHP value
+ *   `decode_stored()`      - post-meta → PHP value
+ *   `persist()`            - PHP value → post-meta write
+ *
+ * Plus one helper, `catalog_field_type()`, that resolves a setting key's
+ * control type via the catalog so persist/normalize can branch on
+ * 'button_group' vs 'password_input' etc.
+ *
+ * @since 1.0.0
+ */
+final class Setting_Value_Codec {
+
+	/**
+	 * Normalise a raw incoming POST value to its in-memory PHP shape.
+	 *
+	 * @since 1.0.0
+	 * @param mixed  $raw_value     Raw value from the request (string or array).
+	 * @param mixed  $default_value Default value shape - drives type coercion.
+	 * @param string $field_type    Catalog field control type, e.g. 'password_input'.
+	 * @return mixed
+	 */
+	public static function normalize_incoming( $raw_value, $default_value, string $field_type = '' ) {
+		if ( is_array( $default_value ) ) {
+			if ( is_array( $raw_value ) ) {
+				return Array_Field::deep( $raw_value );
+			}
+
+			if ( is_string( $raw_value ) ) {
+				$decoded_value = json_decode( wp_unslash( $raw_value ), true );
+				if ( json_last_error() === JSON_ERROR_NONE ) {
+					return Array_Field::deep( $decoded_value );
+				}
+			}
+
+			return $default_value;
+		}
+
+		if ( is_bool( $default_value ) ) {
+			return '1' === $raw_value || 'true' === $raw_value || true === $raw_value;
+		}
+
+		// button_group fields may mix numeric option values with string sentinels
+		// (e.g. a "Custom" option alongside numeric presets). Always treat them as
+		// strings so a sentinel like "custom" is never discarded by the numeric branch.
+		if ( 'button_group' === $field_type ) {
+			return sanitize_text_field( (string) $raw_value );
+		}
+
+		if ( is_numeric( $default_value ) ) {
+			return is_numeric( $raw_value ) ? $raw_value + 0 : $default_value;
+		}
+
+		// password_input fields pass through as-is (sanitize_text_field would
+		// strip special characters valid in passwords). The value is encrypted
+		// - not stored as plain text - by `persist()`.
+		if ( 'password_input' === $field_type ) {
+			return (string) $raw_value;
+		}
+
+		return sanitize_text_field( (string) $raw_value );
+	}
+
+	/**
+	 * Sanitise a string setting value for storage by its control type.
+	 *
+	 * A `password_input` value is returned as ciphertext and never passes
+	 * through `sanitize_text_field()`, which strips characters that are valid
+	 * in a password. Every other control type is sanitised as plain text.
+	 *
+	 * @since  1.1.3
+	 * @param  mixed  $value      Raw value.
+	 * @param  string $field_type Catalog field control type, e.g. 'password_input'.
+	 * @return string
+	 */
+	public static function sanitize_text_value( $value, string $field_type = '' ): string {
+		$value = is_scalar( $value ) ? (string) $value : '';
+
+		if ( 'password_input' === $field_type ) {
+			return self::to_ciphertext( $value );
+		}
+
+		return sanitize_text_field( $value );
+	}
+
+	/**
+	 * Encrypt a password unless it is empty or already this site's ciphertext.
+	 *
+	 * Re-encrypting ciphertext on every save grows the blob until PHP runs out
+	 * of memory, so an encrypted value is returned unchanged. A value counts as
+	 * ciphertext only when it decrypts with this site's key to valid UTF-8:
+	 * `Password_Crypto::is_encrypted()` checks shape alone, and a long
+	 * alphanumeric password has that shape.
+	 *
+	 * @since  1.1.3
+	 * @param  string $value Plaintext or ciphertext.
+	 * @return string Ciphertext, or an empty string.
+	 */
+	private static function to_ciphertext( string $value ): string {
+		if ( '' === $value || '' !== wp_check_invalid_utf8( Password_Crypto::decrypt( $value ) ) ) {
+			return $value;
+		}
+
+		return Password_Crypto::encrypt( $value );
+	}
+
+	/**
+	 * Resolve the catalog control type for a setting key.
+	 *
+	 * Returns '' when the key is not in the catalog or has no control type,
+	 * so callers can treat the empty string as "unknown / use defaults".
+	 *
+	 * @since 1.0.0
+	 * @param string $setting_key Setting key (without the `fotogrids_` prefix).
+	 * @return string Catalog control type, e.g. 'password_input', 'toggle'.
+	 */
+	public static function catalog_field_type( string $setting_key ): string {
+		$entry = Catalog::get( $setting_key );
+		return is_array( $entry ) ? (string) ( $entry['control'] ?? '' ) : '';
+	}
+
+	/**
+	 * Decode a post-meta stored value back to its in-memory PHP shape.
+	 *
+	 * @since 1.0.0
+	 * @param mixed $stored_value   Value as returned by `get_post_meta()`.
+	 * @param mixed $default_value  Default value shape - drives type coercion.
+	 * @return mixed
+	 */
+	public static function decode_stored( $stored_value, $default_value ) {
+		if ( '' === $stored_value || null === $stored_value ) {
+			return $default_value;
+		}
+
+		if ( is_array( $default_value ) ) {
+			if ( is_array( $stored_value ) ) {
+				return $stored_value;
+			}
+
+			if ( is_string( $stored_value ) ) {
+				$decoded_value = json_decode( $stored_value, true );
+				if ( json_last_error() === JSON_ERROR_NONE ) {
+					return $decoded_value;
+				}
+			}
+
+			return $default_value;
+		}
+
+		if ( is_bool( $default_value ) ) {
+			return '1' === $stored_value || 'true' === $stored_value || true === $stored_value;
+		}
+
+		if ( is_numeric( $default_value ) ) {
+			return is_numeric( $stored_value ) ? $stored_value + 0 : $default_value;
+		}
+
+		return (string) $stored_value;
+	}
+
+	/**
+	 * Persist a normalised setting value into post meta.
+	 *
+	 * Arrays go through `wp_json_encode()`. Booleans become '0'/'1' strings.
+	 * Numerics get `sanitize_text_field()`. Catalog-typed strings route
+	 * through their dedicated sanitiser:
+	 *
+	 *   - `password_input` → Password_Crypto::encrypt() (or delete on empty;
+	 *                        re-encryption guard if value already encrypted)
+	 *   - default          → sanitize_text_field()
+	 *
+	 * @since 1.0.0
+	 * @param int    $post_id       Post ID.
+	 * @param string $post_meta_key Full meta key (e.g. `fotogrids_layout`).
+	 * @param mixed  $setting_value Already-normalised value.
+	 * @param mixed  $default_value Default value shape - drives serialisation.
+	 * @param string $field_type    Catalog field control type, e.g. 'password_input'.
+	 * @return void
+	 */
+	public static function persist( int $post_id, string $post_meta_key, $setting_value, $default_value, string $field_type = '' ): void {
+		if ( is_array( $default_value ) ) {
+			update_post_meta( $post_id, $post_meta_key, wp_json_encode( $setting_value ) );
+			return;
+		}
+
+		if ( is_bool( $default_value ) ) {
+			update_post_meta( $post_id, $post_meta_key, $setting_value ? '1' : '0' );
+			return;
+		}
+
+		if ( is_numeric( $default_value ) ) {
+			update_post_meta( $post_id, $post_meta_key, sanitize_text_field( (string) $setting_value ) );
+			return;
+		}
+
+		// password_input fields are encrypted before storage so the raw
+		// password is never written to the DB in plain text. An empty value
+		// means "clear the password", so the meta key is deleted and
+		// password_is_set returns false.
+		if ( 'password_input' === $field_type ) {
+			$plaintext = (string) $setting_value;
+			if ( '' === $plaintext ) {
+				delete_post_meta( $post_id, $post_meta_key );
+				return;
+			}
+
+			$ciphertext = self::to_ciphertext( $plaintext );
+			if ( '' !== $ciphertext ) {
+				update_post_meta( $post_id, $post_meta_key, $ciphertext );
+			}
+			return;
+		}
+
+		update_post_meta( $post_id, $post_meta_key, sanitize_text_field( (string) $setting_value ) );
+	}
+}

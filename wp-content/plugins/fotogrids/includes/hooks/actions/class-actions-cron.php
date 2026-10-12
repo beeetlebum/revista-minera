@@ -1,0 +1,57 @@
+<?php
+/**
+ * WP-Cron action hook identifiers.
+ *
+ * Dispatched by WordPress core's WP-Cron scheduler when `wp_schedule_event()`
+ * fires; FotoGrids listens via `add_action()` on the same hook name.
+ *
+ * @package FotoGrids\Hooks
+ * @since   1.0.0
+ */
+
+declare(strict_types=1);
+
+namespace FotoGrids\Hooks;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * WP-Cron action hook identifiers.
+ */
+final class Actions_Cron {
+
+	/**
+	 * Scheduled WP-Cron action used to purge expired statistics rows.
+	 *
+	 * @since 1.0.0
+	 */
+	public const STATS_CLEANUP = 'fotogrids/cron/stats_cleanup';
+
+	/**
+	 * Scheduled WP-Cron action used to send anonymous usage statistics.
+	 *
+	 * @since 1.0.0
+	 */
+	public const SEND_STATISTICS = 'fotogrids/cron/send_statistics';
+
+	/**
+	 * Scheduled WP-Cron action used to purge expired render-cache rows.
+	 *
+	 * @since 1.1.2
+	 */
+	public const CACHE_PURGE = 'fotogrids/cron/cache_purge';
+
+	/**
+	 * Every scheduled WP-Cron action the plugin owns.
+	 *
+	 * @since 1.1.2
+	 * @var string[]
+	 */
+	public const ALL_CRON_ACTIONS = array(
+		self::STATS_CLEANUP,
+		self::SEND_STATISTICS,
+		self::CACHE_PURGE,
+	);
+}

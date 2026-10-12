@@ -1,0 +1,27 @@
+#customize-controls .control-section-uncut-news .accordion-section-title:hover,
+#customize-controls .control-section-uncut-news .accordion-section-title:focus {
+	background-color: #d71313;
+	color: #fff !important;
+}
+
+.control-section-uncut-news .accordion-section-title .button {
+	background-color: #ffffff;
+	border-color: #ffffff;
+	color: #d71313;
+	font-weight: bold;
+	transition: 0.3s ease-in;
+	box-shadow: 3px 3px 0px 1px #000000;
+}
+
+.control-section-uncut-news .accordion-section-title .button:hover {
+	box-shadow: 0 0 0 0 transparent;
+}
+
+li#accordion-section-uncut-news h3.accordion-section-title {
+    background-color: #d71313;
+    color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+

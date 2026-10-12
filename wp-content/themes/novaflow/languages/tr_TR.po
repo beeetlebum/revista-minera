@@ -1,0 +1,951 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Novaflow 1.0.98\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/novaflow/\n"
+"Last-Translator: yineali\n"
+"Language-Team: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-23 11:45+0000\n"
+"PO-Revision-Date: 2026-09-24T14:05:07+00:00\n"
+"Language: tr_TR\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Generated-By: Babel 2.18.0\n"
+
+#. Theme Name of the theme
+#: style.css:2
+#: inc/block-editor.php:51
+msgid "Novaflow"
+msgstr "Novaflow"
+
+#. Theme URI of the theme
+#: style.css:3
+msgid "https://narya.tr/novaflow/"
+msgstr "https://narya.tr/novaflow/"
+
+#. Description of the theme
+#: style.css:6
+msgid "A colorful, responsive news and magazine theme with editorial layouts, widget areas, block styles, and native WordPress settings."
+msgstr "Editoryal düzenler, bileşen alanları, blok stilleri ve yerleşik WordPress ayarları sunan renkli, duyarlı bir haber ve dergi teması."
+
+#. Author of the theme
+#: style.css:4
+msgid "yineali"
+msgstr "yineali"
+
+#. Author URI of the theme
+#: style.css:5
+msgid "https://narya.tr/"
+msgstr "https://narya.tr/"
+
+#: 404.php:17
+msgid "This story moved off the page."
+msgstr "Bu içerik artık bu sayfada değil."
+
+#: 404.php:18
+msgid "Try a search or return to the homepage to continue exploring."
+msgstr "Arama yapın veya keşfetmeye devam etmek için ana sayfaya dönün."
+
+#: 404.php:21
+#: footer.php:58
+msgid "Back to homepage"
+msgstr "Ana sayfaya dön"
+
+#: archive.php:17
+msgid "Archive"
+msgstr "Arşiv"
+
+#. translators: %s: Number of comments.
+#: comments.php:25
+#, php-format
+msgctxt "comments title"
+msgid "%s comment"
+msgid_plural "%s comments"
+msgstr[0] "%s yorum"
+
+#: comments.php:29
+msgid "Leave a comment"
+msgstr "Yorum Yazın"
+
+#: comments.php:50
+msgid "Comments are closed."
+msgstr "Yorumlar kapalı."
+
+#: comments.php:60
+msgid "Name"
+msgstr "Ad"
+
+#: comments.php:60
+msgid "Your name"
+msgstr "Adınız"
+
+#: comments.php:61
+msgid "Email"
+msgstr "E-posta"
+
+#: comments.php:61
+msgid "Your email address"
+msgstr "E-posta adresiniz"
+
+#: comments.php:66
+msgid "Save my name and email in this browser for the next time I comment."
+msgstr "Bir sonraki yorumum için adımı ve e-posta adresimi bu tarayıcıda kaydet."
+
+#: comments.php:75
+msgid "Write a Comment"
+msgstr "Yorum Yazın"
+
+#: comments.php:76
+msgid "Submit Comment"
+msgstr "Yorumu Gönder"
+
+#: comments.php:80
+msgid "Comment"
+msgstr "Yorum"
+
+#: comments.php:80
+msgid "Write a comment..."
+msgstr "Bir yorum yazın..."
+
+#: footer.php:41
+msgid "Site information"
+msgstr "Site bilgileri"
+
+#: footer.php:67
+#: inc/block-editor.php:89
+#: sidebar.php:88
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: footer.php:82
+#: home.php:19
+#: inc/block-editor.php:86
+#: inc/template-tags.php:990
+#: index.php:20
+#: sidebar.php:55
+msgid "Latest Posts"
+msgstr "Son Yazılar"
+
+#: footer.php:100
+msgid "Quick Links"
+msgstr "Hızlı Bağlantılar"
+
+#: front-page.php:153
+msgid "Featured stories"
+msgstr "Öne Çıkan Yazılar"
+
+#: front-page.php:176
+#: front-page.php:363
+msgid "Latest stories"
+msgstr "Son Yazılar"
+
+#: front-page.php:206
+msgid "Headline selection"
+msgstr "Başlık seçimi"
+
+#. translators: %s: Headline number.
+#: front-page.php:211
+#, python-format,php-format
+msgid "Show headline %s"
+msgstr "%s başlığını göster"
+
+#: front-page.php:261
+msgid "Most read stories"
+msgstr "En çok okunan yazılar"
+
+#: front-page.php:262
+msgid "Most Read"
+msgstr "En Çok Okunanlar"
+
+#. translators: %s: Number of post views.
+#: front-page.php:282
+#: front-page.php:346
+#: front-page.php:449
+#: inc/template-tags.php:455
+#: inc/template-tags.php:583
+#, python-format,php-format
+msgid "%s view"
+msgid_plural "%s views"
+msgstr[0] "%s görüntülenme"
+
+#: front-page.php:320
+msgid "Newsroom pulse"
+msgstr "Gündem Akışı"
+
+#: front-page.php:366
+msgid "Previous"
+msgstr "Önceki"
+
+#: front-page.php:378
+msgid "Next"
+msgstr "Sonraki"
+
+#: front-page.php:386
+msgid "No stories yet"
+msgstr "Henüz yazı yok"
+
+#: front-page.php:387
+msgid "Published posts will appear here in a flexible editorial grid."
+msgstr "Yayımlanan yazılar burada esnek bir editoryal ızgarada görünür."
+
+#: front-page.php:398
+msgid "Homepage sidebar"
+msgstr "Ana sayfa kenar çubuğu"
+
+#: front-page.php:404
+msgid "Readers are following"
+msgstr "Okurlar takip ediyor"
+
+#: front-page.php:405
+msgid "Trending now"
+msgstr "Trend Yazılar"
+
+#: front-page.php:517
+#: header.php:224
+#: inc/template-tags.php:871
+msgid "Editor's selection"
+msgstr "Editörün Seçimi"
+
+#. translators: %s: Estimated reading time in minutes.
+#: front-page.php:534
+#: single.php:132
+#, python-format,php-format
+msgid "%s minute read"
+msgid_plural "%s minutes read"
+msgstr[0] "%s dakika okuma"
+
+#: header.php:23
+msgid "Skip to content"
+msgstr "İçeriğe geç"
+
+#: header.php:35
+msgid "Utility menu"
+msgstr "Yardımcı menü"
+
+#: header.php:52
+msgid "Social networks"
+msgstr "Sosyal Ağlar"
+
+#: header.php:53
+msgid "Social links"
+msgstr "Sosyal bağlantılar"
+
+#. translators: %s: Social network name.
+#: header.php:105
+#, python-format,php-format
+msgid "%s (opens in a new tab)"
+msgstr "%s (yeni sekmede açılır)"
+
+#: header.php:113
+msgid "Change color mode"
+msgstr "Renk modunu değiştir"
+
+#: header.php:115
+#: inc/setup.php:283
+msgid "Light Mode"
+msgstr "Aydınlık Mod"
+
+#: header.php:134
+#: header.php:160
+#: header.php:186
+msgid "Header banner"
+msgstr "Üst banner"
+
+#: header.php:164
+msgid "Opens in a new tab."
+msgstr "Yeni sekmede açılır."
+
+#: header.php:191
+#: header.php:195
+#: header.php:204
+#: header.php:208
+msgid "Header search"
+msgstr "Üst arama"
+
+#: header.php:197
+msgid "Search the site…"
+msgstr "Sitede ara…"
+
+#: header.php:210
+msgid "Search anything you are curious about…"
+msgstr "Merak ettiğiniz her şeyi arayın…"
+
+#: header.php:217
+msgid "Header shortcuts"
+msgstr "Üst bölüm kısayolları"
+
+#: header.php:220
+msgid "Inspiring Ideas"
+msgstr "İlham Veren Fikirler"
+
+#: header.php:220
+msgid "Better Living"
+msgstr "Daha Güzel Yaşam"
+
+#: header.php:224
+msgid "Featured"
+msgstr "Öne Çıkanlar"
+
+#: header.php:228
+msgid "Trends"
+msgstr "Trendler"
+
+#: header.php:228
+msgid "Newest"
+msgstr "En Yeniler"
+
+#: header.php:240
+msgid "Menu"
+msgstr "Menü"
+
+#: header.php:242
+msgid "Primary menu"
+msgstr "Ana menü"
+
+#: header.php:244
+msgid "Close menu"
+msgstr "Menüyü kapat"
+
+#: header.php:258
+msgid "More"
+msgstr "Diğer"
+
+#: header.php:283
+msgid "Breaking News"
+msgstr "Son Dakika"
+
+#: header.php:318
+msgid "Published posts will appear here as a breaking-news stream."
+msgstr "Yayımlanan yazılar burada son dakika akışı olarak görünür."
+
+#: header.php:324
+msgid "Breaking news controls"
+msgstr "Son dakika kontrolleri"
+
+#: header.php:325
+msgid "Previous breaking news"
+msgstr "Önceki son dakika haberi"
+
+#: header.php:326
+msgid "Next breaking news"
+msgstr "Sonraki son dakika haberi"
+
+#: home.php:18
+#: index.php:19
+msgid "Newsroom"
+msgstr "Haber Merkezi"
+
+#: home.php:20
+#: index.php:21
+msgid "The latest reporting, ideas and conversations."
+msgstr "En yeni haberler, fikirler ve konuşmalar."
+
+#: inc/block-editor.php:23
+msgid "Novaflow Frame"
+msgstr "Novaflow Çerçeve"
+
+#: inc/block-editor.php:32
+msgid "Novaflow Accent"
+msgstr "Novaflow Vurgu"
+
+#: inc/block-editor.php:41
+msgid "Novaflow Soft Card"
+msgstr "Novaflow Yumuşak Kart"
+
+#: inc/block-editor.php:59
+msgid "Featured story"
+msgstr "Öne çıkan yazı"
+
+#: inc/block-editor.php:60
+msgid "Use this editorial callout to highlight an important article or announcement."
+msgstr "Önemli bir yazıyı veya duyuruyu vurgulamak için bu editoryal kutuyu kullanın."
+
+#: inc/block-editor.php:66
+msgid "Editorial callout"
+msgstr "Editoryal vurgu kutusu"
+
+#: inc/block-editor.php:67
+msgid "A compact editorial callout with a heading and summary."
+msgstr "Başlık ve özet içeren kompakt bir editoryal kutu."
+
+#: inc/block-editor.php:69
+msgid "news"
+msgstr "haber"
+
+#: inc/block-editor.php:69
+msgid "featured"
+msgstr "öne çıkan"
+
+#: inc/block-editor.php:69
+msgid "callout"
+msgstr "vurgu kutusu"
+
+#: inc/block-editor.php:87
+msgid "Recent Comments"
+msgstr "Son yorumlar"
+
+#: inc/block-editor.php:88
+msgid "Archives"
+msgstr "Arşivler"
+
+#: inc/block-editor.php:128
+msgid "Localized section headings"
+msgstr "Çevrilebilir bölüm başlıkları"
+
+#: inc/customizer.php:40
+msgid "Novaflow Header"
+msgstr "Novaflow Üst Alanı"
+
+#: inc/customizer.php:41
+msgid "Control the visible header areas and the optional header advertisement."
+msgstr "Görünür üst alanları ve isteğe bağlı üst reklamını yönetin."
+
+#: inc/customizer.php:48
+msgid "Top information bar"
+msgstr "Üst bilgi çubuğu"
+
+#: inc/customizer.php:49
+msgid "Display the date, utility menu, and icon links above the logo."
+msgstr "Tarih, yardımcı menü ve ikon bağlantılarını logonun üstünde göster."
+
+#: inc/customizer.php:52
+msgid "Breaking-news ticker"
+msgstr "Son dakika kayan haber"
+
+#: inc/customizer.php:53
+msgid "Display recent posts in the ticker below the primary menu."
+msgstr "Son yazıları ana menünün altındaki kayan haber alanında göster."
+
+#: inc/customizer.php:78
+msgid "Automatic destination"
+msgstr "Otomatik hedef"
+
+#: inc/customizer.php:86
+msgid "Inspiring Ideas category"
+msgstr "İlham Veren Fikirler kategorisi"
+
+#: inc/customizer.php:87
+msgid "Editor's selection category"
+msgstr "Editörün Seçimi kategorisi"
+
+#: inc/customizer.php:88
+msgid "Trends category"
+msgstr "Trendler kategorisi"
+
+#: inc/customizer.php:106
+msgid "Select a category. Automatic uses the posts page configured under Settings > Reading, or the latest-posts section when no separate posts page is configured."
+msgstr "Bir kategori seçin. Otomatik hedef, Ayarlar > Okuma bölümündeki yazılar sayfasını; ayrı bir yazılar sayfası ayarlanmamışsa son yazılar bölümünü kullanır."
+
+#: inc/customizer.php:115
+msgid "Novaflow Header Advertisement"
+msgstr "Novaflow Üst Reklamı"
+
+#: inc/customizer.php:116
+msgid "Upload a banner here, or leave the image empty to use the Header Banner widget area. Nothing is displayed until the site owner enables and configures this area."
+msgstr "Buradan bir banner yükleyin veya Üst Alan Bannerı bileşen alanını kullanmak için görseli boş bırakın. Site sahibi bu alanı etkinleştirip yapılandırmadan reklam gösterilmez."
+
+#: inc/customizer.php:135
+msgid "Display header advertisement"
+msgstr "Üst reklamı göster"
+
+#: inc/customizer.php:136
+msgid "Show the advertisement between the site logo and search form."
+msgstr "Reklamı site logosu ile arama formu arasında göster."
+
+#: inc/customizer.php:156
+msgid "Header advertisement image"
+msgstr "Üst reklam görseli"
+
+#: inc/customizer.php:157
+msgid "Select, change, or remove the advertisement with the WordPress Media Library. Recommended size: 728 × 90 pixels. Leave it empty to use the Header Banner widget area."
+msgstr "WordPress Ortam Kütüphanesi ile reklamı seçin, değiştirin veya kaldırın. Önerilen boyut: 728 × 90 piksel. Üst Alan Bannerı bileşen alanını kullanmak için boş bırakın."
+
+#: inc/customizer.php:179
+msgid "Advertisement destination URL"
+msgstr "Reklam hedef URL’si"
+
+#: inc/customizer.php:180
+msgid "Optional. Add a link only when you want the advertisement to open another page."
+msgstr "İsteğe bağlıdır. Yalnızca reklamın başka bir sayfayı açmasını istiyorsanız bağlantı ekleyin."
+
+#: inc/customizer.php:200
+msgid "Advertisement image alternative text"
+msgstr "Reklam görseli alternatif metni"
+
+#: inc/customizer.php:220
+msgid "Open advertisement link in a new tab"
+msgstr "Reklam bağlantısını yeni sekmede aç"
+
+#: inc/customizer.php:229
+msgid "Novaflow Social Links"
+msgstr "Novaflow Sosyal Bağlantıları"
+
+#: inc/customizer.php:230
+msgid "The default icons link to the official social network homepages. Replace each address with your profile URL, or clear it to hide that icon. External social links use nofollow."
+msgstr "Varsayılan ikonlar sosyal ağların resmî ana sayfalarına gider. Adresi kendi profil bağlantınızla değiştirin veya ikonu gizlemek için alanı boşaltın. Dış sosyal bağlantılarda nofollow kullanılır."
+
+#: inc/customizer.php:236
+msgid "Facebook URL"
+msgstr "Facebook URL"
+
+#: inc/customizer.php:237
+msgid "X URL"
+msgstr "X URL"
+
+#: inc/customizer.php:238
+msgid "Instagram URL"
+msgstr "Instagram URL"
+
+#: inc/customizer.php:239
+msgid "YouTube URL"
+msgstr "YouTube URL"
+
+#: inc/customizer.php:240
+msgid "TikTok URL"
+msgstr "TikTok URL"
+
+#: inc/customizer.php:241
+msgid "LinkedIn URL"
+msgstr "LinkedIn URL"
+
+#: inc/customizer.php:242
+msgid "Pinterest URL"
+msgstr "Pinterest URL"
+
+#: inc/customizer.php:268
+msgid "Novaflow Homepage"
+msgstr "Novaflow Ana Sayfa"
+
+#: inc/customizer.php:269
+msgid "Choose which editorial sections appear when the front page displays the latest posts."
+msgstr "Ana sayfanın yazı akışında gösterilecek editoryal bölümleri seçin."
+
+#: inc/customizer.php:275
+msgid "Trending-posts section"
+msgstr "Trend yazılar bölümü"
+
+#: inc/customizer.php:276
+msgid "Editor's selection section"
+msgstr "Editörün seçimi bölümü"
+
+#: inc/customizer.php:302
+msgid "Novaflow Design"
+msgstr "Novaflow Tasarım"
+
+#: inc/customizer.php:303
+msgid "Adjust layout, typography, and the theme color system."
+msgstr "Düzeni, yazı stillerini ve tema renklerini ayarlayın."
+
+#: inc/customizer.php:310
+msgid "Maximum content width"
+msgstr "Maksimum içerik genişliği"
+
+#: inc/customizer.php:317
+msgid "Card corner radius"
+msgstr "Kart köşe yuvarlaklığı"
+
+#: inc/customizer.php:324
+msgid "Base font size"
+msgstr "Temel yazı boyutu"
+
+#: inc/customizer.php:371
+msgid "Heading font weight"
+msgstr "Başlık yazı kalınlığı"
+
+#: inc/customizer.php:373
+msgid "Light"
+msgstr "İnce"
+
+#: inc/customizer.php:374
+msgid "Normal"
+msgstr "Normal"
+
+#: inc/customizer.php:375
+msgid "Medium"
+msgstr "Orta"
+
+#: inc/customizer.php:381
+msgid "Primary accent color"
+msgstr "Birincil vurgu rengi"
+
+#: inc/customizer.php:382
+msgid "Secondary accent color"
+msgstr "İkincil vurgu rengi"
+
+#: inc/customizer.php:383
+msgid "Tertiary accent color"
+msgstr "Üçüncül vurgu rengi"
+
+#: inc/customizer.php:384
+msgid "Warning color"
+msgstr "Uyarı rengi"
+
+#: inc/customizer.php:385
+msgid "Text color"
+msgstr "Metin rengi"
+
+#: inc/customizer.php:386
+msgid "Card color"
+msgstr "Kart rengi"
+
+#: inc/customizer.php:387
+msgid "Page background color"
+msgstr "Sayfa arka plan rengi"
+
+#: inc/customizer.php:388
+msgid "Dark-area color"
+msgstr "Karanlık alan rengi"
+
+#: inc/setup.php:64
+msgid "Primary Menu"
+msgstr "Ana Menü"
+
+#: inc/setup.php:65
+msgid "Utility Menu"
+msgstr "Yardımcı Menü"
+
+#: inc/setup.php:66
+msgid "Footer Menu"
+msgstr "Alt Menü"
+
+#: inc/setup.php:110
+msgid "Primary Sidebar"
+msgstr "Ana Kenar Çubuğu"
+
+#: inc/setup.php:111
+msgid "Header Banner"
+msgstr "Üst Banner"
+
+#: inc/setup.php:112
+msgid "Footer Column One"
+msgstr "Alt Alan Sütunu Bir"
+
+#: inc/setup.php:113
+msgid "Footer Column Two"
+msgstr "Alt Alan Sütunu İki"
+
+#: inc/setup.php:114
+msgid "Footer Column Three"
+msgstr "Alt Alan Sütunu Üç"
+
+#: inc/setup.php:284
+msgid "Dark Mode"
+msgstr "Karanlık Mod"
+
+#: inc/template-tags.php:43
+#: inc/template-tags.php:652
+msgid "Home"
+msgstr "Ana Sayfa"
+
+#: inc/template-tags.php:149
+#: template-parts/content-page.php:24
+msgid "Untitled page"
+msgstr "Başlıksız sayfa"
+
+#: inc/template-tags.php:151
+msgid "Untitled post"
+msgstr "Başlıksız yazı"
+
+#. translators: %s: Post title.
+#: inc/template-tags.php:170
+#, python-format,php-format
+msgid "Read “%s”"
+msgstr "“%s” yazısını oku"
+
+#: inc/template-tags.php:566
+msgid "Keywords"
+msgstr "Anahtar Kelimeler"
+
+#: inc/template-tags.php:660
+msgid "Blog"
+msgstr "Blog"
+
+#: inc/template-tags.php:668
+msgid "Privacy Policy"
+msgstr "Gizlilik Politikası"
+
+#: inc/template-tags.php:715
+msgid "All rights reserved."
+msgstr "Tüm hakları saklıdır."
+
+#: inc/template-tags.php:872
+#: inc/template-tags.php:1030
+msgid "View all"
+msgstr "Tümünü gör"
+
+#: inc/template-tags.php:939
+msgid "Popular Tags"
+msgstr "Popüler Etiketler"
+
+#: inc/theme-info.php:19
+#: inc/theme-info.php:20
+msgid "About Novaflow"
+msgstr "Novaflow Hakkında"
+
+#: inc/theme-info.php:85
+msgid "Welcome to Novaflow"
+msgstr "Novaflow'a hoş geldiniz"
+
+#: inc/theme-info.php:86
+msgid "Novaflow is a responsive WordPress news and magazine theme built for clear editorial hierarchy, colorful category discovery, fast reading, and native WordPress publishing workflows."
+msgstr "Novaflow; anlaşılır içerik düzeni, renkli kategori gezinmesi, kolay okuma ve yerleşik WordPress yayınlama araçları için tasarlanmış duyarlı bir haber ve dergi temasıdır."
+
+#: inc/theme-info.php:88
+msgid "Version:"
+msgstr "Sürüm:"
+
+#: inc/theme-info.php:89
+msgid "License:"
+msgstr "Lisans:"
+
+#: inc/theme-info.php:90
+msgid "Text domain:"
+msgstr "Metin alanı:"
+
+#: inc/theme-info.php:91
+msgid "Ready to publish"
+msgstr "Yayınlamaya hazır"
+
+#: inc/theme-info.php:94
+msgid "Open Customizer"
+msgstr "Özelleştir'i Aç"
+
+#: inc/theme-info.php:95
+msgid "Manage Menus"
+msgstr "Menüleri Yönet"
+
+#: inc/theme-info.php:96
+msgid "Manage Widgets"
+msgstr "Bileşenleri Yönet"
+
+#: inc/theme-info.php:102
+msgid "Getting Started"
+msgstr "Başlangıç"
+
+#: inc/theme-info.php:104
+msgid "Add your site title or upload a custom logo in the Customizer."
+msgstr "Özelleştir'de site başlığınızı ekleyin veya özel bir logo yükleyin."
+
+#: inc/theme-info.php:105
+msgid "Assign menus to the Primary, Utility, and Footer menu locations."
+msgstr "Menüleri Ana, Üst Bilgi ve Alt Bilgi menü konumlarına atayın."
+
+#: inc/theme-info.php:106
+msgid "Add WordPress widgets to the primary sidebar, header banner, and footer columns."
+msgstr "Ana kenar çubuğuna, üst alan bannerına ve alt bilgi sütunlarına WordPress bileşenleri ekleyin."
+
+#: inc/theme-info.php:107
+msgid "Publish posts with featured images, categories, tags, and excerpts."
+msgstr "Öne çıkan görsel, kategori, etiket ve özet içeren yazılar yayımlayın."
+
+#: inc/theme-info.php:108
+msgid "Choose the latest-posts homepage or a static front page under Reading settings."
+msgstr "Okuma ayarlarından son yazıları gösteren ana sayfayı veya sabit bir sayfayı seçin."
+
+#: inc/theme-info.php:113
+msgid "Theme Features"
+msgstr "Tema Özellikleri"
+
+#: inc/theme-info.php:115
+msgid "Responsive editorial layouts with a right sidebar."
+msgstr "Sağ kenar çubuğu içeren duyarlı editoryal düzenler."
+
+#: inc/theme-info.php:116
+msgid "Featured images, category navigation, post tags, comments, archives, and search."
+msgstr "Öne çıkan görseller, kategori gezinmesi, yazı etiketleri, yorumlar, arşivler ve arama."
+
+#: inc/theme-info.php:117
+msgid "Three registered navigation locations and five widget areas."
+msgstr "Üç kayıtlı menü konumu ve beş bileşen alanı."
+
+#: inc/theme-info.php:118
+msgid "Block styles, wide alignment, responsive embeds, and editor styles."
+msgstr "Blok stilleri, geniş hizalama, duyarlı gömülü içerikler ve düzenleyici stilleri."
+
+#: inc/theme-info.php:119
+msgid "Custom logo, colors, background, header image, and advertisement controls."
+msgstr "Özel logo, renk, arka plan, üst alan görseli ve reklam denetimleri."
+
+#: inc/theme-info.php:120
+msgid "Translation-ready source strings and right-to-left stylesheet support."
+msgstr "Çeviriye hazır kaynak metinleri ve sağdan sola stil desteği."
+
+#: inc/theme-info.php:125
+msgid "System Requirements"
+msgstr "Sistem Gereksinimleri"
+
+#. translators: %s: Minimum supported WordPress version.
+#: inc/theme-info.php:130
+#, python-format,php-format
+msgid "WordPress %s or newer"
+msgstr "WordPress %s veya daha yenisi"
+
+#. translators: %s: Minimum supported PHP version.
+#: inc/theme-info.php:136
+#, python-format,php-format
+msgid "PHP %s or newer"
+msgstr "PHP %s veya daha yenisi"
+
+#. translators: %s: Latest tested WordPress version.
+#: inc/theme-info.php:142
+#, python-format,php-format
+msgid "Tested up to WordPress %s"
+msgstr "WordPress %s sürümüne kadar test edilmiştir"
+
+#: inc/theme-info.php:146
+msgid "Recommended content"
+msgstr "Önerilen içerik"
+
+#: inc/theme-info.php:147
+msgid "Use descriptive post titles, concise excerpts, optimized featured images, relevant categories, and focused tags. WordPress supplies canonical URLs, feeds, sitemaps, and semantic document titles through its native APIs."
+msgstr "Açıklayıcı yazı başlıkları, kısa özetler, optimize edilmiş öne çıkan görseller ve ilgili kategori ve etiketler kullanın. WordPress; kanonik adresleri, beslemeleri, site haritalarını ve belge başlıklarını yerleşik API'leriyle sağlar."
+
+#: inc/theme-info.php:151
+msgid "Accessibility and Performance"
+msgstr "Erişilebilirlik ve Performans"
+
+#: inc/theme-info.php:153
+msgid "Keyboard-accessible skip navigation and visible focus states."
+msgstr "Klavyeyle erişilebilen içeriğe atlama bağlantısı ve görünür odak durumları."
+
+#: inc/theme-info.php:154
+msgid "Semantic headings, landmarks, labels, and native WordPress comment markup."
+msgstr "Anlamlı başlıklar, sayfa bölgeleri, etiketler ve yerleşik WordPress yorum yapısı."
+
+#: inc/theme-info.php:155
+msgid "Responsive image sizes, lazy loading for secondary images, and local theme assets."
+msgstr "Duyarlı görsel boyutları, ikincil görseller için ertelenmiş yükleme ve yerel tema dosyaları."
+
+#: inc/theme-info.php:156
+msgid "No tracking, analytics, remote fonts, or remote asset requests are enabled by the theme."
+msgstr "Tema; izleme, analiz, uzak yazı tipleri veya uzak dosya isteklerini etkinleştirmez."
+
+#: inc/theme-info.php:161
+msgid "License, Privacy, and Support"
+msgstr "Lisans, Gizlilik ve Destek"
+
+#: inc/theme-info.php:162
+msgid "Novaflow is distributed under the GNU General Public License version 2 or later. Bundled asset authorship and license details are documented in readme.txt and the license files included with the theme."
+msgstr "Novaflow, GNU Genel Kamu Lisansı sürüm 2 veya sonrası kapsamında dağıtılır. Paket içindeki kaynakların yazar ve lisans bilgileri readme.txt dosyasında ve temaya dahil edilen lisans dosyalarında açıklanmıştır."
+
+#: inc/theme-info.php:163
+msgid "The theme does not collect personal information, perform telemetry, or contact external services by default. Site owners remain responsible for the privacy practices of their content, plugins, embedded media, analytics, and third-party services."
+msgstr "Tema varsayılan olarak kişisel bilgi toplamaz, telemetri uygulamaz veya harici hizmetlere bağlanmaz. Site sahipleri; içeriklerinin, eklentilerinin, gömülü ortamlarının, analiz araçlarının ve üçüncü taraf hizmetlerinin gizlilik uygulamalarından sorumludur."
+
+#: inc/theme-info.php:164
+msgid "For troubleshooting, first confirm that WordPress and PHP meet the requirements above, temporarily disable plugins to check for conflicts, verify menu and widget assignments, and review the bundled readme.txt file."
+msgstr "Sorunları giderirken önce WordPress ve PHP'nin yukarıdaki gereksinimleri karşıladığını doğrulayın. Çakışmaları kontrol etmek için eklentileri geçici olarak devre dışı bırakın, menü ve bileşen atamalarını doğrulayın ve readme.txt dosyasını inceleyin."
+
+#: search.php:17
+msgid "Search results"
+msgstr "Arama sonuçları"
+
+#. translators: %s: Search query.
+#: search.php:22
+#, python-format,php-format
+msgid "Results for “%s”"
+msgstr "“%s” için sonuçlar"
+
+#: searchform.php:18
+#: searchform.php:24
+msgid "Search for:"
+msgstr "Şunu ara:"
+
+#: searchform.php:21
+msgid "Search stories…"
+msgstr "Yazılarda ara…"
+
+#: searchform.php:29
+#: searchform.php:34
+msgid "Search site"
+msgstr "Sitede ara"
+
+#: searchform.php:30
+#: searchform.php:36
+#: searchform.php:40
+msgid "Search"
+msgstr "Ara"
+
+#: sidebar.php:49
+msgid "Sidebar"
+msgstr "Kenar çubuğu"
+
+#. translators: %s: Author name.
+#: single.php:100
+#, python-format,php-format
+msgid "View all posts by %s"
+msgstr "%s tarafından yazılan tüm yazıları gör"
+
+#: single.php:118
+msgid "Verified author"
+msgstr "Doğrulanmış yazar"
+
+#. translators: %s: Number of comments.
+#: single.php:143
+#, python-format,php-format
+msgid "%s comment"
+msgid_plural "%s comments"
+msgstr[0] "%s yorum"
+
+#: single.php:178
+msgid "Post pages"
+msgstr "Yazı sayfaları"
+
+#: single.php:186
+msgid "Article tags"
+msgstr "Yazı etiketleri"
+
+#: single.php:187
+msgid "Tags:"
+msgstr "Etiketler:"
+
+#: single.php:194
+msgid "Related Posts"
+msgstr "Benzer Yazılar"
+
+#: template-parts/content-none.php:13
+msgid "Nothing here yet"
+msgstr "Henüz burada bir şey yok"
+
+#: template-parts/content-none.php:14
+msgid "No matching stories were found."
+msgstr "Eşleşen içerik bulunamadı."
+
+#: template-parts/content-none.php:15
+msgid "Try another search or publish new content."
+msgstr "Başka bir arama deneyin veya yeni içerik yayımlayın."
+
+#: template-parts/content-page.php:23
+msgid "Page"
+msgstr "Sayfa"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Ink"
+msgstr "Mürekkep"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Pulse Pink"
+msgstr "Canlı Pembe"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Electric Purple"
+msgstr "Elektrik Moru"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Fresh Green"
+msgstr "Taze Yeşil"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Sunny Yellow"
+msgstr "Güneş Sarısı"
+
+#: theme.json
+msgctxt "Color name"
+msgid "Cloud"
+msgstr "Bulut"

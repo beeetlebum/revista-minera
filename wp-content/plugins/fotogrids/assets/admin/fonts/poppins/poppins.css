@@ -1,0 +1,54 @@
+/**
+ * Self-hosted Poppins web font for the FotoGrids admin UI.
+ *
+ * Bundled locally (SIL Open Font License, see OFL.txt) instead of loading from
+ * fonts.googleapis.com, so no admin/visitor data is sent to Google and the
+ * plugin has no external CDN dependency (WordPress.org guideline compliant).
+ *
+ * The font file URLs are relative to this stylesheet, so the browser resolves
+ * them against this file's location (.../assets/admin/fonts/poppins/). Keep
+ * this CSS in the same directory as the .woff2 files.
+ *
+ * woff2 only, with no TTF fallback: every engine has supported the format
+ * since 2016 and WordPress dropped Internet Explorer 11 in 5.8.
+ */
+
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("Poppins-300.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("Poppins-400.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("Poppins-500.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url("Poppins-600.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("Poppins-700.woff2") format("woff2");
+}

@@ -1,0 +1,1531 @@
+<?php
+namespace FotoGrids\REST\Admin;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Admin Data Class
+ *
+ * Handles data operations for admin-specific REST API endpoints.
+ *
+ * @since 1.0.0
+ */
+class Admin_Data {
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom-table data layer; no core API or object cache applies.
+
+	/**
+	 * Add galleries to album
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function add_galleries_to_album( $request ) {
+		$album_id    = $request->get_param( 'id' );
+		$gallery_ids = $request->get_param( 'gallery_ids' );
+
+		if ( empty( $gallery_ids ) || ! is_array( $gallery_ids ) ) {
+			return new \WP_Error(
+				'invalid_gallery_ids',
+				__( 'Invalid gallery IDs provided.', 'fotogrids' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$added  = array();
+		$errors = array();
+
+		foreach ( $gallery_ids as $gallery_id ) {
+			$result = \FotoGrids\Gallery_Album_Relations::add_gallery_to_album( $gallery_id, $album_id );
+
+			if ( $result ) {
+				$added[] = $gallery_id;
+			} else {
+				$errors[] = $gallery_id;
+			}
+		}
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'added'   => $added,
+				'errors'  => $errors,
+				'message' => sprintf(
+				/* translators: %d: number of galleries added to the album. */
+					_n(
+						'%d gallery added to album.',
+						'%d galleries added to album.',
+						count( $added ),
+						'fotogrids'
+					),
+					count( $added )
+				),
+			)
+		);
+	}
+
+	/**
+	 * Remove gallery from album
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function remove_gallery_from_album( $request ) {
+		$album_id   = $request->get_param( 'id' );
+		$gallery_id = $request->get_param( 'gallery_id' );
+
+		$result = \FotoGrids\Gallery_Album_Relations::remove_gallery_from_album( $gallery_id, $album_id );
+
+		if ( $result ) {
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'message' => __( 'Gallery removed from album.', 'fotogrids' ),
+				)
+			);
+		} else {
+			return new \WP_Error(
+				'removal_failed',
+				__( 'Failed to remove gallery from album.', 'fotogrids' ),
+				array( 'status' => 500 )
+			);
+		}
+	}
+
+	/**
+	 * Reorder galleries in album
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function reorder_galleries_in_album( $request ) {
+		$album_id    = $request->get_param( 'id' );
+		$gallery_ids = $request->get_param( 'gallery_ids' );
+
+		if ( empty( $gallery_ids ) || ! is_array( $gallery_ids ) ) {
+			return new \WP_Error(
+				'invalid_gallery_ids',
+				__( 'Invalid gallery IDs provided.', 'fotogrids' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$result = \FotoGrids\Gallery_Album_Relations::reorder_galleries_in_album( $album_id, $gallery_ids );
+
+		if ( $result ) {
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'message' => __( 'Gallery order updated.', 'fotogrids' ),
+				)
+			);
+		} else {
+			return new \WP_Error(
+				'reorder_failed',
+				__( 'Failed to reorder galleries.', 'fotogrids' ),
+				array( 'status' => 500 )
+			);
+		}
+	}
+
+	/**
+	 * Add albums to gallery
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function add_albums_to_gallery( $request ) {
+		$gallery_id = $request->get_param( 'id' );
+		$album_ids  = $request->get_param( 'album_ids' );
+
+		if ( empty( $album_ids ) || ! is_array( $album_ids ) ) {
+			return new \WP_Error(
+				'invalid_album_ids',
+				__( 'Invalid album IDs provided.', 'fotogrids' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$added  = array();
+		$errors = array();
+
+		foreach ( $album_ids as $album_id ) {
+			$result = \FotoGrids\Gallery_Album_Relations::add_gallery_to_album( $gallery_id, $album_id );
+
+			if ( $result ) {
+				$added[] = $album_id;
+			} else {
+				$errors[] = $album_id;
+			}
+		}
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'added'   => $added,
+				'errors'  => $errors,
+				'message' => sprintf(
+				/* translators: %d: number of albums the gallery was added to. */
+					_n(
+						'Gallery added to %d album.',
+						'Gallery added to %d albums.',
+						count( $added ),
+						'fotogrids'
+					),
+					count( $added )
+				),
+			)
+		);
+	}
+
+	/**
+	 * Remove album from gallery
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function remove_album_from_gallery( $request ) {
+		$gallery_id = $request->get_param( 'id' );
+		$album_id   = $request->get_param( 'album_id' );
+
+		$result = \FotoGrids\Gallery_Album_Relations::remove_gallery_from_album( $gallery_id, $album_id );
+
+		if ( $result ) {
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'message' => __( 'Gallery removed from album.', 'fotogrids' ),
+				)
+			);
+		} else {
+			return new \WP_Error(
+				'removal_failed',
+				__( 'Failed to remove gallery from album.', 'fotogrids' ),
+				array( 'status' => 500 )
+			);
+		}
+	}
+
+	/**
+	 * Get WordPress roles
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Array of roles with their capabilities
+	 */
+	public static function get_roles( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		if ( ! current_user_can( 'manage_fotogrids_settings' ) ) {
+			return new \WP_Error( 'forbidden', __( 'Insufficient permissions', 'fotogrids' ), array( 'status' => 403 ) );
+		}
+
+		$wp_roles = wp_roles();
+		$roles    = array();
+
+		foreach ( $wp_roles->roles as $role_key => $role_data ) {
+			$role = get_role( $role_key );
+			if ( ! $role ) {
+				continue;
+			}
+
+			$roles[] = array(
+				'key'          => $role_key,
+				'name'         => $role_data['name'],
+				'capabilities' => $role->capabilities,
+			);
+		}
+
+		return rest_ensure_response( array( 'roles' => $roles ) );
+	}
+
+	/**
+	 * Get the EXIF field vocabulary as picker options.
+	 *
+	 * Backs the `exif_fields` gallery setting and the item editor's EXIF tab,
+	 * so both name the same fields as `Exif_Extractor` reads.
+	 *
+	 * @since 1.1.2
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_exif_fields( $request ) {
+		unset( $request );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return new \WP_Error( 'forbidden', __( 'Insufficient permissions', 'fotogrids' ), array( 'status' => 403 ) );
+		}
+
+		return rest_ensure_response(
+			array(
+				'fields'  => \FotoGrids\Exif\Exif_Fields::as_options(),
+				'groups'  => \FotoGrids\Exif\Exif_Fields::GROUPS,
+				'default' => \FotoGrids\Exif\Exif_Fields::DEFAULT_FIELDS,
+			)
+		);
+	}
+
+	/**
+	 * Get WordPress image sizes
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_image_sizes( $request ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return new \WP_Error( 'forbidden', __( 'Insufficient permissions', 'fotogrids' ), array( 'status' => 403 ) );
+		}
+
+		// Hidden companion sizes - never shown in the picker UI.
+		$hidden_slugs = array( \FotoGrids\Image_Size_Manager::SLUG_FULL_MOBILE );
+
+		// Whether to include hidden sizes (e.g. for the Plugin Settings Media tab).
+		$include_hidden = (bool) ( $request->get_param( 'include_hidden' ) ?? false );
+
+		$sizes              = array();
+		$intermediate_sizes = get_intermediate_image_sizes();
+
+		foreach ( $intermediate_sizes as $size ) {
+			$is_hidden = in_array( $size, $hidden_slugs, true );
+			if ( $is_hidden && ! $include_hidden ) {
+				continue;
+			}
+
+			$is_fotogrids   = strpos( $size, 'fotogrids_' ) === 0;
+			$is_plugin_size = in_array(
+				$size,
+				array(
+					\FotoGrids\Image_Size_Manager::SLUG_THUMBNAIL,
+					\FotoGrids\Image_Size_Manager::SLUG_FULL,
+					\FotoGrids\Image_Size_Manager::SLUG_FULL_MOBILE,
+					\FotoGrids\Image_Size_Manager::SLUG_MASONRY,
+					\FotoGrids\Image_Size_Manager::SLUG_JUSTIFIED,
+				),
+				true
+			);
+			$is_custom_size = strpos( $size, \FotoGrids\Image_Size_Manager::CUSTOM_SLUG_PREFIX ) === 0;
+
+			// Build human-readable label; give FotoGrids plugin sizes nicer names.
+			if ( \FotoGrids\Image_Size_Manager::SLUG_THUMBNAIL === $size ) {
+				$label = __( 'FotoGrids Thumbnails', 'fotogrids' );
+			} elseif ( \FotoGrids\Image_Size_Manager::SLUG_FULL === $size ) {
+				$label = __( 'FotoGrids Full Size', 'fotogrids' );
+			} elseif ( \FotoGrids\Image_Size_Manager::SLUG_FULL_MOBILE === $size ) {
+				$label = __( 'FotoGrids Full Size (Mobile)', 'fotogrids' );
+			} elseif ( \FotoGrids\Image_Size_Manager::SLUG_MASONRY === $size ) {
+				$label = __( 'FotoGrids Masonry (variable height)', 'fotogrids' );
+			} elseif ( \FotoGrids\Image_Size_Manager::SLUG_JUSTIFIED === $size ) {
+				$label = __( 'FotoGrids Justified (variable width)', 'fotogrids' );
+			} else {
+				$label = ucfirst( str_replace( array( '-', '_' ), ' ', $size ) );
+			}
+
+			$size_data = array(
+				'value'          => $size,
+				'label'          => $label,
+				'is_fotogrids'   => $is_fotogrids,
+				'is_plugin_size' => $is_plugin_size,
+				'is_custom_size' => $is_custom_size,
+				'is_hidden'      => $is_hidden,
+			);
+
+			$size_info = wp_get_additional_image_sizes();
+			if ( isset( $size_info[ $size ] ) ) {
+				$size_data['width']  = $size_info[ $size ]['width'];
+				$size_data['height'] = $size_info[ $size ]['height'];
+				$size_data['crop']   = isset( $size_info[ $size ]['crop'] ) ? $size_info[ $size ]['crop'] : false;
+			} else {
+				$size_data['width']  = get_option( "{$size}_size_w" );
+				$size_data['height'] = get_option( "{$size}_size_h" );
+				$size_data['crop']   = get_option( "{$size}_crop" );
+			}
+
+			$sizes[] = $size_data;
+		}
+
+		$sizes[] = array(
+			'value'          => 'full',
+			'label'          => __( 'Full Size', 'fotogrids' ),
+			'is_fotogrids'   => false,
+			'is_plugin_size' => false,
+			'is_custom_size' => false,
+			'is_hidden'      => false,
+		);
+
+		return rest_ensure_response( array( 'sizes' => $sizes ) );
+	}
+
+	/**
+	 * Get plugin-wide media settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/media-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_media_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		$settings     = \FotoGrids\Image_Size_Manager::get_plugin_size_settings();
+		$custom_sizes = \FotoGrids\Image_Size_Manager::get_custom_sizes();
+
+		return rest_ensure_response(
+			array(
+				'settings'     => $settings,
+				'custom_sizes' => array_values(
+					array_map(
+						function ( $slug, $config ) {
+							return array_merge( array( 'slug' => $slug ), $config );
+						},
+						array_keys( $custom_sizes ),
+						$custom_sizes
+					)
+				),
+			)
+		);
+	}
+
+	/**
+	 * Save plugin-wide media settings.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/media-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_media_settings( $request ): \WP_REST_Response {
+		$raw = array(
+			'thumbnail_width'     => $request->get_param( 'thumbnail_width' ),
+			'thumbnail_height'    => $request->get_param( 'thumbnail_height' ),
+			'thumbnail_crop'      => $request->get_param( 'thumbnail_crop' ),
+			'thumbnail_alignment' => $request->get_param( 'thumbnail_alignment' ),
+			'full_width'          => $request->get_param( 'full_width' ),
+			'full_height'         => $request->get_param( 'full_height' ),
+			'masonry_width'       => $request->get_param( 'masonry_width' ),
+			'justified_height'    => $request->get_param( 'justified_height' ),
+		);
+
+		$saved = \FotoGrids\Image_Size_Manager::save_plugin_size_settings( $raw );
+
+		return rest_ensure_response( array( 'settings' => $saved ) );
+	}
+
+	/**
+	 * Get general (responsiveness) settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/general-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_general_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\Plugin_Settings_Store::get_general(),
+			)
+		);
+	}
+
+	/**
+	 * Save general (responsiveness) settings.
+	 *
+	 * Delegates to the same sanitizer the Settings API uses, so REST and
+	 * options.php persist identically (breakpoint clamping included).
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/general-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_general_settings( $request ): \WP_REST_Response {
+		$settings = \FotoGrids\Settings\Plugin_Settings_Store::save_general(
+			array(
+				'mobile_breakpoint'            => $request->get_param( 'mobile_breakpoint' ),
+				'tablet_breakpoint'            => $request->get_param( 'tablet_breakpoint' ),
+				'detect_responsive_by_browser' => $request->get_param( 'detect_responsive_by_browser' ),
+			)
+		);
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Get the global SEO settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/seo-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_seo_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\SEO_Settings_Store::get(),
+			)
+		);
+	}
+
+	/**
+	 * Save the global SEO settings.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/seo-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_seo_settings( $request ): \WP_REST_Response {
+		$settings = \FotoGrids\Settings\SEO_Settings_Store::save( $request->get_json_params() ?: $request->get_params() );
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Get the global sharing settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/sharing-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_sharing_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\Sharing_Settings_Store::get(),
+			)
+		);
+	}
+
+	/**
+	 * Save the global sharing settings.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/sharing-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_sharing_settings( $request ): \WP_REST_Response {
+		$settings = \FotoGrids\Settings\Sharing_Settings_Store::save( $request->get_json_params() ?: $request->get_params() );
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Get the global watermark settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/watermark-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_watermark_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\Watermark_Settings_Store::get(),
+			)
+		);
+	}
+
+	/**
+	 * Save the global watermark settings.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/watermark-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_watermark_settings( $request ): \WP_REST_Response {
+		$settings = \FotoGrids\Settings\Watermark_Settings_Store::save( $request->get_json_params() ?: $request->get_params() );
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Get the global view page appearance settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/view-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_view_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\View_Settings_Store::get(),
+			)
+		);
+	}
+
+	/**
+	 * Save the global view page appearance settings.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/view-settings
+	 *
+	 * A rejected permalink base fails the whole request, so a collision never
+	 * leaves the site with addresses that resolve to nothing.
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public static function save_view_settings( $request ) {
+		$input = $request->get_json_params() ?: $request->get_params();
+
+		$valid = \FotoGrids\Settings\View_Settings_Store::validate_base( is_array( $input ) ? $input : array() );
+
+		if ( is_wp_error( $valid ) ) {
+			return $valid;
+		}
+
+		$settings = \FotoGrids\Settings\View_Settings_Store::save( $input );
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Get collection defaults.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/gallery-defaults
+	 *
+	 * @since  1.1.2
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_gallery_defaults( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'defaults' => self::redact_passwords(
+					(array) get_option( 'fotogrids_gallery_defaults', array() )
+				),
+			)
+		);
+	}
+
+	/**
+	 * Blank every password field in a defaults map.
+	 *
+	 * The same hard guarantee `Settings_Localizer::data_for_collection()` makes
+	 * for the per-collection payload: a stored password never reaches the
+	 * browser. Reading it back is not a supported operation on any surface.
+	 *
+	 * @param  array<string, mixed> $defaults Stored defaults.
+	 * @return array<string, mixed>
+	 */
+	private static function redact_passwords( array $defaults ): array {
+		foreach ( array_keys( $defaults ) as $key ) {
+			if ( 'password_input' === \FotoGrids\Settings\Setting_Value_Codec::catalog_field_type( (string) $key ) ) {
+				$defaults[ $key ] = '';
+			}
+		}
+
+		return $defaults;
+	}
+
+	/**
+	 * Persist collection defaults.
+	 *
+	 * Merges the incoming keys over what is stored rather than replacing the
+	 * option, so a caller that sends one setting does not drop the rest.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/gallery-defaults
+	 *
+	 * @since  1.1.2
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public static function save_gallery_defaults( $request ) {
+		$incoming = (array) $request->get_param( 'defaults' );
+		$stored   = (array) get_option( 'fotogrids_gallery_defaults', array() );
+
+		$merged = array_merge(
+			$stored,
+			\FotoGrids\Settings\Plugin_Settings_Store::sanitize_collection_defaults( $incoming )
+		);
+
+		if ( ! update_option( 'fotogrids_gallery_defaults', $merged ) ) {
+			// update_option() also answers false when nothing changed, so the
+			// stored value is what decides whether this actually failed.
+			$current = (array) get_option( 'fotogrids_gallery_defaults', array() );
+
+			if ( wp_json_encode( $current ) !== wp_json_encode( $merged ) ) {
+				return new \WP_Error(
+					'fotogrids_defaults_not_saved',
+					__( 'The defaults could not be saved.', 'fotogrids' ),
+					array( 'status' => 500 )
+				);
+			}
+		}
+
+		return rest_ensure_response( array( 'defaults' => self::redact_passwords( $merged ) ) );
+	}
+
+	/**
+	 * Get advanced (boolean) settings.
+	 *
+	 * GET /wp-json/fotogrids/v1/admin/advanced-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function get_advanced_settings( $request ): \WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		return rest_ensure_response(
+			array(
+				'settings' => \FotoGrids\Settings\Plugin_Settings_Store::get_advanced(),
+			)
+		);
+	}
+
+	/**
+	 * Save advanced (boolean) settings.
+	 *
+	 * Each flag is its own top-level option. The uninstall flag is persisted
+	 * as its inverse (fotogrids_preserve_data_on_uninstall), which is what the
+	 * uninstaller reads.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/advanced-settings
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response
+	 */
+	public static function save_advanced_settings( $request ): \WP_REST_Response {
+		$settings = \FotoGrids\Settings\Plugin_Settings_Store::save_advanced(
+			array(
+				'autosave'                 => $request->get_param( 'autosave' ),
+				'share_statistics'         => $request->get_param( 'share_statistics' ),
+				'marketing_allowed'        => $request->get_param( 'marketing_allowed' ),
+				'allow_google_fonts'       => $request->get_param( 'allow_google_fonts' ),
+				'allow_news_updates'       => $request->get_param( 'allow_news_updates' ),
+				'delete_data_on_uninstall' => $request->get_param( 'delete_data_on_uninstall' ),
+			)
+		);
+
+		return rest_ensure_response( array( 'settings' => $settings ) );
+	}
+
+	/**
+	 * Regenerate image derivatives for a single attachment.
+	 *
+	 * POST /wp-json/fotogrids/v1/admin/regen-thumbnails/regenerate
+	 *
+	 * @since  1.0.0
+	 * @param  \WP_REST_Request $request
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public static function regenerate_attachment( $request ) {
+		$attachment_id = (int) $request->get_param( 'attachment_id' );
+
+		$attachment_post = get_post( $attachment_id );
+		if ( ! $attachment_post || 'attachment' !== $attachment_post->post_type ) {
+			return new \WP_Error(
+				'invalid_attachment',
+				__( 'Attachment not found.', 'fotogrids' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$file = get_attached_file( $attachment_id );
+		if ( ! $file || ! file_exists( $file ) ) {
+			return new \WP_Error(
+				'file_missing',
+				__( 'Attachment file not found on disk.', 'fotogrids' ),
+				array( 'status' => 422 )
+			);
+		}
+
+		// Regenerate all derivatives for this attachment.
+		$metadata = wp_generate_attachment_metadata( $attachment_id, $file );
+		if ( is_wp_error( $metadata ) ) {
+			return $metadata;
+		}
+		wp_update_attachment_metadata( $attachment_id, $metadata );
+
+		// Return updated size statuses.
+		$plugin_sizes  = array(
+			\FotoGrids\Image_Size_Manager::SLUG_THUMBNAIL,
+			\FotoGrids\Image_Size_Manager::SLUG_FULL,
+		);
+		$custom_sizes  = array_keys( \FotoGrids\Image_Size_Manager::get_custom_sizes() );
+		$size_statuses = array();
+		foreach ( array_merge( $plugin_sizes, $custom_sizes ) as $slug ) {
+			$data                   = image_get_intermediate_size( $attachment_id, $slug );
+			$size_statuses[ $slug ] = array(
+				'exists' => ( false !== $data && ! empty( $data['file'] ) ),
+				'width'  => $data['width'] ?? null,
+				'height' => $data['height'] ?? null,
+			);
+		}
+
+		return rest_ensure_response(
+			array(
+				'attachment_id' => $attachment_id,
+				'sizes'         => $size_statuses,
+			)
+		);
+	}
+
+	/**
+	 * Get Google Fonts family names via a server-side request.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public static function get_google_fonts_families( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Signature mandated by WordPress callback/hook contract; param intentionally unused here.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return new \WP_Error( 'forbidden', __( 'Insufficient permissions', 'fotogrids' ), array( 'status' => 403 ) );
+		}
+
+		// Cache key bumped to _v2 when the payload shape grew from a flat
+		// array of family names to {families, categories}. Old _v1 transients
+		// are left to expire naturally.
+		$cache_key = 'fotogrids_google_fonts_families_v2';
+		$cached    = get_transient( $cache_key );
+
+		if ( is_array( $cached ) && ! empty( $cached['families'] ) ) {
+			return rest_ensure_response(
+				array(
+					'families'   => array_values( $cached['families'] ),
+					'categories' => isset( $cached['categories'] ) && is_array( $cached['categories'] )
+						? $cached['categories']
+						: (object) array(),
+				)
+			);
+		}
+
+		$response = wp_remote_get(
+			'https://fonts.google.com/metadata/fonts',
+			array(
+				'timeout'     => 8,
+				'redirection' => 3,
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return new \WP_Error(
+				'google_fonts_request_failed',
+				__( 'Unable to fetch Google Fonts metadata.', 'fotogrids' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code( $response );
+		if ( 200 !== $status_code ) {
+			return new \WP_Error(
+				'google_fonts_bad_response',
+				__( 'Google Fonts metadata endpoint returned an unexpected response.', 'fotogrids' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		$body            = (string) wp_remote_retrieve_body( $response );
+		$body            = preg_replace( "/^\)\]\}'\n?/", '', $body );
+		$parsed          = json_decode( $body, true );
+		$family_metadata = is_array( $parsed ) && isset( $parsed['familyMetadataList'] ) && is_array( $parsed['familyMetadataList'] )
+			? $parsed['familyMetadataList']
+			: array();
+
+		// Allowed categories mirror Google's `category` taxonomy. Anything
+		// outside this list is normalised to '' so the client doesn't have
+		// to filter unknowns.
+		$allowed_categories = array( 'sans-serif', 'serif', 'display', 'handwriting', 'monospace' );
+
+		$families   = array();
+		$categories = array();
+		foreach ( $family_metadata as $font_entry ) {
+			if ( ! is_array( $font_entry ) || ! isset( $font_entry['family'] ) ) {
+				continue;
+			}
+
+			$family = trim( (string) $font_entry['family'] );
+			if ( '' === $family ) {
+				continue;
+			}
+
+			$families[] = $family;
+
+			$category = isset( $font_entry['category'] ) ? strtolower( trim( (string) $font_entry['category'] ) ) : '';
+			if ( in_array( $category, $allowed_categories, true ) ) {
+				$categories[ $family ] = $category;
+			}
+		}
+
+		$families = array_values( array_unique( $families ) );
+		sort( $families, SORT_NATURAL | SORT_FLAG_CASE );
+
+		if ( empty( $families ) ) {
+			return new \WP_Error(
+				'google_fonts_empty',
+				__( 'Google Fonts metadata response was empty.', 'fotogrids' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		set_transient(
+			$cache_key,
+			array(
+				'families'   => $families,
+				'categories' => $categories,
+			),
+			12 * HOUR_IN_SECONDS
+		);
+
+		return rest_ensure_response(
+			array(
+				'families'   => $families,
+				'categories' => empty( $categories ) ? (object) array() : $categories,
+			)
+		);
+	}
+
+	/**
+	 * Get overview statistics
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_overview_stats( $request ) {
+		global $wpdb;
+
+		$gallery_counts  = wp_count_posts( 'fotogrids_gallery' );
+		$galleries_count = (int) $gallery_counts->publish;
+		$album_counts    = wp_count_posts( 'fotogrids_album' );
+		$albums_count    = $album_counts->publish;
+
+		$items_count = \FotoGrids\Galleries\Gallery_Repository::count_all_items( array( 'publish' ) );
+
+		$stats_table  = $wpdb->prefix . 'fotogrids_statistics';
+		$totals       = $wpdb->get_row(
+			$wpdb->prepare( 'SELECT SUM(views) AS views, SUM(shares) AS shares FROM %i', $stats_table ),
+			ARRAY_A
+		);
+		$views_count  = isset( $totals['views'] ) ? (int) $totals['views'] : 0;
+		$shares_count = isset( $totals['shares'] ) ? (int) $totals['shares'] : 0;
+
+		$trend = self::get_period_trend( (int) $request->get_param( 'days' ) );
+
+		return rest_ensure_response(
+			array(
+				'galleries'           => $galleries_count,
+				'galleries_total'     => self::count_editable_posts( $gallery_counts ),
+				'galleries_published' => $galleries_count,
+				'settings_configured' => self::has_configured_settings(),
+				'albums'              => (int) $albums_count,
+				'albums_total'        => self::count_editable_posts( $album_counts ),
+				'items'               => (int) $items_count,
+				'views'               => (int) $views_count,
+				'shares'              => (int) $shares_count,
+				'trend'               => $trend,
+			)
+		);
+	}
+
+	/**
+	 * Totals for the selected window and the window immediately before it.
+	 *
+	 * Both windows are the same length, so the pair supports a like-for-like
+	 * comparison. Also carries the prior window's start and end dates for
+	 * display. Returns null when no period is selected, since an all-time view
+	 * has nothing to compare against.
+	 *
+	 * @since 1.0.0
+	 * @param int $days Window length in days.
+	 * @return array|null
+	 */
+	private static function get_period_trend( int $days ) {
+		if ( $days <= 0 ) {
+			return null;
+		}
+
+		global $wpdb;
+		$daily_table = $wpdb->prefix . 'fotogrids_statistics_daily';
+
+		$today          = self::site_date( 0 )->format( 'Y-m-d' );
+		$current_start  = self::site_date( $days - 1 )->format( 'Y-m-d' );
+		$previous_first = self::site_date( ( 2 * $days ) - 1 );
+
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT
+                    SUM(CASE WHEN viewed_date >= %s THEN views  ELSE 0 END) AS views_current,
+                    SUM(CASE WHEN viewed_date <  %s THEN views  ELSE 0 END) AS views_previous,
+                    SUM(CASE WHEN viewed_date >= %s THEN shares ELSE 0 END) AS shares_current,
+                    SUM(CASE WHEN viewed_date <  %s THEN shares ELSE 0 END) AS shares_previous
+                 FROM %i
+                 WHERE viewed_date >= %s
+                   AND viewed_date <= %s',
+				$current_start,
+				$current_start,
+				$current_start,
+				$current_start,
+				$daily_table,
+				$previous_first->format( 'Y-m-d' ),
+				$today
+			),
+			ARRAY_A
+		);
+
+		$previous_start = $previous_first->format( 'M j' );
+		$previous_end   = self::site_date( $days )->format( 'M j' );
+
+		return array(
+			'days'            => $days,
+			'views'           => isset( $row['views_current'] ) ? (int) $row['views_current'] : 0,
+			'views_previous'  => isset( $row['views_previous'] ) ? (int) $row['views_previous'] : 0,
+			'shares'          => isset( $row['shares_current'] ) ? (int) $row['shares_current'] : 0,
+			'shares_previous' => isset( $row['shares_previous'] ) ? (int) $row['shares_previous'] : 0,
+			'previous_start'  => $previous_start,
+			'previous_end'    => $previous_end,
+		);
+	}
+
+	/**
+	 * Returns the site-local date a given number of days before today.
+	 *
+	 * @since 1.1.4
+	 * @param int $days_ago Days before today.
+	 * @return \DateTimeImmutable
+	 */
+	private static function site_date( int $days_ago ): \DateTimeImmutable {
+		return ( new \DateTimeImmutable( 'today', wp_timezone() ) )->modify( '-' . $days_ago . ' days' );
+	}
+
+	/**
+	 * Sum the post statuses that represent a post the user has authored.
+	 *
+	 * Excludes trash, auto-draft and inherit so an abandoned autosave or a
+	 * trashed gallery does not read as work in progress.
+	 *
+	 * @since 1.0.0
+	 * @param object $counts Result of wp_count_posts().
+	 * @return int
+	 */
+	private static function count_editable_posts( $counts ): int {
+		$statuses = array( 'publish', 'future', 'draft', 'pending', 'private' );
+		$total    = 0;
+
+		foreach ( $statuses as $status ) {
+			$total += isset( $counts->$status ) ? (int) $counts->$status : 0;
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Whether the user has saved any of the plugin's Setup settings pages.
+	 *
+	 * Each option below is written only when its Settings tab is saved, so the
+	 * presence of a non-empty value is the signal. The one exception is
+	 * fotogrids_media_settings, which Activator seeds on first activation and
+	 * therefore only counts once it diverges from the seeded defaults.
+	 *
+	 * @since 1.0.0
+	 * @return bool
+	 */
+	private static function has_configured_settings(): bool {
+		$option_keys = array(
+			'fotogrids_general_settings',
+			'fotogrids_gallery_defaults',
+			'fotogrids_album_defaults',
+			'fotogrids_permission_settings',
+			'fotogrids_integration_settings',
+			'fotogrids_sharing_settings',
+			'fotogrids_view_settings',
+			'fotogrids_watermark_settings',
+			'fotogrids_seo_settings',
+		);
+
+		foreach ( $option_keys as $option_key ) {
+			$stored = get_option( $option_key, null );
+
+			if ( null !== $stored && array() !== $stored && '' !== $stored ) {
+				return true;
+			}
+		}
+
+		$media = get_option( 'fotogrids_media_settings', null );
+
+		if ( is_array( $media ) && \FotoGrids\Image_Size_Manager::get_plugin_size_defaults() !== $media ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get views data over time
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_views_data( $request ) {
+		$days = (int) $request->get_param( 'days' );
+		if ( $days <= 0 ) {
+			$days = 7;
+		}
+
+		global $wpdb;
+		$daily_table = $wpdb->prefix . 'fotogrids_statistics_daily';
+
+		// Fetch the selected window plus the one before it in one query, then
+		// map to a dense date-keyed array so days with zero views are still
+		// represented.
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT viewed_date, SUM(views) AS daily_views
+             FROM %i
+             WHERE viewed_date >= %s
+               AND viewed_date <= %s
+             GROUP BY viewed_date
+             ORDER BY viewed_date ASC',
+				$daily_table,
+				self::site_date( ( 2 * $days ) - 1 )->format( 'Y-m-d' ),
+				self::site_date( 0 )->format( 'Y-m-d' )
+			),
+			ARRAY_A
+		);
+
+		$views_by_date = array();
+		foreach ( $rows as $row ) {
+			$views_by_date[ $row['viewed_date'] ] = (int) $row['daily_views'];
+		}
+
+		$labels   = array();
+		$data     = array();
+		$previous = array();
+
+		for ( $i = $days - 1; $i >= 0; $i-- ) {
+			$day      = self::site_date( $i );
+			$date     = $day->format( 'Y-m-d' );
+			$labels[] = $day->format( 'M j' );
+			$data[]   = $views_by_date[ $date ] ?? 0;
+
+			// Same weekday offset one window earlier, so the two lines compare
+			// like for like.
+			$prior_date = self::site_date( $i + $days )->format( 'Y-m-d' );
+			$previous[] = $views_by_date[ $prior_date ] ?? 0;
+		}
+
+		return rest_ensure_response(
+			array(
+				'labels'   => $labels,
+				'data'     => $data,
+				'previous' => $previous,
+			)
+		);
+	}
+
+	/**
+	 * Get popular galleries
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_popular_galleries( $request ) {
+		$days = (int) $request->get_param( 'days' );
+
+		global $wpdb;
+
+		$daily_table = $wpdb->prefix . 'fotogrids_statistics_daily';
+		$stats_table = $wpdb->prefix . 'fotogrids_statistics';
+
+		if ( $days > 0 ) {
+			// Scope to the daily table for the selected period.
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT object_id, SUM(views) AS total_views
+                 FROM %i
+                 WHERE object_type = 'gallery'
+                   AND viewed_date >= %s
+                 GROUP BY object_id
+                 ORDER BY total_views DESC, object_id ASC
+                 LIMIT 10",
+					$daily_table,
+					self::site_date( $days - 1 )->format( 'Y-m-d' )
+				),
+				ARRAY_A
+			);
+
+			$total_views = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM(views)
+                 FROM %i
+                 WHERE object_type = 'gallery'
+                   AND viewed_date >= %s",
+					$daily_table,
+					self::site_date( $days - 1 )->format( 'Y-m-d' )
+				)
+			);
+		} else {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT object_id, SUM(views) AS total_views
+                 FROM %i
+                 WHERE object_type = 'gallery'
+                 GROUP BY object_id
+                 ORDER BY total_views DESC, object_id ASC
+                 LIMIT 10",
+					$stats_table
+				),
+				ARRAY_A
+			);
+
+			$total_views = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM(views)
+                 FROM %i
+                 WHERE object_type = 'gallery'",
+					$stats_table
+				)
+			);
+		}
+
+		$labels = array();
+		$data   = array();
+		$ids    = array();
+
+		foreach ( $results as $result ) {
+			$gallery = get_post( $result['object_id'] );
+			if ( $gallery && current_user_can( 'read_post', $gallery->ID ) ) {
+				$labels[] = $gallery->post_title;
+				$data[]   = (int) $result['total_views'];
+				$ids[]    = (int) $gallery->ID;
+			}
+		}
+
+		return rest_ensure_response(
+			array(
+				'labels' => $labels,
+				'data'   => $data,
+				'ids'    => $ids,
+				'total'  => $total_views,
+			)
+		);
+	}
+
+	/**
+	 * Get recent activity
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_recent_activity( $request ) {
+		$days = (int) $request->get_param( 'days' );
+
+		global $wpdb;
+		$stats_table = $wpdb->prefix . 'fotogrids_statistics';
+
+		if ( $days > 0 ) {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT object_type, object_id, views, last_viewed
+                 FROM %i
+                 WHERE last_viewed >= %s
+                 ORDER BY last_viewed DESC
+                 LIMIT 20',
+					$stats_table,
+					gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) )
+				),
+				ARRAY_A
+			);
+		} else {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT object_type, object_id, views, last_viewed
+                 FROM %i
+                 ORDER BY last_viewed DESC
+                 LIMIT 20',
+					$stats_table
+				),
+				ARRAY_A
+			);
+		}
+
+		$activity = array();
+
+		foreach ( $results as $result ) {
+			$post = get_post( $result['object_id'] );
+			if ( $post && current_user_can( 'read_post', $post->ID ) ) {
+				$activity[] = array(
+					'id'          => (int) $result['object_id'],
+					'title'       => $post->post_title,
+					'type'        => $result['object_type'],
+					'views'       => (int) $result['views'],
+					'last_viewed' => human_time_diff( strtotime( $result['last_viewed'] . ' UTC' ), time() ) . ' ago',
+					'edit_url'    => get_edit_post_link( $post->ID, 'raw' ) ?? '',
+				);
+			}
+		}
+
+		return rest_ensure_response( $activity );
+	}
+
+	/**
+	 * Get top performing content
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_top_content( $request ) {
+		$days = (int) $request->get_param( 'days' );
+
+		global $wpdb;
+
+		$daily_table = $wpdb->prefix . 'fotogrids_statistics_daily';
+		$stats_table = $wpdb->prefix . 'fotogrids_statistics';
+
+		if ( $days > 0 ) {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT object_type, object_id,
+                        SUM(views) AS views, SUM(shares) AS shares
+                 FROM %i
+                 WHERE viewed_date >= %s
+                 GROUP BY object_type, object_id
+                 ORDER BY views DESC, object_type ASC, object_id ASC
+                 LIMIT 20',
+					$daily_table,
+					self::site_date( $days - 1 )->format( 'Y-m-d' )
+				),
+				ARRAY_A
+			);
+
+			$total_views = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT SUM(views)
+                 FROM %i
+                 WHERE viewed_date >= %s',
+					$daily_table,
+					self::site_date( $days - 1 )->format( 'Y-m-d' )
+				)
+			);
+		} else {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT object_type, object_id, views, shares
+                 FROM %i
+                 ORDER BY views DESC, object_type ASC, object_id ASC
+                 LIMIT 20',
+					$stats_table
+				),
+				ARRAY_A
+			);
+
+			$total_views = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT SUM(views) FROM %i', $stats_table ) );
+		}
+
+		$content = array();
+
+		foreach ( $results as $result ) {
+			$post = get_post( $result['object_id'] );
+			if ( $post && current_user_can( 'read_post', $post->ID ) ) {
+				$views = (int) $result['views'];
+
+				$content[] = array(
+					'id'          => (int) $result['object_id'],
+					'title'       => $post->post_title,
+					'type'        => $result['object_type'],
+					'views'       => $views,
+					'views_share' => $total_views > 0 ? round( $views / $total_views * 100, 1 ) : 0.0,
+					'shares'      => (int) ( $result['shares'] ?: 0 ),
+					'edit_url'    => get_edit_post_link( $post->ID, 'raw' ) ?? '',
+				);
+			}
+		}
+
+		return rest_ensure_response( $content );
+	}
+
+	/**
+	 * Add items to gallery
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function add_items_to_gallery( $request ) {
+		$gallery_id = $request->get_param( 'id' );
+		$item_ids   = $request->get_param( 'item_ids' );
+
+		if ( empty( $item_ids ) || ! is_array( $item_ids ) ) {
+			return new \WP_Error(
+				'invalid_item_ids',
+				__( 'Invalid item IDs provided.', 'fotogrids' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$added  = array();
+		$errors = array();
+
+		foreach ( $item_ids as $item_id ) {
+			$result = \FotoGrids\Galleries\Gallery_Items::add( (int) $gallery_id, (int) $item_id );
+
+			if ( $result ) {
+				$added[] = $item_id;
+			} else {
+				$errors[] = $item_id;
+			}
+		}
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'added'   => $added,
+				'errors'  => $errors,
+				'message' => sprintf(
+				/* translators: %d: number of items added to the gallery. */
+					_n(
+						'%d item added to gallery.',
+						'%d items added to gallery.',
+						count( $added ),
+						'fotogrids'
+					),
+					count( $added )
+				),
+			)
+		);
+	}
+
+	/**
+	 * Get recently edited galleries and albums
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_recently_edited( $request ) {
+		$post_status = array( 'publish', 'draft' );
+		if ( $request->get_param( 'include_private' ) ) {
+			$post_status[] = 'private';
+		}
+
+		return rest_ensure_response(
+			array(
+				'items' => self::fetch_recently_edited(
+					array(
+						'limit'       => (int) $request->get_param( 'limit' ),
+						'post_status' => $post_status,
+					)
+				),
+			)
+		);
+	}
+
+	/**
+	 * Recently edited galleries and albums the current user can edit.
+	 *
+	 * Shared by the REST route above and the dashboard widget.
+	 *
+	 * @since  1.0.0
+	 * @param  array<string, mixed> $args Optional. Keys: limit, post_type, post_status.
+	 * @return array<int, array<string, mixed>> Normalized rows, newest first.
+	 */
+	public static function fetch_recently_edited( array $args = array() ): array {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'limit'       => 10,
+				'post_type'   => array( 'fotogrids_gallery', 'fotogrids_album' ),
+				'post_status' => array( 'publish', 'draft' ),
+			)
+		);
+
+		$query = array(
+			'post_type'              => $args['post_type'],
+			'post_status'            => $args['post_status'],
+			'orderby'                => array(
+				'modified' => 'DESC',
+				'ID'       => 'DESC',
+			),
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		);
+
+		$edits_others = false;
+		foreach ( (array) $args['post_type'] as $post_type ) {
+			$type_object = get_post_type_object( $post_type );
+			if ( $type_object && current_user_can( $type_object->cap->edit_others_posts ) ) {
+				$edits_others = true;
+				break;
+			}
+		}
+
+		if ( ! $edits_others ) {
+			$query['author'] = get_current_user_id();
+		}
+
+		$datetime_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+		$remaining       = (int) $args['limit'];
+		$batch           = $remaining;
+		$offset          = 0;
+
+		$items = array();
+		while ( $remaining > 0 ) {
+			$query['posts_per_page'] = $batch;
+			$query['offset']         = $offset;
+
+			$posts = get_posts( $query );
+
+			foreach ( $posts as $post ) {
+				if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+					continue;
+				}
+
+				$is_album = 'fotogrids_album' === $post->post_type;
+
+				$items[] = array(
+					'id'                 => $post->ID,
+					'title'              => trim( $post->post_title ),
+					'placeholder'        => \FotoGrids\Collection_Title::placeholder( $post ),
+					'type'               => $post->post_type,
+					'type_label'         => $is_album ? __( 'Album', 'fotogrids' ) : __( 'Gallery', 'fotogrids' ),
+					'status'             => $post->post_status,
+					'modified'           => $post->post_modified,
+					'modified_gmt'       => $post->post_modified_gmt,
+					'modified_timestamp' => (int) get_post_timestamp( $post, 'modified' ),
+					'modified_formatted' => date_i18n( $datetime_format, strtotime( $post->post_modified ) ),
+					'edit_url'           => get_edit_post_link( $post->ID, 'raw' ),
+				);
+
+				--$remaining;
+				if ( 0 === $remaining ) {
+					break;
+				}
+			}
+
+			if ( count( $posts ) < $batch ) {
+				break;
+			}
+
+			$offset += $batch;
+			$batch   = 100;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Get news and updates for the dashboard widget
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public static function get_news_updates( $request ) {
+		$refresh = (bool) $request->get_param( 'refresh' );
+
+		return rest_ensure_response(
+			array(
+				'enabled' => News_Feed::is_enabled(),
+				'items'   => News_Feed::get_items( $refresh ),
+			)
+		);
+	}
+
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+}

@@ -1,0 +1,472 @@
+Novaflow Changelog
+
+1.0.98 - 2026-09-24 (Home label and footer tagline)
+- The highlighted custom homepage link in the primary menu now uses the localized Home interface label. Other menu labels and all destinations remain unchanged.
+- Removed only the site-description line from the footer brand area; the saved site description, logo, home link and copyright credit are preserved.
+
+1.0.98 - 2026-09-24 (localized widget headings)
+- Added an optional native WordPress Block Bindings source for Latest Posts, Recent Comments, Archives and Categories headings.
+- Added editor previews and English-source/Turkish translations; ordinary user headings, menus, category names and posts remain unchanged.
+- Theme installation never modifies saved widget content; bindings are explicitly configured per site.
+
+1.0.98 - 2026-09-24 (Blog shortcut)
+- The automatic Editor's selection shortcut now opens the configured posts page instead of the homepage section.
+- Verified English (UK), English (US), and Turkish interface labels and updated the translated Customizer explanation.
+- Preserved user-authored menus, categories, widget headings, comments, and site description; these require content translations separately from theme localization.
+
+1.0.98 - 2026-09-24 (shortcut restoration and translation maintenance)
+- Restored the three visual header shortcuts with selected-category URLs and a real Editor's selection section anchor; added safe generic fallbacks.
+- Completed Turkish interface strings, including the missing contextual plural for comment counts, and internationalized the copyright suffix.
+- Kept the owner's fixed Turkish footer phrase as an explicit exception. User content and manually saved menu/widget text are not automatically translated by a theme language pack.
+
+1.0.98 - 2026-09-24 (owner-requested fixed release version)
+- Removed only the three pictured visual header shortcuts, leaving the search, navigation, social links, page sections and footer unchanged.
+- The release version is fixed at 1.0.98 by request; the higher-numbered entries below are historical development notes.
+
+1.0.293 - 2026-09-24
+- Stabilized primary-menu font weight, icon size and spacing across hover, keyboard focus and current-page states; removed vertical hover movement without removing color feedback.
+- Preserved the gold overflow button, permanent Home color, equal spacing and initial-load stability.
+- Duplicate menu entries remain site data to manage in WordPress, not hardcoded filtering in the theme.
+
+1.0.292 - 2026-09-24
+- Changed the icon-only overflow button to a pale-yellow/gold palette matching the navigation bar.
+- Added the optional owner-managed nf-menu-home-highlight menu class for a persistent hover-style highlight, including dark mode.
+- Menu labels and destinations remain WordPress menu data, not hardcoded theme links. No footer or layout behavior changed.
+
+1.0.291 - 2026-09-24
+- Replaced the visible More label and chevron with one compact, colorful menu icon; retained the translated accessible button name.
+- Distributed remaining navigation space equally across the visible menu items, with centered links and no unused trailing space.
+- Preserved intrinsic-width overflow measurement, stable initial loading, all menu destinations and the footer.
+
+1.0.290 - 2026-09-24
+- Reserved the desktop navigation row before deferred JavaScript and revealed the menu after font-aware measurement, preventing the initial wrapped-menu flash and vertical jump.
+- Added a bounded loading fallback so navigation remains available if the main script fails; no-JavaScript navigation remains horizontally scrollable.
+- Restyled More with the theme's pink/purple icon badge, soft gradient, chevron, dark mode and visible keyboard focus. Menu destinations and footer are unchanged.
+
+1.0.289 - 2026-09-24
+- Opened the existing footer credit in a new tab with noopener/noreferrer, without nofollow or a change to its text or styling.
+- Kept desktop primary navigation on one row, moving only the links that do not fit into a right-aligned More disclosure. Original WordPress links, order and submenus are retained.
+- Added keyboard, outside-click, resize and font-load handling; preserved the mobile menu and the no-JavaScript fallback.
+
+1.0.288 - 2026-09-24
+- Changed only the footer's surrounding sentence to English: All rights reserved.
+- Preserved the fixed Turkish link text, dynamic year, ordinary followed link, action architecture, and existing styling.
+
+1.0.287 - 2026-09-24
+- Applied the owner's explicitly requested fixed Turkish footer sentence and literal https://narya.tr/ HTML link in novaflow_footer_credit_link(), retaining the existing novaflow_footer_credit action.
+- Kept the text outside gettext; only the local WordPress year is dynamic. No rel restrictions, JavaScript, hidden content, or administrator settings were added.
+- Removed the footer-credit underline override; existing footer CSS keeps the link's color/font inherited and all link-state underlines disabled.
+- Header, menus, homepage, sidebar, banner, scripts, responsive behavior, screenshot, and translations are unchanged.
+
+1.0.286 - 2026-09-24
+- Restored the five official social-platform homepage defaults while keeping URLs editable and allowing empty fields to hide individual icons.
+- Added an explicit Customizer explanation of the defaults and nofollow behavior.
+- Renamed the author-credit label to Narya, underlined it, and applied nofollow noopener noreferrer.
+- Kept the existing WordPress-native Utility Menu location and the corrected screenshot.
+
+1.0.285 - 2026-09-24
+- Resized the complete author-supplied screenshot to 1200 x 900 pixels without cropping, added borders, or replacing any content.
+- Removed the white margins added in 1.0.284 and verified a full-width, full-height fit in a 4:3 theme-card preview.
+- Theme layout, functionality, and image licensing remain unchanged.
+
+1.0.284 - 2026-09-23
+- Re-reviewed the author's updated 1.0.283 package against the five reviewer points.
+- Installed the new author-created screenshot without altering any source pixels; added 4:3 canvas margins.
+- Replaced stale image credits with per-photograph CC0 credits and documented all used third-party icon licenses.
+- Removed hardcoded Turkish page/category destinations and menu title/URL rewriting.
+- Added Customizer category selectors for the three existing header shortcuts.
+- Restored custom logos, owner-managed utility menus, and optional-only social destinations.
+- Replaced the unrelated footer keyword link with the site owner's copyright and one neutral theme credit.
+- Fixed magazine pagination in both Reading modes and the unbounded Most Read request.
+- Restored accessible mobile navigation and kept desktop overflow items visible.
+- Raised default/maximum canvas width to 1600px without overwriting saved settings.
+- Updated English source strings and Turkish translation catalogs.
+
+1.0.283 - 2026-09-23
+- Production hardening pass with the existing frontend HTML/CSS/layout preserved.
+- Removed the obsolete header-search category data query and its unused JavaScript controller, plus an unused header social array and no-op body-class filter.
+- Added per-request option/category caching, centralized safe category archive URL handling, WP_Error fallbacks, safer text normalization, and defensive translated-heading replacement.
+- Removed the optional mbstring dependency from category shortcut matching while preserving Turkish/English slug matching through WordPress sanitize_title().
+- Bounded Most Read candidate scans when a view provider is present and avoids scanning all posts when no provider exists; removed synthetic duplication of latest comments so only real approved comments render.
+- Kept the project-specific Turkish footer anchor intact and routed the surrounding copyright sentence through the existing Novaflow translation catalog.
+- Replaced direct-access exit guards with non-terminating returns and removed unused localized JavaScript values. The theme contains no custom SQL, AJAX, REST, or file-upload endpoint requiring additional nonce/DB handlers.
+
+1.0.282 - 2026-09-23
+- Primary navigation now renders only the menu assigned to Appearance > Menus > Primary Menu; automatic top-level page fallback and legacy menu-item URL/title mutation were removed.
+- Replaced the native header search category select with a custom modern dropdown panel that shows icons for each category option and keeps the selected category synced to the search filter.
+- Set existing installations to the requested 1500px theme width and rebuilt the default header search to the supplied pill design with a real category filter and pink Search button.
+
+1.0.252 - 2026-09-23
+- Rebuilt the right-side header shortcuts to the supplied vertical icon/category model, linked each item to its category archive, and bundled local Bootstrap Icons.
+
+1.0.251 - 2026-09-23
+- Rebuilt the default desktop header center to match the supplied reference: a wide integrated search field plus three pastel shortcut cards for Trend Products, Just for You, and Latest Additions, while preserving the existing optional Customizer header advertisement path.
+- Added translated shortcut labels, responsive behavior, matching icon treatments, and dark-mode styling without changing the lower navigation or ticker.
+
+1.0.250 - 2026-09-23
+- Increased all text inside the sidebar Editor's Selection widget by 2px, including the section heading, View all link, category badges, card titles, dates, and view counts, without changing card or image dimensions.
+
+1.0.249 - 2026-09-23
+- Fixed the homepage Latest Stories pagination at its real data source: the first three Featured Stories remain stable, while the eight-card Latest Stories grid now reads nf_story_page and fetches the next eight published posts on page 2 and later.
+- Rebuilt the homepage pager as a Latest Stories pager instead of a Most Read pager, so the visible page number and the eight-card story set always advance together.
+
+1.0.246 - 2026-09-23
+- Rebuilt Most Read homepage pagination to deterministically slice the ranked post-ID list before querying, so page 2 displays IDs 7–12, page 3 displays IDs 13–18, and repeated first-page content cannot occur.
+- Fixed Most Read pagination so page 2 and later use WordPress WP_Query pagination against the full ranked ID list instead of manual array slicing, and rebuilt pagination links with explicit nf_story_page URLs.
+- Restored the homepage Most Read pagination by overriding two legacy CSS rules that were still forcing `.nf-home-pagination` to `display:none !important`.
+- Restored the homepage pagination under the Most Read section. The ranked list now shows six posts per page and provides Previous/Next plus numbered page links using the existing nf_story_page flow.
+- Added a compact 2x2 Editor's Selection widget directly below Latest Comments in the primary sidebar. Sticky posts are used as editorial picks and recent posts fill any empty slots; cards include image, category, title, date, and optional view count with dark-mode support.
+- Increased only the Latest Comments date text from 11px to 12px.
+- Updated the latest-comments widget so the author and comment date share the first row while the comment excerpt always starts on a separate second row.
+- Changed the homepage Latest Stories block into a Most Read section that ranks posts by plugin-provided view counts, keeps the existing six-card layout, and shows view totals when available.
+- Strengthened frontend localization for database-stored UI labels: primary/utility/footer menu titles now localize at render time using title/object/term/URL context, fallback menus are localized, and known widget/Gutenberg headings such as Latest Posts, Latest Comments, Categories, and Related Posts use the same translation rule.
+- Reworked theme internationalization: converted Turkish source UI strings to English gettext sources, localized dark/light mode labels in JavaScript, and routed known theme menu/category labels through the Novaflow text domain so they follow the selected site language.
+- Increased single-post article content text by 2px and increased Related Posts section typography by 1px without changing card or image dimensions.
+- Forced footer post/list titles to a single line with ellipsis so long titles no longer wrap and distort footer columns.
+- Removed the erroneous 5px sidebar offset from 1.0.233 and explicitly aligned both homepage grid columns to the same top edge.
+- Aligned the homepage Trending now/sidebar column with the Featured stories box by correcting the desktop top offset only.
+- Increased only the Featured stories outer shell and headline-card corner radius from 8px to 12px.
+- Fixed the breaking-news arrow controls wrapper in dark mode so the previously white control area now uses the same dark-navy surface as the ticker.
+- Completed dark-mode coverage for modern single-post pages, including the article shell, related-posts area, related cards, tags, metadata, captions, comments and form surfaces so no light-theme white bands remain.
+- Fixed the breaking-news ticker in dark mode by overriding the real white ticker-inner surface with dark navy and restoring high-contrast story/time/control colors.
+- Based the update back on 1.0.225 to preserve the older homepage pulse section design, then fixed dark-mode visibility for sidebar block headings, latest comments/latest posts widgets, and the breaking-news ticker text.
+- Rebuilt dark mode as a complete dark-navy theme layer, overriding legacy light gradients/backgrounds across headers, menus, ticker, page shells, cards, sidebars, widgets, forms, article content, comments and footer.
+- Replaced the site header and footer branding with the newly supplied transparent NovaFlow logo asset, optimized locally as PNG and lossless WebP.
+- Vertically centered the breaking-news story text within the ticker row and increased only the moving story title typography by 1px.
+- Enlarged the desktop header logo column and increased the rendered logo size so the logo area appears noticeably bigger without collapsing the adjoining banner/search areas.
+- Restored the archive/category sidebar to its previous position while keeping category archives limited to 10 posts per page.
+- Moved the archive page header into the left content column so the right sidebar starts at the top, and set category archives to exactly 10 posts per page with normal WordPress pagination.
+- Updated the category/archive post grid so desktop archive pages display four cards side by side per row, while keeping tablet and mobile breakpoints unchanged.
+- Set the desktop utility bar to 30px without shrinking text/icons, made all five social icons functional with nofollow links and network fallbacks, and added a persistent working dark-mode toggle.
+- Rebuilt the top utility bar from the stable 1.0.210 base to match the supplied screenshot closely: full-width 52px bar, exact four Turkish links with slash separators, right-side follow label, five social icons, vertical divider, and Aydınlık Mod.
+- Removed the description text from the numbered Home Pulse cards while keeping the number, category, title and bottom meta row.
+- Moved the Latest stories category badge back down above the date row and increased the bottom date/meta compartment height to 35px.
+- Kept neighboring desktop menu items fixed by using a non-reflow hover emphasis, and made the Latest stories card titles bold.
+- Restored the Latest stories text sizes and changed desktop menu hover so labels become bold with a different hover color.
+- Rebalanced Latest stories card body rows so excerpt text fits inside the box cleanly, and restored the stronger desktop menu hover grow effect with a new teal hover color.
+- Reverted the 1.0.204 Latest stories excerpt-removal change and restored the 1.0.203 card layout.
+- Reduced the Latest stories date/meta bottom compartment to a true 25px total height by removing extra body bottom padding and fixing the meta row height.
+- Restored the Latest stories card order so the category sits above the title again, and removed the lead Featured story excerpt under the title.
+- Fixed Latest stories title separators by moving the divider outside the line-clamped heading box, and matched the Featured outer shell plus all three headline cards to the navigation's 8px radius.
+
+1.0.200 - 2026-09-23
+- Matched the Featured stories outer box corner radius to the navigation box and added divider lines under Latest stories card titles.
+- Fixed the ineffective global thin-text override by normalizing every theme-owned public font-weight declaration in main.css and ui.css to 400.
+- Removed synthetic currentColor text-shadows that visually re-boldened active/hovered navigation labels.
+- Added a final high-specificity 400-weight guard with font synthesis disabled so nested WordPress/plugin markup cannot fall back to synthetic bold.
+
+1.0.198 - 2026-09-23
+- Standardized all public-facing theme text to a normal thin 400 weight through one final authoritative typography layer.
+- Removes visual boldness from headings, card titles, menus, labels, buttons, strong/b text, metadata, widgets, and footer text without changing layout or icons.
+
+1.0.197 - 2026-09-23
+- Rebuilt card hover motion as one final CSS system across homepage, archive, related-story, and sidebar card boxes.
+- Every supported card now rises 5px with the same shadow; cards with media zoom their image to 1.045 using the same easing.
+- Removed the broken nf-pointer-effects-ready CSS gate that permanently disabled hover motion because no runtime code ever added that class.
+
+1.0.196 - 2026-09-23
+- Keeps the Anasayfa/Home primary-menu item visibly selected while the real front page is open.
+- Wraps the Featured stories heading and three-card headline mosaic in one clean 7px-radius outer box without changing the card layout.
+
+1.0.195 - 2026-09-23
+- Replaced the plain square shown before the Shop menu item with the Lucide Store SVG, bundled locally with the theme.
+- Kept the existing 22px menu-icon sizing and assigned the storefront icon a matching purple accent.
+
+1.0.194 - 2026-09-23
+- Distributed visible desktop primary-menu items evenly across the full navigation width while preserving natural label widths.
+- Kept trailing non-fitting menu items hidden without restoring the removed overflow button.
+
+1.0.193 - 2026-09-23
+- Restored natural, non-shrinking desktop primary-menu item widths so labels are no longer crushed or ellipsized.
+- Added responsive menu fitting that shows only complete top-level items that fit inside the 1500px navigation row and hides trailing items that do not fit.
+- Kept the removed hamburger/overflow control disabled; no replacement button is added.
+- Recalculates fitting after resize, page load, and font loading so the row stays inside the theme container.
+
+1.0.192 - 2026-09-23
+- Fixed the desktop primary menu after removal of the overflow button so the menu can shrink within the 1500px theme container instead of extending beyond the right edge.
+- Removed the max-content width lock from desktop menu items and links; items now keep natural sizing but are allowed to shrink, with long labels safely ellipsized when necessary.
+
+1.0.191 - 2026-09-23
+- Removed the desktop primary-menu overflow control that generated the yellow three-line button shown at the right edge of the menu.
+- Removed the JavaScript that created and managed that control; all WordPress primary-menu items now remain in the normal menu row.
+- Added a final CSS safeguard so stale overflow-control markup from an older cached build cannot become visible.
+
+1.0.190 - 2026-09-23
+- Removed the yellow hamburger/mobile menu toggle from the header.
+- Removed the mobile grid column that existed only for that toggle so no empty space remains.
+
+1.0.189 - 2026-09-23
+- Set the theme container default and maximum width to 1500px.
+- Added a one-time migration that reduces previously saved 1600px widths to 1500px while preserving narrower Customizer choices.
+
+1.0.188 - 2026-09-23
+- Set each desktop primary-menu item and clickable menu box to an explicit 40px height.
+- Widened the right-side overflow/menu control by 50px while keeping the rest of the header unchanged.
+
+1.0.100 - 2026-09-22
+- Kept the desktop primary menu section at exactly 40px high while enlarging its usable inner row from 34px to 38px.
+- Increased primary-menu labels, decorative icons, separators, spacing, and the overflow button proportionally for a larger, better-balanced navigation bar.
+
+1.0.99 - 2026-09-22
+- Expanded the default and maximum theme container width from 1500px to 1600px.
+- Added a one-time migration so existing installations saved at the former 1500px ceiling adopt the new 1600px width while preserving future Customizer choices.
+
+1.0.98 - 2026-09-22
+- Removed the empty page-templates directory from the distributable package.
+- Removed the primary-menu filter that injected hardcoded Turkish category slugs and an author link, plus language-specific category icon rules; WordPress now controls primary-menu contents completely and decorative icons use generic term IDs.
+- Replaced all non-English translation source strings with English strings and refreshed the translation files.
+- Expanded bundled-resource attribution with exact filenames, copyright, license, source URLs, and local license-copy paths.
+- Restored the author-supplied photographic screenshot and documented the author's GPLv2-or-later release for every photograph shown in it.
+- Removed theme-side social share buttons and share URL generation because share functionality is plugin territory under the WordPress.org Theme Review requirements.
+- Made optional social-profile URLs empty by default; fresh installations now expose only the single Narya Author URI credit.
+- Added a colorful editorial header showcase that fills the banner position whenever no site-owner advertisement or widget is configured.
+- Set the theme canvas, saved-value sanitizer, and Customizer width limit to 1500px.
+- Restored screenshot.png with the original author-supplied photographs and retained its WordPress.org-compliant 1200 by 900 dimensions.
+- Re-ran static security, privacy, syntax, resource, package, and WordPress.org compliance checks.
+
+1.0.97 - 2026-09-01
+- Removed all theme-side post-view tracking, visitor cookies, database writes, stored-view queries, and default view-count output; plugins may optionally provide display-only counts through the existing filter.
+- Set the single author credit to the Author URI at https://narya.tr/, removed the former secondary credit, and changed the Narya credit to a normal followed link with only noopener/noreferrer safety relationships.
+- Updated Tested up to to WordPress 7.1.
+- Improved the six reviewer-reported color contrast pairs to WCAG AA, renamed two template-scope variables that collided with WordPress globals, added a front-page h1 for document structure, and added the missing translator comments.
+
+1.0.96 - 2026-08-24
+- Hardened Customizer external URLs by requiring complete HTTP(S) destinations without embedded credentials.
+- Added defensive type and error handling for filtered excerpts, article introductions, and WordPress tag links.
+- Preserved the existing templates, CSS classes, layouts, hooks, option names, and WordPress-native media and comment workflows.
+
+1.0.95 - 2026-08-24
+- Added a complete, privacy-friendly About Novaflow screen under Appearance using native WordPress administration APIs.
+- Documented setup steps, theme features, requirements, accessibility, performance, licensing, privacy, and troubleshooting inside the theme.
+
+1.0.94 - 2026-08-24
+- Added a theme-specific Theme URI header.
+- Switched single-post tags to WordPress core tag output while preserving the existing Novaflow styling.
+- Prepared and validated the distributable theme under the required novaflow directory slug.
+
+1.0.93 - 2026-08-24
+- Removed the header-banner shadow without changing its dimensions or placement.
+- Added locally bundled WebP derivatives for the default logo and banner, reducing their combined transfer size while retaining the original source PNG files.
+- Removed the unused front-end Dashicons request, reserved high image priority for the primary homepage visual, and lazy-loaded related-post thumbnails.
+- Preserved WordPress core title, canonical, robots, feeds, and sitemap behavior while extending native HTML5 support to navigation widgets.
+
+1.0.92 - 2026-08-24
+- Standardized the earlier author-site links with explicit labels and qualified new-tab relationships.
+- Removed the earlier separate website Customizer option so the author-site credit followed one code path.
+
+1.0.91 - 2026-08-24
+- Adjusted the earlier website-icon position in the utility social-link row.
+
+1.0.90 - 2026-08-24
+- Updated the earlier website-link relationships and replaced generic link symbols with locally bundled Lucide icons.
+
+1.0.89 - 2026-08-24
+- Changed the utility bar surface to white and added an optional, Customizer-managed external website slot with transparent accessible labeling and qualified outbound-link attributes.
+
+1.0.88 - 2026-08-24
+- Increased only the Categories sidebar heading and category-label typography by two pixels while preserving the icon and grid dimensions.
+
+1.0.87 - 2026-08-24
+- Removed white circular fills, visible borders, and shadows behind top-bar social icons.
+- Retained a subtle transparent color highlight for keyboard and pointer interaction.
+
+1.0.86 - 2026-08-24
+- Restyled the top utility bar with a modern colorful surface and clearer interactive states.
+- Replaced the header's hand-drawn social marks with locally bundled Simple Icons brand SVGs.
+- Added native Customizer URL controls and nofollow header links for TikTok, LinkedIn, and Pinterest.
+
+1.0.85 - 2026-08-24
+- Increased all Newsroom Pulse card typography by two pixels.
+- Limited Pulse card titles to one line and summaries to a stable two-line area.
+
+1.0.84 - 2026-08-24
+- Limited Editor's selection card titles to a consistent two-line area.
+- Increased homepage list-row height by another 20 pixels to 203 pixels.
+- Increased three-column latest-card summary and date typography by two pixels.
+
+1.0.83 - 2026-08-24
+- Widened every desktop sidebar column by 30 pixels across homepage, archive, page, and single-post templates.
+- Increased homepage list-row height by 20 pixels and allowed summaries to use the complete available line width.
+- Increased footer typography by two pixels while preserving its existing visual hierarchy and responsive layout.
+
+1.0.82 - 2026-08-24
+- Expanded the default site container to fill modern desktop and 4K viewports while preserving existing theme spacing and responsive layouts.
+- Kept saved Customizer width choices intact and extended the native width control to the new full-width limit.
+- Reused the hardened advertisement image validator when normalizing saved options.
+- Revalidated public templates, pagination, menus, headline controls, ticker animation, comments, sharing links, images, and responsive overflow.
+
+1.0.81 - 2026-08-24
+- Hardened Customizer advertisement image validation with attachment-status and raster MIME allowlists.
+- Limited post-view database writes to published GET requests and one count per visitor cookie per hour.
+- Restored the native WordPress comment-cookie consent field and added core-compatible field length limits.
+- Replaced static menu-icon innerHTML construction with safe DOM element creation.
+- Audited upload, content, comment, REST, AJAX, database, output escaping, debug, and suspicious-code surfaces without changing the homepage template.
+
+1.0.80 - 2026-08-24
+- Increased every text style in the homepage Newsroom Pulse section by one pixel while preserving its layout.
+
+1.0.79 - 2026-08-24
+- Added a distinct three-card Newsroom Pulse section beneath homepage story pagination.
+- Connected cards to native WordPress posts, categories, permalinks, dates, comments, excerpts, and view counts.
+- Added query and before/after action hooks plus a responsive one-column mobile layout.
+
+1.0.78 - 2026-08-24
+- Reduced desktop homepage list cards by 20 pixels at both the top and bottom.
+- Preserved title, summary, category, icon, and metadata sizing while compacting vertical spacing.
+
+1.0.77 - 2026-08-24
+- Removed the homepage list-card title divider.
+- Vertically centered each story summary between its title and metadata row without changing card height.
+
+1.0.76 - 2026-08-24
+- Added a subtle divider between each homepage list-card title and summary without changing card dimensions.
+
+1.0.75 - 2026-08-24
+- Prevented portrait featured images from increasing homepage list-row height.
+- Standardized all six desktop list cards at 203 pixels while preserving the existing mobile layout.
+- Verified both numbered list pages for equal card sizing, image cropping, and horizontal overflow.
+
+1.0.74 - 2026-08-24
+- Restored the additional homepage feed as an independent six-post WordPress query.
+- Placed working numbered, previous, and next pagination directly below the six story rows.
+- Preserved the existing card layout, sidebar, responsive rules, and hover effects.
+
+1.0.73 - 2026-08-24
+- Replaced every legacy PHP, JavaScript, CSS, option, hook, block, image-size, and query-parameter prefix with the independent Novaflow namespace.
+- Changed the theme option array to novaflow_options so Novaflow does not read or modify another theme's settings.
+- Preserved the existing templates, layout values, responsive rules, colors, and interactions during the namespace migration.
+
+1.0.72 - 2026-08-24
+- Audited the complete theme structure and WordPress integration.
+- Prevented the additional homepage story list from repeating posts already shown in the main editorial grid.
+- Read the author link from the standard style.css Author URI instead of a hard-coded template URL.
+- Completed bundled resource license and source documentation.
+- Revalidated PHP, JavaScript, WordPress hooks, public URLs, and Theme Check results.
+
+1.0.71 - 2026-08-24
+- Limited each Latest Comments widget entry to two text lines while preserving its WordPress links.
+
+1.0.70 - 2026-08-24
+- Replaced stale manual card excerpts with summaries derived from the current WordPress post content.
+- Updated the single-post introduction to follow the current article content.
+- Added query filters for the front page, story list, trending posts, ticker, editor selection, and related posts.
+- Verified post, page, taxonomy, author, blog, and search URLs across the local WordPress installation.
+
+1.0.69 - 2026-08-24
+- Limited homepage horizontal-list descriptions to a stable two-line reading width.
+
+1.0.68 - 2026-08-24
+- Limited homepage horizontal-list titles to one line and sidebar trending titles to two lines.
+
+1.0.67 - 2026-08-24
+- Prevented restored pointer hover state from animating cards and images during page reload while preserving all hover effects after real pointer movement.
+
+1.0.66 - 2026-08-24
+- Prevented single post images from flashing during reload by using eager loading, synchronous decoding, and stable compositing layers.
+- Preserved existing image hover scaling after the reload stability fix.
+
+1.0.65 - 2026-08-24
+- Removed the custom reload visibility and manual scroll-restoration mechanism.
+- Fixed reload movement at its source by disabling smooth scrolling for browser-restored positions.
+
+1.0.64 - 2026-08-24
+- Delayed reload-page reveal until the saved scroll position becomes reachable, preventing a brief jump to the top.
+
+1.0.63 - 2026-08-24
+- Preserved the current scroll position during page reloads without changing normal navigation behavior.
+- Restored the top-bar Facebook and X symbols while keeping local brand artwork in article share controls.
+
+1.0.62 - 2026-08-24
+- Replaced the animated comment submit treatment with a compact, light, static button.
+
+1.0.61 - 2026-08-24
+- Restyled the comment submit button with a restrained rose treatment and increased its label size by 3 pixels.
+
+1.0.60 - 2026-08-24
+- Reduced the single post author avatar from 52 pixels to 37 pixels.
+
+1.0.59 - 2026-08-24
+- Replaced hand-drawn share symbols with locally bundled, openly licensed brand SVG icons.
+- Documented Simple Icons and Bootstrap Icons sources and licenses for WordPress.org review.
+
+1.0.58 - 2026-08-24
+- Reduced single post share button circles while preserving their icon size.
+- Replaced the copy-link control with working LinkedIn and Telegram share links and added nofollow attributes to every external share link.
+
+1.0.57 - 2026-08-24
+- Reduced the space above single post titles to 10 pixels.
+
+1.0.56 - 2026-08-24
+- Expanded single post introductory text to a consistent two-line summary using real WordPress excerpt and content data.
+
+1.0.55 - 2026-08-24
+- Reduced single post title sizing and constrained title and deck text to the article column without wrapping.
+
+1.0.54 - 2026-08-24
+- Restored the primary sidebar on single post pages.
+- Reduced the vertical height and spacing of related post cards.
+
+1.0.53 - 2026-08-24
+- Rebuilt the single post layout with a responsive editorial header, author details, sharing controls, featured media, WordPress tags, related posts, and a compact comment form.
+- Added Turkish interface translations for the new single post components.
+
+1.0.52 - 2026-08-23
+- Extended the single post information bar to the card edges and removed its outline.
+
+1.0.51 - 2026-08-23
+- Added a separated 50px information box below single post titles.
+
+1.0.50 - 2026-08-23
+- Restored the previous single post title styling.
+- Moved the post information row above the featured image.
+
+1.0.49 - 2026-08-23
+- Increased and colorized the single post reading-time and comment information.
+- Added a colorful visual treatment to single post title headers.
+
+1.0.48 - 2026-08-23
+- Added a 4px inset and increased the single post featured-image corner radius.
+
+1.0.47 - 2026-08-23
+- Restored full-width featured images on single post pages while retaining rounded corners.
+
+1.0.46 - 2026-08-23
+- Moved the single post information row below the featured image.
+- Added rounded corners to featured images on single post pages.
+
+1.0.45 - 2026-08-23
+- Moved the author, date, reading-time, and comment row above the title on single post pages.
+
+1.0.44 - 2026-08-23
+- Removed the category badge displayed above titles on single post pages.
+
+1.0.43 - 2026-08-23
+- Moved header JavaScript into the WordPress script enqueue system without changing menu behavior.
+- Compressed the 1200 x 900 theme screenshot for faster WordPress.org processing.
+- Revalidated the package against the official WordPress Theme Check rules.
+
+1.0.42 - 2026-08-23
+- Expanded the required English theme description and bundled documentation for WordPress.org.
+- No settings, admin pages, public templates, or front-end components were added.
+
+1.0.41 - 2026-08-17
+- Removed the optional Theme URI header to address the WordPress.org theme review feedback.
+- No theme layout, styling, functionality, or bundled assets were changed.
+
+1.0.40 - 2026-08-13
+- Removed the custom Appearance > Novaflow Settings screen and moved all presentation settings into the native WordPress Customizer.
+- Preserved the novaflow_options array so existing saved values continue to work without changing the public design.
+- Added Customizer controls for header advertisement media/options and social profile URLs.
+- Standardized copyright and GPLv2-or-later licensing notices.
+- Rebuilt the theme screenshot using only original Novaflow abstract artwork and removed unknown/third-party imagery and advertisement-looking preview content.
+- Removed the unused custom admin PHP, CSS, and JavaScript files.
+
+1.0.39 - 2026-08-04
+- Corrected static-front-page and separate posts-page handling.
+- Added complete mobile-menu focus containment, Escape handling, modal semantics, and focus restoration.
+- Fixed long-title and unbroken-text wrapping throughout the theme.
+- Hardened option validation, external URL protocols, attachment checks, nonces, capabilities, escaping, and accessible labels.
+- Preserved the managed header advertisement, compact search, editorial homepage, light footer, admin settings screen, and existing visual design.
+- Verified responsive layouts from 320px mobile screens through wide desktop viewports, including RTL rendering and keyboard interactions.
+- Optimized the 1200 × 900 theme screenshot for the WordPress.org package.
+- Refreshed translation, licensing, privacy, and resource documentation.

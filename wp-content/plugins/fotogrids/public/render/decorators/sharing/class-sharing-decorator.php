@@ -1,0 +1,173 @@
+<?php
+declare(strict_types=1);
+
+namespace FotoGrids\Render\Decorators\Sharing;
+
+use FotoGrids\Render\Api\Asset_Decl;
+use FotoGrids\Render\Api\Collection_Kind;
+use FotoGrids\Render\Api\Decorator;
+use FotoGrids\Render\Api\Item_View;
+use FotoGrids\Render\Api\Module_Assets;
+use FotoGrids\Render\Api\Render_Context;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Exposes the resolved sharing configuration to the frontend.
+ *
+ * Writes the effective sharing config (enabled networks, placements, button
+ * style/size) as a JSON data attribute on the gallery wrapper. The frontend
+ * reads it and renders share bars on thumbnails / full images for the
+ * placements that apply. Active whenever sharing is enabled for the collection.
+ *
+ * @package FotoGrids\Render\Decorators\Sharing
+ * @since   1.0.0
+ */
+final class Sharing_Decorator implements Decorator {
+
+	public function id(): string {
+		return 'fotogrids/sharing';
+	}
+
+	public function origin(): string {
+		return 'fotogrids';
+	}
+
+	public function replaces(): ?string {
+		return null;
+	}
+
+	public function extends_id(): ?string {
+		return null;
+	}
+
+	/**
+	 * Translated share-bar labels, carried in every share config as `labels`.
+	 *
+	 * Keyed by stored network id plus the tooltip and copy-feedback strings.
+	 * `share_on` carries a `%s` placeholder for the network label.
+	 *
+	 * @since  1.1.4
+	 * @return array<string, string>
+	 */
+	public static function client_labels(): array {
+		return array(
+			'facebook'    => __( 'Facebook', 'fotogrids' ),
+			'x'           => __( 'X', 'fotogrids' ),
+			'pinterest'   => __( 'Pinterest', 'fotogrids' ),
+			'linkedin'    => __( 'LinkedIn', 'fotogrids' ),
+			'whatsapp'    => __( 'WhatsApp', 'fotogrids' ),
+			'telegram'    => __( 'Telegram', 'fotogrids' ),
+			'reddit'      => __( 'Reddit', 'fotogrids' ),
+			'email'       => __( 'Email', 'fotogrids' ),
+			'copy_link'   => __( 'Copy link', 'fotogrids' ),
+			/* translators: %s: social network name, e.g. Facebook. */
+			'share_on'    => __( 'Share on %s', 'fotogrids' ),
+			'link_copied' => __( 'Link copied', 'fotogrids' ),
+			'copy_failed' => __( 'Copy failed', 'fotogrids' ),
+		);
+	}
+
+	/**
+	 * Active when sharing resolves to enabled for this collection.
+	 *
+	 * Opts out of album-as-collection renders. The item-level share
+	 * placements (thumbnail, lightbox) don't apply to album thumbnails
+	 * (which navigate into a gallery, not into a lightbox), and the
+	 * view_footer placement is rendered by the View Page shell - not by
+	 * the gallery wrapper inside it.
+	 *
+	 * @since 1.0.0
+	 * @param Render_Context $render_context Render context.
+	 * @return bool
+	 */
+	public function supports( Render_Context $render_context ): bool {
+		if ( Collection_Kind::ALBUM === $render_context->meta->collection_kind ) {
+			return false;
+		}
+		$resolved = \FotoGrids\Settings\Sharing_Settings_Store::resolve( (int) $render_context->meta->gallery_id );
+		return ! empty( $resolved['enabled'] );
+	}
+
+	/**
+	 * Sharing adds no per-item wrappers; the frontend draws the bars.
+	 *
+	 * @since 1.0.0
+	 * @param array<int, Item_View> $collection_items Collection items.
+	 * @param Render_Context        $render_context   Render context.
+	 * @return array<int, Item_View>
+	 */
+	public function decorate_items( array $collection_items, Render_Context $render_context ): array {
+		return $collection_items;
+	}
+
+	/**
+	 * Write the resolved sharing config onto the gallery wrapper.
+	 *
+	 * @since 1.0.0
+	 * @param Render_Context $render_context Render context.
+	 * @return array<string, string>
+	 */
+	public function wrapper_data_attrs( Render_Context $render_context ): array {
+		$resolved = \FotoGrids\Settings\Sharing_Settings_Store::resolve( (int) $render_context->meta->gallery_id );
+
+		$payload = array(
+			'enabled'      => (bool) $resolved['enabled'],
+			'networks'     => $resolved['networks'],
+			'placements'   => $resolved['placements'],
+			'button_style' => $resolved['button_style'],
+			'button_size'  => $resolved['button_size'],
+			'labels'       => self::client_labels(),
+		);
+
+		return array( 'data-fg-sharing' => wp_json_encode( $payload ) );
+	}
+
+	public function style_vars( Render_Context $render_context ): array {
+		return array();
+	}
+
+	/**
+	 * Sharing's own JS and CSS. Both ship from the module folder via the
+	 * webpack entries `sharing` (JS, copied to assets/js) and the inline
+	 * CSS file (copied verbatim by CopyWebpackPlugin's public/render/**
+	 * rule).
+	 *
+	 * @since 1.0.0
+	 * @param Render_Context $render_context Render context.
+	 * @return Module_Assets
+	 */
+	public function assets( Render_Context $render_context ): Module_Assets {
+		return new Module_Assets(
+			array(
+				// fg-tooltip first so its handle is registered before any
+				// module that depends on it (sharing's share-bar buttons
+				// bind tooltips via window.FgTooltip).
+				'fotogrids-fg-tooltip' => new Asset_Decl(
+					'../../assets/css/fg-tooltip.css',
+					array(),
+					false,
+				),
+				'fotogrids-sharing'    => new Asset_Decl(
+					'decorators/sharing/sharing.css',
+					array(),
+					false,
+				),
+			),
+			array(
+				'fotogrids-fg-tooltip' => new Asset_Decl(
+					'../../assets/js/fg-tooltip.js',
+					array(),
+					true,
+				),
+				'fotogrids-sharing'    => new Asset_Decl(
+					'../../assets/js/sharing.js',
+					array( 'fotogrids-runtime', 'fotogrids-fg-tooltip' ),
+					true,
+				),
+			),
+		);
+	}
+}

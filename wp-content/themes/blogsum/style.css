@@ -1,0 +1,318 @@
+/*
+Theme Name: Blogsum
+Theme URI: https://wpmatcha.com/wordpress-themes/newsum/
+Author: WP Matcha
+Author URI: https://wpmatcha.com
+Description: Blogsum is an authoritative, editorial blog and broadsheet news magazine WordPress theme designed for writers, independent journalists, storytelling bloggers, and modern publications. As an optimized child theme of Newsum, it features an editorial broadsheet layout, refined typography, responsive design, fast performance, and seamless compatibility with the NewSum Pro suite.
+Template: newsum
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
+Version: 1.0.3
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: blogsum
+Tags: blog, news, grid-layout, one-column, two-columns, three-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, full-width-template, theme-options, translation-ready, block-patterns
+*/
+
+/* ------------------------------------------------------------------------- *
+ *  Blogsum Child Theme - Editorial & Broadsheet Enhancements
+/* ------------------------------------------------------------------------- */
+
+/* Refined Editorial Palette & Spacing Defaults */
+:root {
+    --blogsum-editorial-serif: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+    --blogsum-editorial-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --blogsum-accent: var(--accent-color, #ff2a2a);
+    --blogsum-lead-bg: rgba(255, 255, 255, 0.02);
+    --blogsum-border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-light {
+    --blogsum-lead-bg: rgba(0, 0, 0, 0.02);
+    --blogsum-border-subtle: rgba(0, 0, 0, 0.08);
+}
+
+/* --- Site Content Spacing Alignment --- */
+.site-content {
+    padding-top: var(--space-md);
+}
+
+/* --- Primary Navigation Wrap Safeguard (Prevent Bleed) --- */
+.nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------------- *
+ *  Hero Broadsheet (Tribune) Refinements for Blogsum
+/* ------------------------------------------------------------------------- */
+.hero-newspaper-broadsheet {
+    padding-top: 0;
+    padding-bottom: var(--space-md, 2rem);
+}
+
+.newspaper-broadsheet-container {
+    border-top: 2px solid var(--border-color, #27272a);
+    border-bottom: 2px solid var(--border-color, #27272a);
+    padding: 1.25rem 0;
+}
+
+.newspaper-col-header {
+    border-bottom: 2px solid var(--border-color, #27272a);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.newspaper-col-kicker {
+    font-family: var(--blogsum-editorial-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blogsum-accent);
+}
+
+.newspaper-col-badge {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--text-secondary, #a1a1aa);
+}
+
+/* Lead Feature Story Body */
+.newspaper-lead-article {
+    background: var(--blogsum-lead-bg);
+    border: 1px solid var(--blogsum-border-subtle);
+    border-radius: 4px;
+    padding: 1.25rem;
+}
+
+.newspaper-lead-article:hover {
+    box-shadow: none;
+}
+
+.newspaper-lead-pill {
+    background: var(--blogsum-accent);
+    color: #ffffff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+}
+
+.newspaper-lead-title {
+    font-family: var(--blogsum-editorial-serif);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.newspaper-lead-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.newspaper-lead-title a:hover {
+    color: var(--blogsum-accent);
+}
+
+.newspaper-lead-excerpt {
+    font-family: var(--blogsum-editorial-sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary, #a1a1aa);
+    margin-bottom: 1.25rem;
+}
+
+/* Newspaper Brief Items (Col 1) */
+.newspaper-brief-item {
+    border-bottom: 1px dashed var(--blogsum-border-subtle);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.newspaper-brief-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.newspaper-brief-title {
+    font-family: var(--blogsum-editorial-serif);
+    font-size: 1.0625rem;
+    line-height: 1.35;
+    margin: 0.35rem 0 0.5rem;
+}
+
+.newspaper-brief-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.newspaper-brief-title a:hover {
+    color: var(--blogsum-accent);
+}
+
+.newspaper-kicker {
+    font-family: var(--blogsum-editorial-sans);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blogsum-accent);
+}
+
+/* Newspaper Featured Card (Col 3) */
+.newspaper-featured-card {
+    background: var(--blogsum-lead-bg);
+    border: 1px solid var(--blogsum-border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+}
+
+.newspaper-featured-card .newspaper-card-content {
+    padding: 1rem;
+}
+
+.newspaper-featured-card .newspaper-card-title {
+    font-family: var(--blogsum-editorial-serif);
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-top: 0.4rem;
+}
+
+.newspaper-featured-card .newspaper-card-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.newspaper-featured-card .newspaper-card-title a:hover {
+    color: var(--blogsum-accent);
+}
+
+/* ------------------------------------------------------------------------- *
+ *  Editorial Blog Post & Typography Polish
+/* ------------------------------------------------------------------------- */
+/* Refined Drop Cap for Articles */
+.has-drop-cap:not(:focus)::first-letter {
+    font-family: var(--blogsum-editorial-serif);
+    color: var(--blogsum-accent);
+    font-size: 4.85em;
+    float: left;
+    font-weight: 700;
+    line-height: 0.82;
+    margin: 0.05em 0.12em 0 0;
+    text-transform: uppercase;
+}
+
+/* Editorial Blockquote */
+blockquote,
+.wp-block-quote {
+    border-left: 3px solid var(--blogsum-accent);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--blogsum-lead-bg);
+    font-family: var(--blogsum-editorial-serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+blockquote cite,
+.wp-block-quote cite {
+    display: block;
+    font-family: var(--blogsum-editorial-sans);
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-top: 0.75rem;
+    color: var(--text-secondary, #a1a1aa);
+    text-transform: uppercase;
+}
+
+/* Single Post Author Box */
+.author-bio-box,
+.newsum-author-profile {
+    border: 1px solid var(--blogsum-border-subtle);
+    border-left: 4px solid var(--blogsum-accent);
+    background: var(--blogsum-lead-bg);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin: 2.5rem 0;
+}
+
+/* Reading Progress Indicator Subtle Theme Pulse */
+.reading-time-badge {
+    background: var(--blogsum-lead-bg);
+    border: 1px solid var(--blogsum-border-subtle);
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+}
+
+/* Mobile Responsiveness Reinforcements */
+@media (max-width: 768px) {
+    .newspaper-grid {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+
+    .newspaper-col-center {
+        grid-column: 1 / -1 !important;
+        order: -1 !important;
+    }
+
+    .newspaper-col-left,
+    .newspaper-col-center,
+    .newspaper-col-right {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color, #27272a) !important;
+        box-sizing: border-box !important;
+    }
+
+    .newspaper-col-right {
+        border-bottom: none !important;
+    }
+}

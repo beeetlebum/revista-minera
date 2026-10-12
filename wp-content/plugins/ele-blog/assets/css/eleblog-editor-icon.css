@@ -1,0 +1,16 @@
+.elementor-element .icon {
+  position: relative;
+}
+.elementor-element .icon .eleblog-icon::after {
+  content: "PRO";
+  font-size: 10px;
+  opacity: 0.4;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: red;
+}
+.elementor-control-redirect_page_url .elementor-control-url-more{
+  display: none;
+}
+
